@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+/* @import '~bootstrap/css/bootstrap'; */
+/* @import '~ngx-toastr/toastr-bs4-alert'; */
+@import '~@fortawesome/fontawesome-free/css/fontawesome';
+@import '~@fortawesome/fontawesome-free/css/solid';
+@import '~@fortawesome/fontawesome-free/css/regular';
+@import '~@fortawesome/fontawesome-free/css/brands';
+@import './assets/cssm-admin';

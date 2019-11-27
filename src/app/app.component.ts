@@ -6,5 +6,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'centrosanitario-santamaria-backend';
+  title = 'cssm-dashboard';
+
+  constructor() {
+
+  }
+
+  // getClasses() {
+  //   const classes = {
+  //     'pinned-sidebar': getSidebarStat().isSidebarPinned,
+  //     'toggeled-sidebar': getSidebarStat().isSidebarToggeled
+  //   }
+  //   return classes;
+  // }
+  // toggleSidebar() {
+  //   this.appService.toggleSidebar();
+  // }
+
+  // getSidebarStat() {
+  //   return {
+  //     isSidebarPinned: this.isSidebarPinned,
+  //     isSidebarToggeled: this.isSidebarToggeled
+  //   }
+  // }
+
 }
