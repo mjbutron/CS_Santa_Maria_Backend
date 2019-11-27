@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CoreService } from '../../../services/core.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,26 +9,17 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   isCollapsed = true;
-  isSidebarPinned = false;
-  isSidebarToggeled = false;
 
-  constructor() { }
+  constructor(private coreService: CoreService) { }
 
   ngOnInit() {
   }
 
   toggleSidebarPin() {
-    this.isSidebarPinned = ! this.isSidebarPinned;
+    this.coreService.toggleSidebarPin();
   }
   toggleSidebar() {
-    this.isSidebarToggeled = ! this.isSidebarToggeled;
-  }
-
-  getSidebarStat() {
-    return {
-      isSidebarPinned: this.isSidebarPinned,
-      isSidebarToggeled: this.isSidebarToggeled
-    }
+    this.coreService.toggleSidebar();
   }
 
 }

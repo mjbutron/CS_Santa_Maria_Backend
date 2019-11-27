@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CoreService } from './services/core.service';
 
 @Component({
   selector: 'app-root',
@@ -8,26 +9,17 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'cssm-dashboard';
 
-  constructor() {
+  constructor(private coreService: CoreService) {}
 
+  getClasses() {
+    const classes = {
+      'pinned-sidebar': this.coreService.getSidebarStat().isSidebarPinned,
+      'toggeled-sidebar': this.coreService.getSidebarStat().isSidebarToggeled
+    }
+    return classes;
   }
-
-  // getClasses() {
-  //   const classes = {
-  //     'pinned-sidebar': getSidebarStat().isSidebarPinned,
-  //     'toggeled-sidebar': getSidebarStat().isSidebarToggeled
-  //   }
-  //   return classes;
-  // }
-  // toggleSidebar() {
-  //   this.appService.toggleSidebar();
-  // }
-
-  // getSidebarStat() {
-  //   return {
-  //     isSidebarPinned: this.isSidebarPinned,
-  //     isSidebarToggeled: this.isSidebarToggeled
-  //   }
-  // }
+  toggleSidebar() {
+    this.coreService.toggleSidebar();
+  }
 
 }

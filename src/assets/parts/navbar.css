@@ -148,3 +148,9 @@
 		 display: none;
 	}
 }
+
+.wrapper .cssm-font {
+  font-family: 'Amatic SC', cursive;
+  font-weight: bold;
+  font-size: 28px;
+}

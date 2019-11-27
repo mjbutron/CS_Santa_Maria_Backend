@@ -10,11 +10,11 @@ body {
 	 border-color: rgba(110, 120, 153, .3);
 }
  .wrapper.default-theme nav.navbar .navbar-brand {
-	 color: #b9bece;
+	 color: #ffffff;
 }
  .wrapper.default-theme nav.navbar .left-nav input.navbar-search {
 	 background: #04c1c3;
-	 color: #6e7899;
+	 color: #ffffff;
 }
  .wrapper.default-theme nav.navbar .left-nav input.navbar-search::placeholder {
 	 color: rgba(110, 120, 153, .6);
@@ -23,10 +23,10 @@ body {
 	 background: #0095A6;
 }
  .wrapper.default-theme nav.navbar .nav-link {
-	 color: #6e7899;
+	 color: #ffffff;
 }
  .wrapper.default-theme nav.navbar .nav-link i {
-	 border-color: #6e7899;
+	 border-color: #ffffff;
 	 background: #04c1c3;
 }
  .wrapper.default-theme nav.navbar .nav-link:hover {
