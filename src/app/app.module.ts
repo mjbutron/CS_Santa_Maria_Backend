@@ -15,13 +15,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
