@@ -122,14 +122,14 @@ body {
 	 background-color: #4c5671;
 }
  .wrapper.default-theme .btn.btn-outline-lightning {
-	 color: #5b6582;
-	 background-color: transparent;
-	 border-color: #5b6582;
+	 color: #f0f3ff;
+	 background-color: #04c1c3;
+	 border-color: #04c1c3;
 }
  .wrapper.default-theme .btn.btn-outline-lightning:hover {
 	 color: #f0f3ff;
-	 background-color: #5b6582;
-	 border-color: #5b6582;
+	 background-color: #0095A6;
+	 border-color: #0095A6;
 }
  .wrapper.default-theme .form-control {
 	 font-size: 0.9rem;

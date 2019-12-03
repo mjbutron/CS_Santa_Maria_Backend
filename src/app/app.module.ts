@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ToastrModule } from 'ngx-toastr';
 
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 // Routes
 import { APP_ROUTING } from './app.routes';
 
@@ -31,7 +33,8 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     ToastrModule.forRoot(),
-    APP_ROUTING
+    APP_ROUTING,
+    DragDropModule
   ],
   providers: [{provide : LocationStrategy , useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

@@ -106,6 +106,77 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
+            <h5>Cabecera principal (Slider) </h5>
+          </div>
+          <div class="card-body">
+            <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>
+                <div class="col mb-4">
+                  <div class="card h-100">
+                    <img src="../../../assets/img/default-image.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{timePeriod}}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">Descripción del slider.</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-title mb-1 p-3">
+            <h5>Cambiar imágenes </h5>
+          </div>
+          <div class="card-body">
+            <form>
+            <div class="form-group">
+              <label for="husername" class="col-sm-2 col-form-label text-nowrap">Título</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control rounded-0" id="husername" aria-describedby="emailHelp">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="staticEmail" class="col-sm-2 col-form-label text-nowrap">Descripción</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control rounded-0" id="staticEmail" aria-describedby="emailHelp">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-sm-2 col-form-label text-nowrap">Color de letra</label>
+              <div class="col-sm-10">
+                <input type="color" value="#918d8d">
+              </div>
+            <!-- </div>
+            <div class="form-group"> -->
+              <label for="inputPassword" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
+              <div class="col-sm-10">
+                <input type="file" (change)="onFileChanged($event)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-2 col-form-label"></label>
+              <div class="col-sm-10 mb-3">
+                <button type="button" class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Subir</button>
+                <button type="button " class="btn btn-outline-lightning rounded-0 mb-2">Cancelar</button>
+              </div>
+            </div>
+          </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div>
+
+    <div class="row">
+
+      <div class="col-md-12 mb-4">
+
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
             <h5>Talleres (Pagina de inicio)</h5>
           </div>
           <div class="card-body">
@@ -205,83 +276,87 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Cabecera principal (Sliders) </h5>
+            <h5>Opiniones (Pagina de inicio)</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive-md">
               <div class="table-responsive">
-                <div class="row row-cols-1 row-cols-md-3">
-                  <div class="col mb-4">
-                    <div class="card h-100">
-                      <img src="../../../assets/img/default-image.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Título 1</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Descripción del slider 1</h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col mb-4">
-                    <div class="card h-100">
-                      <img src="../../../assets/img/default-image.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Título 2</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Descripción del slider 2</h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col mb-4">
-                    <div class="card h-100">
-                      <img src="../../../assets/img/default-image.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Título 3</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Descripción del slider 3</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Comentario</th>
+                      <th>Valoración</th>
+                      <th>Fecha</th>
+                      <th>Quitar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Nombre Usuario</td>
+                      <td class="align-middle">
+                        Comentario del usuario
+                      </td>
+                      <td>
+                        <span style="font-size: 0.7em; color: gold;">
+                          <i class="fas fa-star" ></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                        </span>
+                      </td>
+                      <td>22/10/2019</td>
+                      <td >
+                        <a class="btn btn-sm btn-outline-lightning rounded-0">
+                          <i class="far fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Nombre Usuario</td>
+                      <td class="align-middle">
+                        La leche de pantalla, la mejor que comprado de 27 pulgadas, ideal para videojuegos,
+                        nitidez increíble la resolución fantástica, no hay pegas una maravilla que no
+                        tiene nada de marcó y es todo pantalla, es una maravilla de pantalla.
+                      </td>
+                      <td>
+                        <span style="font-size: 0.7em; color: gold;">
+                          <i class="fas fa-star" ></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                          <i class="fas fa-star"></i>
+                        </span>
+                      </td>
+                      <td>22/10/2019</td>
+                      <td >
+                        <a class="btn btn-sm btn-outline-lightning rounded-0">
+                          <i class="far fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Nombre Usuario</td>
+                      <td class="align-middle">
+                        Comentario del usuario
+                      </td>
+                      <td>
+                        <span style="font-size: 0.7em; color: gold;">
+                          <i class="fas fa-star" ></i>
+                          <i class="fas fa-star"></i>
+                        </span>
+                      </td>
+                      <td>22/10/2019</td>
+                      <td >
+                        <a class="btn btn-sm btn-outline-lightning rounded-0">
+                          <i class="far fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-
-          <div class="card-title mb-1 p-3">
-            <h5>Cambiar imágenes </h5>
-          </div>
-          <div class="card-body">
-            <form>
-            <div class="form-group row">
-              <label for="husername" class="col-sm-2 col-form-label text-nowrap">Título</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control rounded-0" id="husername" aria-describedby="emailHelp">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="staticEmail" class="col-sm-2 col-form-label text-nowrap">Descripción</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control rounded-0" id="staticEmail" aria-describedby="emailHelp">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="inputPassword" class="col-sm-2 col-form-label text-nowrap">Color de letra</label>
-              <div class="col-sm-10">
-                <input type="color" value="#918d8d">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="inputPassword" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
-              <div class="col-sm-10">
-                <input type="file" (change)="onFileChanged($event)">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mb-3">
-                <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2">Subir</button>
-                <button type="button " class="btn btn-outline-lightning rounded-0 mb-2">Cancelar</button>
-              </div>
-            </div>
-          </form>
-          </div>
-
         </div>
       </div>
     </div>
