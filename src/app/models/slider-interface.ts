@@ -6,5 +6,5 @@ export interface SliderInterface {
   order_slider?: Number;
   createDate?: string;
   updateDate?: string;
-  userId?: string;
+  user_id?: Number;
 }

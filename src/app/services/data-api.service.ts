@@ -10,10 +10,14 @@ import { SliderInterface } from '../models/slider-interface';
 })
 export class DataApiService {
 
-  private url = environment.urlApiRest;
-  headers : HttpHeaders = new HttpHeaders({
-    "Content-type": "application/json"
-  });
+  url = environment.urlApiRest;
+
+  httpOptions = {
+  headers: new HttpHeaders({
+    "Content-type": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImFkbWluQHNtbWF0cm9uYXMuY29tIn0.ywKx_i8RfPOS17CQ5b_Le-QUuyBWMjMwti1SfdUO17Y"
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -24,10 +28,8 @@ export class DataApiService {
 
   updateOrderSlider(slider: SliderInterface, orderSlider: Number){
     slider.order_slider = orderSlider;
-    // console.log(slider);
-    // console.log("Index: " + orderSlider);
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
-    // return this.http.put(url_api, JSON.stringify(slider));
+    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);
   }
 
 }

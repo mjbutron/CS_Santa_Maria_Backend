@@ -112,7 +112,7 @@
             <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
               <div class="example-box" *ngFor="let slider of sliders" cdkDrag>
                 <div class="col mb-4">
-                  <div class="card h-100">
+                  <div class="card h-100" (click)="onSlider(slider)">
                     <img src="{{slider.image}}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{slider.title}}</h5>

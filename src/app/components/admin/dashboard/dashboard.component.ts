@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { ToastrService } from 'ngx-toastr';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { SliderInterface } from '../../../models/slider-interface';
@@ -14,7 +15,7 @@ export class DashboardComponent implements OnInit {
  sliders: SliderInterface[] = [];
  errors = "";
 
-  constructor(private dataApi: DataApiService) {}
+  constructor(private dataApi: DataApiService, public toastr: ToastrService) {}
 
   ngOnInit() {
     this.getSlider();
@@ -33,11 +34,17 @@ export class DashboardComponent implements OnInit {
     moveItemInArray(this.sliders, event.previousIndex, event.currentIndex);
     var index = 1;
     for(let slider of this.sliders){
-      this.dataApi.updateOrderSlider(slider, index);
-      index++;      
-      //console.log(slider.id + slider.order_slider);
+      this.dataApi.updateOrderSlider(slider, index).subscribe((data) => {
+        console.log(data);
+      });
+      index++;
     }
+    console.log("succes");
+    this.toastr.success('Se ha actualizado el orden de la cabecera!', 'Actualizado');
+  }
 
+  onSlider(slider: SliderInterface){
+    console.log(slider);
   }
 
   onFileChanged($event){
