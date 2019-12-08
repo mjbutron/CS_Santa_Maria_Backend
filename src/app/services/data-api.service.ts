@@ -26,7 +26,7 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
-  updateOrderSlider(slider: SliderInterface, orderSlider: Number){
+  updateOrderSlider(slider: SliderInterface, orderSlider: number){
     slider.order_slider = orderSlider;
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
     return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);

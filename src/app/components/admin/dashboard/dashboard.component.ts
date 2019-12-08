@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
 
 import { DataApiService } from 'src/app/services/data-api.service';
-import { SliderInterface } from '../../../models/slider-interface';
+import { SliderInterface } from 'src/app/models/slider-interface';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,10 +13,15 @@ import { SliderInterface } from '../../../models/slider-interface';
 })
 export class DashboardComponent implements OnInit {
 
- sliders: SliderInterface[] = [];
- errors = "";
+  // Slider
+  sliderObj: SliderInterface;
+  sliders: SliderInterface[] = [];
+  // Errors
+  errors = "";
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService) {}
+  constructor(private dataApi: DataApiService, public toastr: ToastrService) {
+    this.sliderObj = new SliderInterface();
+  }
 
   ngOnInit() {
     this.getSlider();
@@ -39,12 +45,19 @@ export class DashboardComponent implements OnInit {
       });
       index++;
     }
-    console.log("succes");
     this.toastr.success('Se ha actualizado el orden de la cabecera!', 'Actualizado');
   }
 
   onSlider(slider: SliderInterface){
     console.log(slider);
+    this.sliderObj = slider;
+  }
+
+  onSliderChange(form: NgForm){
+    console.log(form);
+    if(form.invalid){
+      return;
+    }
   }
 
   onFileChanged($event){

@@ -1,10 +1,11 @@
-export interface SliderInterface {
-  id?: Number;
+export class SliderInterface {
+  id?: number;
   title?: string;
   description?: string;
   image?: string;
-  order_slider?: Number;
+  order_slider?: number;
+  color?: string;
   createDate?: string;
   updateDate?: string;
-  user_id?: Number;
+  user_id?: number;
 }
