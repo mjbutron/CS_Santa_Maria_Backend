@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   pathImage: "../../assets/img",
-  urlApiRest: "http://localhost/apiRest/public"
+  urlApiRest: "http://localhost/apiRest/public",
+  pathServerImage: "C:/xampp/htdocs/apiRest/uploads/"
 };
 
 /*

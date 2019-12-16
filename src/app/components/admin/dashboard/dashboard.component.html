@@ -114,7 +114,7 @@
               <div class="example-box" *ngFor="let slider of sliders" cdkDrag>
                 <div class="col mb-4">
                   <div class="card h-100" (click)="onSlider(slider)">
-                    <img src="{{slider.image}}" class="card-img-top" alt="...">
+                    <img [src]="path+slider.image" class="card-img-top" alt="..."/>
                     <div class="card-body">
                       <h5 class="card-title">{{slider.title}}</h5>
                       <h6 class="card-subtitle mb-2 text-muted">{{slider.description}}</h6>
@@ -129,36 +129,48 @@
             <h5>Editar cabecera</h5>
           </div>
           <div class="card-body">
-            <form (ngSubmit)="onSliderChange( sliderForm )" #sliderForm="ngForm">
+            <form (ngSubmit)="onSubmit( sliderForm )" #sliderForm="ngForm" enctype="multipart/form-data">
             <!-- <div class="form-group"> -->
               <label for="title" class="col-sm-2 col-form-label text-nowrap">Título</label>
+              <span *ngIf="sliderForm.submitted && sliderForm.controls['title'].errors"
+                    class="text-danger animated fadeIn">El título es obligatorio</span>
               <div class="col-sm-10">
-                <input type="text" class="form-control rounded-0" name="title" [(ngModel)]="sliderObj.title">
+                <input type="text" class="form-control rounded-0" name="title" [disabled]="disabledForm"
+                [(ngModel)]="sliderObj.title" required>
               </div>
             <!-- </div> -->
             <!-- <div class="form-group"> -->
               <label for="descSlider" class="col-sm-2 col-form-label text-nowrap">Descripción</label>
+              <span *ngIf="sliderForm.submitted && sliderForm.controls['description'].errors"
+                    class="text-danger animated fadeIn">La descripción es obligatoria</span>
               <div class="col-sm-10">
-                <input type="text" class="form-control rounded-0" name="description" [(ngModel)]="sliderObj.description">
+                <input type="text" class="form-control rounded-0" name="description" [disabled]="disabledForm"
+                [(ngModel)]="sliderObj.description" required>
               </div>
             <!-- </div> -->
             <!-- <div class="form-group"> -->
               <label for="colorSlider" class="col-sm-2 col-form-label text-nowrap">Color de letra</label>
+              <span *ngIf="sliderForm.submitted && sliderForm.controls['color'].errors"
+                    class="text-danger animated fadeIn">El color es obligatorio</span>
               <div class="col-sm-10">
-                <input type="color" value="#918d8d" name="color" [(ngModel)]="sliderObj.color">
+                <input type="color" value="#918d8d" name="color" [disabled]="disabledForm"
+                [(ngModel)]="sliderObj.color_text" required>
               </div>
             <!-- </div>
             <div class="form-group"> -->
               <label for="imageSlider" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
+              <span *ngIf="uploadSucces" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
               <div class="col-sm-10">
-                <input type="file" name="image" [(ngModel)]="sliderObj.image" (change)="onFileChanged($event)">
+                <input type="file" name="image" (change)="onFileChanged($event)" [disabled]="disabledForm">
               </div>
             <!-- </div> -->
             <!-- <div class="form-group"> -->
               <label for="" class="col-sm-2 col-form-label"></label>
               <div class="col-sm-10 mb-3">
-                <button type="submit" name="submit" class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Subir</button>
-                <button type="button" name="cancel" class="btn btn-outline-lightning rounded-0 mb-2">Cancelar</button>
+                <button type="submit" name="submit"
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Subir</button>
+                <button type="button" name="cancel"
+                class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">Cancelar</button>
               </div>
             <!-- </div> -->
           </form>

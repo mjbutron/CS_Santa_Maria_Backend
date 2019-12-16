@@ -2,9 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
+import { CoreService } from 'src/app/services/core.service';
 import { SliderInterface } from 'src/app/models/slider-interface';
+
+const _BLANK = '';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,18 +18,32 @@ import { SliderInterface } from 'src/app/models/slider-interface';
 })
 export class DashboardComponent implements OnInit {
 
+  // Path
+  path = "http://localhost/apiRest/uploads/";
+  // Form
+  disabledForm = true;
+  // File
+  selectedImg: File;
+  uploadSucces: boolean;
   // Slider
   sliderObj: SliderInterface;
+  sliderImg: string;
+  // Carrousel
   sliders: SliderInterface[] = [];
   // Errors
   errors = "";
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService) {
+  constructor(private dataApi: DataApiService,
+    public toastr: ToastrService,
+    private coreService: CoreService,
+    public _DomSanitizer: DomSanitizer) {
     this.sliderObj = new SliderInterface();
   }
 
   ngOnInit() {
+    this.uploadSucces = false;
     this.getSlider();
+
   }
 
   getSlider(){
@@ -49,21 +68,47 @@ export class DashboardComponent implements OnInit {
   }
 
   onSlider(slider: SliderInterface){
-    console.log(slider);
-    this.sliderObj = slider;
+    this.sliderObj.id = slider.id;
+    this.sliderObj.title = slider.title;
+    this.sliderObj.description = slider.description;
+    this.sliderObj.order_slider = slider.order_slider;
+    this.sliderObj.color_text = slider.color_text;
+    this.sliderObj.user_id = slider.user_id;
+    this.sliderImg = slider.image;
+    this.disabledForm = false;
   }
 
-  onSliderChange(form: NgForm){
+  onCancel(){
+    this.sliderObj.id = 0;
+    this.sliderObj.title = _BLANK;
+    this.sliderObj.description = _BLANK;
+    this.sliderObj.order_slider = 0;
+    this.sliderObj.color_text = '#ffffff';
+    this.sliderObj.user_id = 0;
+    this.sliderObj.image = _BLANK;
+    this.uploadSucces = false;
+  }
+
+  onSubmit(form: NgForm){
     console.log(form);
     if(form.invalid){
       return;
     }
+
+    this.sliderObj.image = this.sliderImg;
+    this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
+      console.log(data);
+      this.getSlider();
+    });
+
   }
 
   onFileChanged($event){
-    // console.log("Subida");
-    // const file = event.target.files[0];
-    // console.log(file.name);
+    this.selectedImg = $event.target.files[0];
+    this.coreService.uploadFiles(this.selectedImg).subscribe((data) => {
+      this.uploadSucces = true;
+      this.sliderImg = data.message;
+    });
   }
 
 }

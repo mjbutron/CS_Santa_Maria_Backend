@@ -26,6 +26,11 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
+  updateSliderById(slider: SliderInterface){
+    const url_api = this.url + '/admin/api/slider/update/' + slider.id;
+    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);
+  }
+
   updateOrderSlider(slider: SliderInterface, orderSlider: number){
     slider.order_slider = orderSlider;
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;

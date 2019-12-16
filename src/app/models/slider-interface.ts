@@ -4,7 +4,7 @@ export class SliderInterface {
   description?: string;
   image?: string;
   order_slider?: number;
-  color?: string;
+  color_text?: string;
   createDate?: string;
   updateDate?: string;
   user_id?: number;
