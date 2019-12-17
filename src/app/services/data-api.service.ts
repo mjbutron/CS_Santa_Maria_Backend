@@ -21,6 +21,13 @@ export class DataApiService {
 
   constructor(private http: HttpClient) { }
 
+// DASH API
+  getCountServices(){
+    const url_api = this.url + '/admin/api/statistics/countServices';
+    return this.http.get(url_api, this.httpOptions);
+  }
+
+// SLIDER API
   getAllSlider(){
     const url_api = this.url + '/api/allSlider';
     return this.http.get(url_api);

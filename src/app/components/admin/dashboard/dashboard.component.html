@@ -12,7 +12,7 @@
             </div>
             <div class="ml-auto">
               <p class="card-label text-right text-muted">Servicios</p>
-              <h4 class="card-text text-right ">32</h4>
+              <h4 class="card-text text-right ">{{countServices}}</h4>
             </div>
           </div>
         </div>
@@ -159,16 +159,16 @@
             <!-- </div>
             <div class="form-group"> -->
               <label for="imageSlider" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
-              <span *ngIf="uploadSucces" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
+              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
               <div class="col-sm-10">
-                <input type="file" name="image" (change)="onFileChanged($event)" [disabled]="disabledForm">
+                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
               </div>
             <!-- </div> -->
             <!-- <div class="form-group"> -->
               <label for="" class="col-sm-2 col-form-label"></label>
               <div class="col-sm-10 mb-3">
                 <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Subir</button>
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Aceptar</button>
                 <button type="button" name="cancel"
                 class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">Cancelar</button>
               </div>

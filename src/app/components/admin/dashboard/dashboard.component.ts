@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
-import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 import { SliderInterface } from 'src/app/models/slider-interface';
 
-const _BLANK = '';
+const K_BLANK = '';
+const K_MAX_SIZE = 3000000;
 
 @Component({
   selector: 'app-dashboard',
@@ -18,13 +18,16 @@ const _BLANK = '';
 })
 export class DashboardComponent implements OnInit {
 
+  // Statistics
+  countServices: number;
   // Path
   path = "http://localhost/apiRest/uploads/";
   // Form
   disabledForm = true;
+  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
   // File
   selectedImg: File;
-  uploadSucces: boolean;
+  uploadSuccess: boolean;
   // Slider
   sliderObj: SliderInterface;
   sliderImg: string;
@@ -33,17 +36,20 @@ export class DashboardComponent implements OnInit {
   // Errors
   errors = "";
 
-  constructor(private dataApi: DataApiService,
-    public toastr: ToastrService,
-    private coreService: CoreService,
-    public _DomSanitizer: DomSanitizer) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
   }
 
   ngOnInit() {
-    this.uploadSucces = false;
+    this.uploadSuccess = false;
+    this.getCountServices();
     this.getSlider();
+  }
 
+  getCountServices(){
+    this.dataApi.getCountServices().subscribe((data) => {
+      this.countServices = data[0].total;
+    });
   }
 
   getSlider(){
@@ -64,7 +70,7 @@ export class DashboardComponent implements OnInit {
       });
       index++;
     }
-    this.toastr.success('Se ha actualizado el orden de la cabecera!', 'Actualizado');
+    this.toastr.success('Se ha modificado el orden de la cabecera', 'Actualizado');
   }
 
   onSlider(slider: SliderInterface){
@@ -80,35 +86,46 @@ export class DashboardComponent implements OnInit {
 
   onCancel(){
     this.sliderObj.id = 0;
-    this.sliderObj.title = _BLANK;
-    this.sliderObj.description = _BLANK;
+    this.sliderObj.title = K_BLANK;
+    this.sliderObj.description = K_BLANK;
+    this.imageFile.nativeElement.value = K_BLANK;
     this.sliderObj.order_slider = 0;
     this.sliderObj.color_text = '#ffffff';
     this.sliderObj.user_id = 0;
-    this.sliderObj.image = _BLANK;
-    this.uploadSucces = false;
+    this.sliderObj.image = K_BLANK;
+    this.uploadSuccess = false;
+    this.disabledForm = true;
   }
 
   onSubmit(form: NgForm){
-    console.log(form);
     if(form.invalid){
       return;
     }
-
-    this.sliderObj.image = this.sliderImg;
-    this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
-      console.log(data);
-      this.getSlider();
+    this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
+      this.sliderImg = img['message'];
+      this.sliderObj.image = this.sliderImg;
+      this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
+        this.getSlider();
+        this.disabledForm = true;
+        this.onCancel();
+        this.toastr.success('Se ha editado la cabecera', 'Actualizado');
+      });
     });
-
   }
 
   onFileChanged($event){
-    this.selectedImg = $event.target.files[0];
-    this.coreService.uploadFiles(this.selectedImg).subscribe((data) => {
-      this.uploadSucces = true;
-      this.sliderImg = data.message;
-    });
+    if($event != null){
+      this.selectedImg = $event.target.files[0];
+      if(this.selectedImg.size > K_MAX_SIZE){
+        this.imageFile.nativeElement.value = K_BLANK;
+        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+        return;
+      } else{
+        this.uploadSuccess = true;
+      }
+    } else{
+      return;
+    }
   }
 
 }
