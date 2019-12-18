@@ -1,10 +1,9 @@
-export class SliderInterface {
+export class ServiceInterface {
   id?: number;
   title?: string;
-  description?: string;
   image?: string;
-  order_slider?: number;
-  color_text?: string;
+  subtitle?: string;
+  description?: string;
   create_date?: string;
   update_date?: string;
   user_id?: number;

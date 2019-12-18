@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 import { SliderInterface } from 'src/app/models/slider-interface';
+import { ServiceInterface } from 'src/app/models/service-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
@@ -18,21 +19,23 @@ const K_MAX_SIZE = 3000000;
 })
 export class DashboardComponent implements OnInit {
 
-  // Statistics
-  countServices: number;
   // Path
   path = "http://localhost/apiRest/uploads/";
   // Form
   disabledForm = true;
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
-  // File
+  // Slider - Image
   selectedImg: File;
   uploadSuccess: boolean;
   // Slider
   sliderObj: SliderInterface;
   sliderImg: string;
-  // Carrousel
+  // Slider - Carrousel
   sliders: SliderInterface[] = [];
+  // Service
+  services: ServiceInterface[] = [];
+  numSrv: number;
+  lastDateSrv: Date;
   // Errors
   errors = "";
 
@@ -42,17 +45,22 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.uploadSuccess = false;
-    this.getCountServices();
-    this.getSlider();
+    this.getAllServices();
+    this.getAllSlider();
   }
 
-  getCountServices(){
-    this.dataApi.getCountServices().subscribe((data) => {
-      this.countServices = data[0].total;
+  getAllServices(){
+    this.dataApi.getAllServices()
+    .subscribe((allServices: ServiceInterface[]) => {
+      this.services = allServices;
+      this.numSrv = allServices.length;
+      // this.lastDateSrv = this.services[0].create_date;
+    }, (err) => {
+      this.errors = err;
     });
   }
 
-  getSlider(){
+  getAllSlider(){
     this.dataApi.getAllSlider()
     .subscribe((allSliders: SliderInterface[]) => {
       this.sliders = allSliders;
@@ -105,7 +113,7 @@ export class DashboardComponent implements OnInit {
       this.sliderImg = img['message'];
       this.sliderObj.image = this.sliderImg;
       this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
-        this.getSlider();
+        this.getAllSlider();
         this.disabledForm = true;
         this.onCancel();
         this.toastr.success('Se ha editado la cabecera', 'Actualizado');
@@ -127,5 +135,4 @@ export class DashboardComponent implements OnInit {
       return;
     }
   }
-
 }

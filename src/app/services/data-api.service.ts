@@ -44,4 +44,10 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);
   }
 
+// SERVICES API
+  getAllServices(){
+    const url_api = this.url + '/api/allServices';
+    return this.http.get(url_api);
+  }
+
 }
