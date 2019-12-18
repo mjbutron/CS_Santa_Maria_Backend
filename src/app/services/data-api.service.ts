@@ -50,4 +50,10 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
+// WORKSHOP API
+  getAllWorkShops(){
+    const url_api = this.url + '/api/allWorkShops';
+    return this.http.get(url_api);
+  }
+
 }

@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   // Service
   services: ServiceInterface[] = [];
   numSrv: number;
-  lastDateSrv: Date;
+  lastDateSrv: string;
   // Errors
   errors = "";
 
@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
     .subscribe((allServices: ServiceInterface[]) => {
       this.services = allServices;
       this.numSrv = allServices.length;
-      // this.lastDateSrv = this.services[0].create_date;
+      this.lastDateSrv = this.services[0].create_date;
     }, (err) => {
       this.errors = err;
     });

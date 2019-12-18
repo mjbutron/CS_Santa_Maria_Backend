@@ -1,14 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ToastrModule } from 'ngx-toastr';
-
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 // Routes
@@ -20,6 +18,11 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+
+// Date
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
     APP_ROUTING,
     DragDropModule
   ],
-  providers: [{provide : LocationStrategy , useClass: HashLocationStrategy}],
+  providers: [
+    {provide : LocationStrategy , useClass: HashLocationStrategy},
+    {provide: LOCALE_ID, useValue: 'es'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
