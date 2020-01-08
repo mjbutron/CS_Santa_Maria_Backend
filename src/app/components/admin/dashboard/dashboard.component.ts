@@ -8,6 +8,7 @@ import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 import { SliderInterface } from 'src/app/models/slider-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
+import { WorkshopInterface } from 'src/app/models/workshop-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
@@ -36,6 +37,10 @@ export class DashboardComponent implements OnInit {
   services: ServiceInterface[] = [];
   numSrv: number;
   lastDateSrv: string;
+  // Workshop
+  wspInHome: WorkshopInterface[] = [];
+  numWsp: number;
+  nextDateWsp: string;
   // Errors
   errors = "";
 
@@ -46,6 +51,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.uploadSuccess = false;
     this.getAllServices();
+    this.getAllWorkshops();
     this.getAllSlider();
   }
 
@@ -55,6 +61,21 @@ export class DashboardComponent implements OnInit {
       this.services = allServices;
       this.numSrv = allServices.length;
       this.lastDateSrv = this.services[0].create_date;
+    }, (err) => {
+      this.errors = err;
+    });
+  }
+
+  getAllWorkshops(){
+    this.dataApi.getAllWorkshops()
+    .subscribe((allWorkshops: WorkshopInterface[]) => {
+      for(let wspHome of allWorkshops){
+        if(wspHome.home == 1){
+          this.wspInHome.push(wspHome);
+        }
+      }
+      this.numWsp = allWorkshops.length;
+      this.nextDateWsp = allWorkshops[0].session_date;
     }, (err) => {
       this.errors = err;
     });

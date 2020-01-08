@@ -51,8 +51,8 @@ export class DataApiService {
   }
 
 // WORKSHOP API
-  getAllWorkShops(){
-    const url_api = this.url + '/api/allWorkShops';
+  getAllWorkshops(){
+    const url_api = this.url + '/api/allWorkshops';
     return this.http.get(url_api);
   }
 

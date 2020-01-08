@@ -35,7 +35,7 @@
             </div>
             <div class="ml-auto">
               <p class="card-label text-right text-muted">Talleres</p>
-              <h4 class="card-text text-right ">15</h4>
+              <h4 class="card-text text-right">{{numWsp}}</h4>
             </div>
           </div>
         </div>
@@ -43,7 +43,7 @@
           <small class="text-muted">Próximo Taller: </small>
           <small class="text-success ml-auto">
             <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
-            18/12/2019
+            {{nextDateWsp | date}}
           </small>
         </div>
       </div>
@@ -202,71 +202,23 @@
                       <th>Fecha</th>
                       <th>Hora</th>
                       <th>Precio</th>
-                      <th>Quitar</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Nombre del taller</td>
+                    <tr *ngFor="let workshop of wspInHome">
+                      <td>{{workshop.title}}</td>
                       <td class="align-middle">
-                        18/12/2019
+                        {{workshop.session_date | date}}
                         <!-- <div class="progress" style="height: 3px;">
                           <div class="progress-bar bg-danger" style="width: 35% ;"></div>
                         </div> -->
                       </td>
-                      <td>18:00</td>
-                      <td>40.0€</td>
+                      <td>{{workshop.session_start}}</td>
+                      <td>{{workshop.price}}€</td>
                       <td >
                         <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nombre del taller</td>
-                      <td class="align-middle">
-                        18/12/2019
-                        <!-- <div class="progress" style="height: 3px;">
-                          <div class="progress-bar bg-danger" style="width: 35% ;"></div>
-                        </div> -->
-                      </td>
-                      <td>18:00</td>
-                      <td>40.0€</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nombre del taller</td>
-                      <td class="align-middle">
-                        18/12/2019
-                        <!-- <div class="progress" style="height: 3px;">
-                          <div class="progress-bar bg-danger" style="width: 35% ;"></div>
-                        </div> -->
-                      </td>
-                      <td>18:00</td>
-                      <td>40.0€</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nombre del taller</td>
-                      <td class="align-middle">
-                        18/12/2019
-                        <!-- <div class="progress" style="height: 3px;">
-                          <div class="progress-bar bg-danger" style="width: 35% ;"></div>
-                        </div> -->
-                      </td>
-                      <td>18:00</td>
-                      <td>40.0€</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
+                          <i class="far fa-edit"></i>
                         </a>
                       </td>
                     </tr>
