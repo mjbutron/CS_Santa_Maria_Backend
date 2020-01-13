@@ -18,10 +18,12 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { ContactComponent } from './components/admin/contact/contact.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -30,7 +32,8 @@ registerLocaleData(localeEs);
     NavbarComponent,
     FooterComponent,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

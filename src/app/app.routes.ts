@@ -1,9 +1,11 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { ContactComponent } from './components/admin/contact/contact.component';
 
 const APP_ROUTES: Routes = [
   { path: 'admin/dashboard', component: DashboardComponent }, // TODO only users auth
+  { path: 'admin/contacto', component: ContactComponent }, // TODO only users auth
   { path: '**', pathMatch: 'full', redirectTo: 'admin/dashboard' }
 ];
 
