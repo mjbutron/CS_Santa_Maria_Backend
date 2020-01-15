@@ -19,6 +19,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { ContactComponent } from './components/admin/contact/contact.component';
+import { WorkshopComponent } from './components/admin/workshop/workshop.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -33,7 +34,8 @@ registerLocaleData(localeEs);
     FooterComponent,
     SidebarComponent,
     DashboardComponent,
-    ContactComponent
+    ContactComponent,
+    WorkshopComponent
   ],
   imports: [
     BrowserModule,

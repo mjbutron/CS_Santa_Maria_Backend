@@ -1,0 +1,201 @@
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Talleres
+            <span style="font-size: 1.7em; color: #0095A6;">
+              <i class="fas fa-plus-square float-right"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Precio</th>
+                    <th>Inicio</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let workshop of workShops">
+                    <td>{{workshop.title}}</td>
+                    <td class="align-middle">
+                      {{workshop.session_date | date}}
+                    </td>
+                    <td>{{workshop.session_start}}</td>
+                    <td>{{workshop.price}}€</td>
+                    <td *ngIf="workshop.home==0">
+                      <i class="fas fa-minus"></i>
+                    </td>
+                    <td *ngIf="workshop.home==1">
+                      <i class="fas fa-check"></i>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0">
+                        <i class="far fa-edit"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5>Editar taller</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>General</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="email">Nombre/Título</label>
+                  <input name="email" id="email" type="email" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Precio (€)</label>
+                  <input name="name" id="name" type="number" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="email">Subtítulo</label>
+                  <input name="email" id="email" type="email" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Página de inicio</label>
+                  <input name="name" id="name" type="checkbox" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Breve descripción para la página de inicio</label>
+                  <textarea rows="4" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Información del taller</label>
+                  <textarea rows="6" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Imagen</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Visualización</label>
+                  <div class="card-body">
+                    <div class="col mb-4">
+                      <div class="card h-100">
+                        <img src="./assets/img/classPrenatal.png" class="card-img-top" alt="..."/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Programación</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-9">
+                <div class="form-group">
+                  <label for="email">Direccion (Donde se imparte)</label>
+                  <input name="email" id="email" type="email" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Fecha</label>
+                  <input name="name" id="name" type="date" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="email">Hora de inicio</label>
+                  <input name="email" id="email" type="time" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Hora de finalización</label>
+                  <input name="name" id="name" type="time" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Número de sesiones</label>
+                  <input name="name" id="name" type="number" class="form-control">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
