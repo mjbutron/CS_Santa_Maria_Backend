@@ -43,6 +43,8 @@ export class DashboardComponent implements OnInit {
   nextDateWsp: string;
   // Errors
   errors = "";
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
@@ -50,6 +52,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.uploadSuccess = false;
+    this.isLoaded = false;
     this.getAllServices();
     this.getAllWorkshops();
     this.getAllSlider();
@@ -61,8 +64,10 @@ export class DashboardComponent implements OnInit {
       this.services = allServices;
       this.numSrv = allServices.length;
       this.lastDateSrv = this.services[0].create_date;
+      this.isLoaded = true;
     }, (err) => {
       this.errors = err;
+      this.isLoaded = false;
     });
   }
 
