@@ -1,0 +1,17 @@
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li [ngClass]="page > 1 ? 'page-item': 'page-item disabled'">
+      <a class="page-link" [routerLink]="" (click)="previousPage()" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li *ngFor="let number of numberPage" [ngClass]="number == page ? 'page-item active': 'page-item'">
+      <a class="page-link" [routerLink]="" (click)="goNumberPage(number)" >{{number}}</a>
+    </li>
+    <li [ngClass]="page < totalPages ? 'page-item': 'page-item disabled'">
+      <a class="page-link" [routerLink]="" (click)="nextPage()" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

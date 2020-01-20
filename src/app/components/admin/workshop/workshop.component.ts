@@ -17,11 +17,26 @@ export class WorkshopComponent implements OnInit {
   workShops: WorkshopInterface[] = [];
   // Errors
   errors = "";
+  // Numeros páginas
+  public numberPage: nummber = 0;
+  // Página actual
+  public page: number = 1;
+  // Total de paginas
+  public totalPages: number;
+  // Total de elementos
+  public numWorkShops: number;
+  // Elementos por página
+  private numResults: number = 10;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getAllWorkshops();
+    this.getWorkShopsByPage(this.page);
+  }
+
+  goToPage(page: number){
+    this.page = page;
+    this.getWorkShopsByPage(page);
   }
 
   getAllWorkshops(){
@@ -30,6 +45,15 @@ export class WorkshopComponent implements OnInit {
       this.workShops = allWorkshops;
     }, (err) => {
       this.errors = err;
+    });
+  }
+
+  getWorkShopsByPage(page: Number) {
+    this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
+        this.workShops = data['allWorkshops'];
+        this.numWorkShops = data['total'];
+        this.totalPages = data['totalPages'];
+        this.numberPage = Array(this.totalPages).fill().map((x,i)=>i+1);
     });
   }
 

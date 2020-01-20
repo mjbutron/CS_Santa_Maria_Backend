@@ -56,4 +56,9 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
+  getWorkShopsByPage(page: Number){
+    const url_api = this.url + '/api/workshopsByPage/' + page;
+    return this.http.get(url_api);
+  }
+
 }

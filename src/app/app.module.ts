@@ -24,6 +24,7 @@ import { WorkshopComponent } from './components/admin/workshop/workshop.componen
 // Date
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 registerLocaleData(localeEs);
 
@@ -35,7 +36,8 @@ registerLocaleData(localeEs);
     SidebarComponent,
     DashboardComponent,
     ContactComponent,
-    WorkshopComponent
+    WorkshopComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
