@@ -20,14 +20,14 @@
     </div> -->
     <ul class="menu-items">
       <li >
-        <a href="#" routerLink="/admin/dashboard" routerLinkActive="active">
+        <a [routerLink]="['admin/dashboard']" routerLinkActive="active">
           <i class="fa fa-tv"></i>
           <span>Dashboard</span>
           <!-- <span class="badge badge-warning rounded-0 text-dark p-1">NEW</span> -->
         </a>
       </li>
       <li>
-        <a href="#" routerLink="/admin/contacto" routerLinkActive="active">
+        <a [routerLink]="['admin/contacto']" routerLinkActive="active">
           <i class="far fa-address-card"></i>
           <span>Info. Contacto</span>
         </a>
@@ -45,7 +45,7 @@
         </a>
       </li>
       <li>
-        <a href="#" routerLink="/admin/talleres" routerLinkActive="active">
+        <a [routerLink]="['admin/talleres']" routerLinkActive="active">
           <i class="fa fa-globe"></i>
           <span>Talleres</span>
         </a>

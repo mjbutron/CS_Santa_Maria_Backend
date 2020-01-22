@@ -61,4 +61,15 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
+  // COURSE API
+    getAllCourses(){
+      const url_api = this.url + '/api/courses';
+      return this.http.get(url_api);
+    }
+
+    getCoursesByPage(page: Number){
+      const url_api = this.url + '/api/coursesByPage/' + page;
+      return this.http.get(url_api);
+    }
+
 }

@@ -1,8 +1,6 @@
-<div>
+<div #sectionScroll id="scroll">
   <h4 class="mb-4 text-muted">Dashboard </h4>
-
   <div class="row">
-
     <div class="col-md-6 col-lg-3 mb-4">
       <div class="text-center" *ngIf="!isLoaded">
         <div class="spinner-border" style="color:#0095A6" role="status">
@@ -46,7 +44,7 @@
         </div>
         <div class="card-footer d-flex ">
           <small class="text-muted">Próximo Taller: </small>
-          <small class="text-success ml-auto">
+          <small class="text-info ml-auto">
             <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
             {{nextDateWsp | date}}
           </small>
@@ -63,15 +61,15 @@
             </div>
             <div class="ml-auto">
               <p class="card-label text-right text-muted">Cursos</p>
-              <h4 class="card-text text-right ">12</h4>
+              <h4 class="card-text text-right ">{{numCrs}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex ">
-          <small class="text-muted">Ult. realizado: </small>
-          <small class="text-danger ml-auto">
+          <small class="text-muted">Próximo Curso: </small>
+          <small class="text-info ml-auto">
             <!-- <i class="fa fa-caret-down" aria-hidden="true"></i> -->
-            15/09/2019
+            {{nextDateCrs | date}}
           </small>
         </div>
       </div>
@@ -195,7 +193,13 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Talleres (Pagina de inicio)</h5>
+            <h5>Talleres (Página de inicio)
+              <a routerLink="/admin/talleres" class="btn btn-sm btn-outline-lightning rounded-0 float-right">
+                <span style="font-size: 1.7em;">
+                  <i class="fas fa-edit float-right"></i>
+                </span>
+              </a>
+            </h5>
           </div>
           <div class="card-body">
             <div class="table-responsive-md">
@@ -205,9 +209,8 @@
                     <tr>
                       <th>Nombre</th>
                       <th>Fecha</th>
-                      <th>Hora</th>
+                      <th>Horario</th>
                       <th>Precio</th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -219,13 +222,8 @@
                           <div class="progress-bar bg-danger" style="width: 35% ;"></div>
                         </div> -->
                       </td>
-                      <td>{{workshop.session_start}}</td>
+                      <td>{{workshop.session_start}} - {{workshop.session_end}}</td>
                       <td>{{workshop.price}}€</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-edit"></i>
-                        </a>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -236,7 +234,6 @@
       </div>
     </div>
   </div>
-
 
   <div>
 
@@ -331,6 +328,4 @@
       </div>
     </div>
   </div>
-
-
 </div>

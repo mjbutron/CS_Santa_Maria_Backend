@@ -6,9 +6,11 @@ import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
+
 import { SliderInterface } from 'src/app/models/slider-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
+import { CourseInterface } from 'src/app/models/course-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
@@ -41,6 +43,10 @@ export class DashboardComponent implements OnInit {
   wspInHome: WorkshopInterface[] = [];
   numWsp: number;
   nextDateWsp: string;
+  // Course
+  course: CourseInterface[] = [];
+  numCrs: number;
+  nextDateCrs: string;
   // Errors
   errors = "";
   // Load
@@ -56,6 +62,7 @@ export class DashboardComponent implements OnInit {
     this.getAllServices();
     this.getAllWorkshops();
     this.getAllSlider();
+    this.getAllCourses();
   }
 
   getAllServices(){
@@ -92,6 +99,19 @@ export class DashboardComponent implements OnInit {
       this.sliders = allSliders;
     }, (err) => {
       this.errors = err;
+    });
+  }
+
+  getAllCourses(){
+    this.dataApi.getAllCourses()
+    .subscribe((allCourses: CourseInterface[]) => {
+      this.course = allCourses;
+      this.numCrs = allCourses.length;
+      this.nextDateCrs = this.course[0].create_date;
+      this.isLoaded = true;
+    }, (err) => {
+      this.errors = err;
+      this.isLoaded = false;
     });
   }
 

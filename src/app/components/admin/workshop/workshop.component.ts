@@ -18,7 +18,7 @@ export class WorkshopComponent implements OnInit {
   // Errors
   errors = "";
   // Numeros páginas
-  public numberPage: nummber = 0;
+  public numberPage: number[] = [];
   // Página actual
   public page: number = 1;
   // Total de paginas
@@ -53,7 +53,7 @@ export class WorkshopComponent implements OnInit {
         this.workShops = data['allWorkshops'];
         this.numWorkShops = data['total'];
         this.totalPages = data['totalPages'];
-        this.numberPage = Array(this.totalPages).fill().map((x,i)=>i+1);
+        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
     });
   }
 
