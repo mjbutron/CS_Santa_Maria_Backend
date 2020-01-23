@@ -24,6 +24,8 @@ export class DashboardComponent implements OnInit {
 
   // Path
   path = "http://localhost/apiRest/uploads/";
+  // Scroll
+  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
   // Form
   disabledForm = true;
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
@@ -57,6 +59,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.scrollToDiv();
     this.uploadSuccess = false;
     this.isLoaded = false;
     this.getAllServices();
@@ -180,5 +183,9 @@ export class DashboardComponent implements OnInit {
     } else{
       return;
     }
+  }
+
+  scrollToDiv() {
+      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 }

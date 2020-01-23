@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -27,10 +27,13 @@ export class WorkshopComponent implements OnInit {
   public numWorkShops: number;
   // Elementos por página
   private numResults: number = 10;
+  // Scroll
+  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) { }
 
   ngOnInit() {
+    this.scrollToDiv();
     this.getWorkShopsByPage(this.page);
   }
 
@@ -57,4 +60,7 @@ export class WorkshopComponent implements OnInit {
     });
   }
 
+  scrollToDiv() {
+      this.subsScrollDiv.nativeElement.scrollIntoView(true);
+  }
 }
