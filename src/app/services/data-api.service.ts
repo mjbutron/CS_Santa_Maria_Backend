@@ -62,14 +62,30 @@ export class DataApiService {
   }
 
   // COURSE API
-    getAllCourses(){
-      const url_api = this.url + '/api/courses';
-      return this.http.get(url_api);
-    }
+  getAllCourses(){
+    const url_api = this.url + '/api/courses';
+    return this.http.get(url_api);
+  }
 
-    getCoursesByPage(page: Number){
-      const url_api = this.url + '/api/coursesByPage/' + page;
-      return this.http.get(url_api);
-    }
+  getCoursesByPage(page: Number) {
+    const url_api = this.url + '/api/coursesByPage/' + page;
+    return this.http.get(url_api);
+  }
+
+  // CONTACT API
+  getInfoHome(){
+    const url_api = this.url + '/api/home/info';
+    return this.http.get(url_api);
+  }
+
+  getInfoFooter(){
+    const url_api = this.url + '/api/footer/info';
+    return this.http.get(url_api);
+  }
+
+  getInfoContact(){
+    const url_api = this.url + '/api/contact/info';
+    return this.http.get(url_api);
+  }
 
 }
