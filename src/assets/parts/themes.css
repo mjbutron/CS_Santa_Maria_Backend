@@ -125,6 +125,7 @@ body {
 	 color: #f0f3ff;
 	 background-color: #04c1c3;
 	 border-color: #04c1c3;
+	 width: 100%;
 }
  .wrapper.default-theme .btn.btn-outline-lightning:hover {
 	 color: #f0f3ff;

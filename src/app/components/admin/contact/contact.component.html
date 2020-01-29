@@ -1,4 +1,5 @@
 <div #subsScroll id="scroll" class="panel-header panel-header-sm">
+  <hr>
 </div>
 <div class="main-content">
   <div class="row">
@@ -14,64 +15,64 @@
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="usr_email">Email</label>
+                  <input name="usr_email" id="usr_email" type="email" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Nombre</label>
-                  <input name="name" id="name" type="text" class="form-control">
+                  <label for="usr_name">Nombre</label>
+                  <input name="usr_name" id="usr_name" type="text" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Apellidos</label>
-                  <input name="surname" id="surname" type="text" class="form-control">
+                  <label for="usr_surname">Apellidos</label>
+                  <input name="usr_surname" id="usr_surname" type="text" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Teléfono</label>
-                  <input name="telephone" id="telephone" type="text" class="form-control">
+                  <label for="usr_telephone">Teléfono</label>
+                  <input name="usr_telephone" id="usr_telephone" type="text" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Dirección</label>
-                  <input type="text" class="form-control">
+                  <label for="usr_address">Dirección</label>
+                  <input name="usr_address" id="usr_address" type="text" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4 pr-1">
                 <div class="form-group">
-                  <label>Población</label>
-                  <input type="text" class="form-control">
+                  <label for="usr_city">Población</label>
+                  <input name="usr_city" id="usr_city" type="text" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 px-1">
                 <div class="form-group">
-                  <label>Provincia</label>
-                  <input type="text" class="form-control">
+                  <label for="usr_province">Provincia</label>
+                  <input name="usr_province" id="usr_province" type="text" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 pl-1">
                 <div class="form-group">
-                  <label>Código Postal</label>
-                  <input type="number" class="form-control">
+                  <label for="usr_poscode">Código Postal</label>
+                  <input name="usr_poscode" id="usr_poscode" type="number" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Acerca de mí</label>
-                  <textarea rows="4" cols="80" class="form-control"></textarea>
+                  <label for="usr_about">Acerca de mí</label>
+                  <textarea name="usr_about" id="usr_about" rows="4" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
@@ -122,7 +123,7 @@
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="onSubmitHome( homeForm )" #homeForm="ngForm" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-12">
                 <label><strong>Teléfonos de la cabecera</strong></label>
@@ -131,14 +132,14 @@
             <div class="row p-2">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Teléfono primario</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="hme_firstph">Teléfono primario</label>
+                  <input name="hme_firstph" id="hme_firstph" type="number" [(ngModel)]="infoObj.home_first_ph" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Teléfono secundario</label>
-                  <input name="name" id="name" type="text" class="form-control">
+                  <label for="hme_secondph">Teléfono secundario</label>
+                  <input name="hme_secondph" id="hme_secondph" type="number" [(ngModel)]="infoObj.home_second_ph" class="form-control">
                 </div>
               </div>
             </div>
@@ -151,21 +152,31 @@
             <div class="row p-2">
               <div class="col-md-4 pr-1">
                 <div class="form-group">
-                  <label>Facebook</label>
-                  <input type="text" class="form-control">
+                  <label for="hme_fcbk">Facebook</label>
+                  <input name="hme_fcbk" id="hme_fcbk" type="text" [(ngModel)]="infoObj.home_fcbk" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 px-1">
                 <div class="form-group">
-                  <label>YouTube</label>
-                  <input type="text" class="form-control">
+                  <label for="hme_ytube">YouTube</label>
+                  <input name="hme_ytube" id="hme_ytube" type="text" [(ngModel)]="infoObj.home_ytube" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 pl-1">
                 <div class="form-group">
-                  <label>Instagram</label>
-                  <input type="number" class="form-control">
+                  <label for="hme_insta">Instagram</label>
+                  <input name="hme_insta" id="hme_insta" type="text" [(ngModel)]="infoObj.home_insta" class="form-control">
                 </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6 pr-1">
+                  <button type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetHome(homeForm)">Reiniciar</button>
               </div>
             </div>
           </form>
@@ -182,33 +193,43 @@
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="onSubmitFooter( footerForm )" #footerForm="ngForm" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Dirección del local</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="localaddress">Dirección del local</label>
+                  <input name="localaddress" id="localaddress" type="text" [(ngModel)]="infoObj.footer_address" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Email de información</label>
-                  <input name="name" id="name" type="text" class="form-control">
+                  <label for="ftr_email">Email de información</label>
+                  <input name="ftr_email" id="ftr_email" type="text" [(ngModel)]="infoObj.footer_email" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Teléfono de contacto</label>
-                  <input name="surname" id="surname" type="text" class="form-control">
+                  <label for="ftr_phone">Teléfono de contacto</label>
+                  <input name="ftr_phone" id="ftr_phone" type="number" [(ngModel)]="infoObj.footer_ph" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Horario</label>
-                  <input name="telephone" id="telephone" type="text" class="form-control">
+                  <label for="ftr_time">Horario</label>
+                  <input name="ftr_time" id="ftr_time" type="text" [(ngModel)]="infoObj.footer_schdl" class="form-control">
                 </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6 pr-1">
+                  <button type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetFooter(footerForm)">Reiniciar</button>
               </div>
             </div>
           </form>
@@ -225,40 +246,40 @@
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="onSubmitContact( contactForm )" #contactForm="ngForm" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Dirección</label>
-                  <input type="text" class="form-control">
+                  <label for="cnt_address">Dirección</label>
+                  <input name="cnt_address" id="cnt_address" type="text" [(ngModel)]="infoObj.cnt_address" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Teléfono para cita previa</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="cnt_ph_appo">Teléfono para cita previa</label>
+                  <input name="cnt_ph_appo" id="cnt_ph_appo" type="number" [(ngModel)]="infoObj.cnt_ph_appo" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Emails</label>
-                  <input name="name" id="name" type="text" class="form-control">
+                  <label for="cnt_email">Emails</label>
+                  <input name="cnt_email" id="cnt_email" type="text" [(ngModel)]="infoObj.cnt_emails" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label>Teléfonos matronas</label>
-                  <input name="surname" id="surname" type="text" class="form-control">
+                  <label for="cnt_ph_mwives">Teléfonos matronas</label>
+                  <input name="cnt_ph_mwives" id="cnt_ph_mwives" type="number" [(ngModel)]="infoObj.cnt_ph_mwives" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Teléfonos fisioterapia</label>
-                  <input name="telephone" id="telephone" type="text" class="form-control">
+                  <label for="cnt_ph_physio">Teléfonos fisioterapia</label>
+                  <input name="cnt_ph_physio" id="cnt_ph_physio" type="number" [(ngModel)]="infoObj.cnt_ph_physio" class="form-control">
                 </div>
               </div>
             </div>
@@ -271,15 +292,25 @@
             <div class="row p-2">
               <div class="col-md-6 pr-1">
                 <div class="form-group">
-                  <label for="email">Latitud</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="cnt_lat">Latitud</label>
+                  <input name="cnt_lat" id="cnt_lat" type="text" [(ngModel)]="infoObj.cnt_lat" class="form-control">
                 </div>
               </div>
               <div class="col-md-6 pl-1">
                 <div class="form-group">
-                  <label>Longitud</label>
-                  <input name="name" id="name" type="text" class="form-control">
+                  <label for="cnt_lon">Longitud</label>
+                  <input name="cnt_lon" id="cnt_lon" type="text" [(ngModel)]="infoObj.cnt_lon" class="form-control">
                 </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6 pr-1">
+                  <button type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+              </div>
+              <div class="col-md-6 pl-1">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetContact(contactForm)">Reiniciar</button>
               </div>
             </div>
           </form>

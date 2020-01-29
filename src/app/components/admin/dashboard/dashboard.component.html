@@ -1,4 +1,4 @@
-<div #subsScroll id="scroll"></div>
+<div #subsScroll id="scroll"><hr></div>
 <div>
   <h4 class="mb-4 text-muted">Dashboard </h4>
   <div class="row">
@@ -157,7 +157,7 @@
               <span *ngIf="sliderForm.submitted && sliderForm.controls['color'].errors"
                     class="text-danger animated fadeIn">El color es obligatorio</span>
               <div class="col-sm-10">
-                <input type="color" value="#918d8d" name="color" [disabled]="disabledForm"
+                <input id="color" type="color" name="color" [disabled]="disabledForm"
                 [(ngModel)]="sliderObj.color_text" required>
               </div>
             <!-- </div>
@@ -170,12 +170,17 @@
             <!-- </div> -->
             <!-- <div class="form-group"> -->
               <label for="" class="col-sm-2 col-form-label"></label>
-              <div class="col-sm-10 mb-3">
-                <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Aceptar</button>
-                <button type="button" name="cancel"
-                class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">Cancelar</button>
-              </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <button type="submit" name="submit"
+                    class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Aceptar</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button type="button" name="cancel"
+                    class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">Cancelar</button>
+                  </div>
+                </div>
+              <!-- <div class="col-sm-10 mb-3"></div> -->
             <!-- </div> -->
           </form>
           </div>

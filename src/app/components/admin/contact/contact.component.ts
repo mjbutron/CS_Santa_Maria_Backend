@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ContactInterface } from 'src/app/models/contact-interface';
@@ -65,9 +66,35 @@ export class ContactComponent implements OnInit {
       this.infoObj.cnt_ph_physio = data[0]['cnt_ph_physio'];
       this.infoObj.cnt_lat = data[0]['cnt_lat'];
       this.infoObj.cnt_lon = data[0]['cnt_lon'];
-      console.log(this.infoObj);
     }, (err) => {
       this.errors = err;
     });
+  }
+
+  onSubmitHome(form: NgForm){
+    console.log(form);
+  }
+
+  onResetHome(form: NgForm){
+    console.log(form);
+    form.reset();
+  }
+
+  onSubmitFooter(form: NgForm){
+    console.log(form);
+  }
+
+  onResetFooter(form: NgForm){
+    console.log(form);
+    form.reset();
+  }
+
+  onSubmitContact(form: NgForm){
+    console.log(form);
+  }
+
+  onResetContact(form: NgForm){
+    console.log(form);
+    form.reset();
   }
 }
