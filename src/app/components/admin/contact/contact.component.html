@@ -303,8 +303,12 @@
                 </div>
               </div>
             </div>
-            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="16">
-              <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+            <agm-map
+              [latitude]="lat"
+              [longitude]="lon"
+              [zoom]="16"
+              (mapClick)="mapClicked($event)">
+              <agm-marker [latitude]="lat" [longitude]="lon"></agm-marker>
             </agm-map>
             <div class="row p-2">
               <div class="col-md-6 pr-1">

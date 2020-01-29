@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MouseEvent } from '@agm/core';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ContactInterface } from 'src/app/models/contact-interface';
@@ -18,8 +19,8 @@ export class ContactComponent implements OnInit {
   // Errors
   errors = "";
   // Coordinates
-  lat = 36.591538;
-  lng = -6.230237;
+  lat = 0.0;
+  lon = 0.0;
 
   constructor(private dataApi: DataApiService) {
     this.infoObj = new ContactInterface();
@@ -69,6 +70,8 @@ export class ContactComponent implements OnInit {
       this.infoObj.cnt_ph_physio = data[0]['cnt_ph_physio'];
       this.infoObj.cnt_lat = data[0]['cnt_lat'];
       this.infoObj.cnt_lon = data[0]['cnt_lon'];
+      this.lat = +this.infoObj.cnt_lat;
+      this.lon = +this.infoObj.cnt_lon;
     }, (err) => {
       this.errors = err;
     });
@@ -79,7 +82,6 @@ export class ContactComponent implements OnInit {
   }
 
   onResetHome(form: NgForm){
-    console.log(form);
     form.reset();
   }
 
@@ -88,7 +90,6 @@ export class ContactComponent implements OnInit {
   }
 
   onResetFooter(form: NgForm){
-    console.log(form);
     form.reset();
   }
 
@@ -97,7 +98,14 @@ export class ContactComponent implements OnInit {
   }
 
   onResetContact(form: NgForm){
-    console.log(form);
     form.reset();
   }
+
+  mapClicked($event: MouseEvent) {
+    this.lat = $event.coords.lat;
+    this.lon = $event.coords.lng;
+    this.infoObj.cnt_lat = this.lat.toString();
+    this.infoObj.cnt_lon = this.lon.toString();
+  }
+
 }
