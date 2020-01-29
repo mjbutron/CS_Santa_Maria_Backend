@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ToastrModule } from 'ngx-toastr';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AgmCoreModule } from '@agm/core';
 
 // Routes
 import { APP_ROUTING } from './app.routes';
@@ -20,11 +21,11 @@ import { SidebarComponent } from './components/shared/sidebar/sidebar.component'
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { ContactComponent } from './components/admin/contact/contact.component';
 import { WorkshopComponent } from './components/admin/workshop/workshop.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 registerLocaleData(localeEs);
 
@@ -47,6 +48,9 @@ registerLocaleData(localeEs);
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     ToastrModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: ''
+    }),
     APP_ROUTING,
     DragDropModule
   ],

@@ -17,6 +17,9 @@ export class ContactComponent implements OnInit {
   @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
   // Errors
   errors = "";
+  // Coordinates
+  lat = 36.591538;
+  lng = -6.230237;
 
   constructor(private dataApi: DataApiService) {
     this.infoObj = new ContactInterface();
