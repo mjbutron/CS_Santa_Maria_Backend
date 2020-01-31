@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 
 import { SliderInterface } from '../models/slider-interface';
+import { ContactInterface } from 'src/app/models/contact-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +87,21 @@ export class DataApiService {
   getInfoContact(){
     const url_api = this.url + '/api/contact/info';
     return this.http.get(url_api);
+  }
+
+  updateInfoHomeById(infoHome: ContactInterface){
+    const url_api = this.url + '/admin/api/home/info/update/' + infoHome.id;
+    return this.http.put(url_api, JSON.stringify(infoHome), this.httpOptions);
+  }
+
+  updateInfoFooterById(infoFooter: ContactInterface){
+    const url_api = this.url + '/admin/api/footer/info/update/' + infoFooter.id;
+    return this.http.put(url_api, JSON.stringify(infoFooter), this.httpOptions);
+  }
+
+  updateInfoContactById(infoContact: ContactInterface){
+    const url_api = this.url + '/admin/api/contact/info/update/' + infoContact.id;
+    return this.http.put(url_api, JSON.stringify(infoContact), this.httpOptions);
   }
 
 }

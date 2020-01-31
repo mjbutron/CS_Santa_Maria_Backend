@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
+import { ToastrService } from 'ngx-toastr';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ContactInterface } from 'src/app/models/contact-interface';
@@ -22,7 +23,7 @@ export class ContactComponent implements OnInit {
   lat = 0.0;
   lon = 0.0;
 
-  constructor(private dataApi: DataApiService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService) {
     this.infoObj = new ContactInterface();
   }
 
@@ -78,7 +79,14 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmitHome(form: NgForm){
-    console.log(form);
+    if(form.invalid){
+      return;
+    }
+    this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
+      this.toastr.success('Se ha actualizado la información', 'Actualizado');
+    }, (err) => {
+      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+    });
   }
 
   onResetHome(form: NgForm){
@@ -86,7 +94,14 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmitFooter(form: NgForm){
-    console.log(form);
+    if(form.invalid){
+      return;
+    }
+    this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
+      this.toastr.success('Se ha actualizado la información', 'Actualizado');
+    }, (err) => {
+      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+    });
   }
 
   onResetFooter(form: NgForm){
@@ -94,13 +109,21 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmitContact(form: NgForm){
-    console.log(form);
+    if(form.invalid){
+      return;
+    }
+    this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
+      this.toastr.success('Se ha actualizado la información', 'Actualizado');
+    }, (err) => {
+      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+    });
   }
 
   onResetContact(form: NgForm){
     form.reset();
   }
 
+  // Maps
   mapClicked($event: MouseEvent) {
     this.lat = $event.coords.lat;
     this.lon = $event.coords.lng;
