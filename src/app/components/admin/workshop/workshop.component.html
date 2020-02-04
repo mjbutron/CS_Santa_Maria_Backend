@@ -5,9 +5,11 @@
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
           <h5>Talleres ({{numWorkShops}} resultados)
-            <span style="font-size: 1.7em; color: #0095A6;">
-              <i class="fas fa-plus-square float-right"></i>
-            </span>
+            <a href="/" >
+              <span style="font-size: 1.7em; color: #0095A6;">
+                <i class="fas fa-plus-square float-right"></i>
+              </span>
+            </a>
           </h5>
         </div>
         <div class="card-body">
@@ -39,7 +41,7 @@
                       <i class="fas fa-check"></i>
                     </td>
                     <td>
-                      <a class="btn btn-sm btn-outline-lightning rounded-0">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0" (click)="onEditWorkshop(workshop)">
                         <i class="far fa-edit"></i>
                       </a>
                     </td>
@@ -54,7 +56,8 @@
     </div>
   </div>
 
-  <div class="row">
+<div #editWorkshop id="editWs"></div>
+  <div *ngIf="activeForm" class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
@@ -72,44 +75,44 @@
             <div class="row p-2">
               <div class="col-md-10">
                 <div class="form-group">
-                  <label for="email">Nombre/Título</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="title">Nombre/Título</label>
+                  <input name="title" id="title" type="text" [(ngModel)]="workShopObj.title" class="form-control">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
-                  <label>Precio (€)</label>
-                  <input name="name" id="name" type="number" class="form-control">
+                  <label for="price">Precio (€)</label>
+                  <input name="price" id="price" type="number" [(ngModel)]="workShopObj.price" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-10">
                 <div class="form-group">
-                  <label for="email">Subtítulo</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="subtitle">Subtítulo</label>
+                  <input name="subtitle" id="subtitle" type="text" [(ngModel)]="workShopObj.subtitle" class="form-control">
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
-                  <label>Página de inicio</label>
-                  <input name="name" id="name" type="checkbox" class="form-control">
+                  <label for="home">Página de inicio</label>
+                  <input name="home" id="home" type="checkbox" [(ngModel)]="inHomeChk" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Breve descripción para la página de inicio</label>
-                  <textarea rows="4" cols="80" class="form-control"></textarea>
+                  <label for="home_desc">Breve descripción para la página de inicio</label>
+                  <textarea name="home_desc" id="home_desc" [(ngModel)]="workShopObj.description_home" rows="4" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Información del taller</label>
-                  <textarea rows="6" cols="80" class="form-control"></textarea>
+                  <label for="desc">Información del taller</label>
+                  <textarea name="desc" id="desc" [(ngModel)]="workShopObj.description" rows="6" cols="80" class="form-control"></textarea>
                 </div>
               </div>
             </div>
@@ -122,11 +125,11 @@
             <div class="row p-2">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Visualización</label>
+                  <label for="picture">Visualización</label>
                   <div class="card-body">
                     <div class="col mb-4">
                       <div class="card h-100">
-                        <img src="./assets/img/classPrenatal.png" class="card-img-top" alt="..."/>
+                        <img [src]="path+workShopObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
                       </div>
                     </div>
                   </div>
@@ -147,34 +150,34 @@
             <div class="row p-2">
               <div class="col-md-9">
                 <div class="form-group">
-                  <label for="email">Direccion (Donde se imparte)</label>
-                  <input name="email" id="email" type="email" class="form-control">
+                  <label for="address">Direccion (Donde se imparte)</label>
+                  <input name="address" id="address" type="text" [(ngModel)]="workShopObj.address" class="form-control">
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>Fecha</label>
-                  <input name="name" id="name" type="date" class="form-control">
+                  <label for="date">Fecha</label>
+                  <input name="date" id="date" type="date" [ngModel]="workShopObj.session_date | date:'yyyy-MM-dd'" (ngModelChange)="workShopObj.session_date = $event" class="form-control">
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="email">Hora de inicio</label>
-                  <input name="email" id="email" type="time" class="form-control">
+                  <label for="init_time">Hora de inicio</label>
+                  <input name="time" id="time" type="time" [(ngModel)]="workShopObj.session_start" class="form-control">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Hora de finalización</label>
-                  <input name="name" id="name" type="time" class="form-control">
+                  <label for="end_time">Hora de finalización</label>
+                  <input name="end_time" id="end_time" type="time" [(ngModel)]="workShopObj.session_end" class="form-control">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label>Número de sesiones</label>
-                  <input name="name" id="name" type="number" class="form-control">
+                  <label for="n_sessions">Número de sesiones</label>
+                  <input name="n_sessions" id="n_sessions" type="number" [(ngModel)]="workShopObj.sessions" class="form-control">
                 </div>
               </div>
             </div>
