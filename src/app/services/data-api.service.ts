@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 
 import { SliderInterface } from '../models/slider-interface';
 import { ContactInterface } from 'src/app/models/contact-interface';
+import { WorkshopInterface } from 'src/app/models/workshop-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +63,12 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
-  // COURSE API
+  updateWorkshopById(workshop: WorkshopInterface){
+    const url_api = this.url + '/admin/api/workshops/update/' + workshop.id;
+    return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions);
+  }
+
+// COURSE API
   getAllCourses(){
     const url_api = this.url + '/api/courses';
     return this.http.get(url_api);
@@ -73,7 +79,7 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
-  // CONTACT API
+// CONTACT API
   getInfoHome(){
     const url_api = this.url + '/api/home/info';
     return this.http.get(url_api);

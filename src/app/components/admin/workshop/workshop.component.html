@@ -5,11 +5,15 @@
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
           <h5>Talleres ({{numWorkShops}} resultados)
-            <a href="/" >
-              <span style="font-size: 1.7em; color: #0095A6;">
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onNewWorkshop()" >
+              <span  style="font-size: 1.7em; color: #0095A6;">
                 <i class="fas fa-plus-square float-right"></i>
               </span>
             </a>
+            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
+              <i class="fas fa-plus-square float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición del taller"></i>
+            </span>
           </h5>
         </div>
         <div class="card-body">
@@ -66,7 +70,7 @@
           </div>
         </div>
         <div class="card-body">
-          <form>
+          <form (ngSubmit)="onSubmit( workshopForm )" #workshopForm="ngForm" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-12">
                 <label><strong>General</strong></label>
@@ -96,7 +100,9 @@
               <div class="col-md-2">
                 <div class="form-group">
                   <label for="home">Página de inicio</label>
-                  <input name="home" id="home" type="checkbox" [(ngModel)]="inHomeChk" class="form-control">
+                  <input name="home" id="home" type="checkbox" [(ngModel)]="inHomeChk"
+                    data-md-icheck (change)="toggleVisibility($event)"
+                    class="form-control">
                 </div>
               </div>
             </div>
@@ -137,6 +143,19 @@
               </div>
             </div>
             <div class="row p-2">
+              <div class="col-md-6">
+                <button *ngIf="!changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onEditImage()">Editar imagen
+                </button>
+                <button *ngIf="changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onCancelEditImage()">Cancelar
+                </button>
+              </div>
+            </div>
+            <div *ngIf="changeImage" class="row p-2">
+              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
               <div class="col-md-12">
                 <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
               </div>
@@ -179,6 +198,18 @@
                   <label for="n_sessions">Número de sesiones</label>
                   <input name="n_sessions" id="n_sessions" type="number" [(ngModel)]="workShopObj.sessions" class="form-control">
                 </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button *ngIf="isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  <button *ngIf="!isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(workshopForm)">Cancelar</button>
               </div>
             </div>
           </form>
