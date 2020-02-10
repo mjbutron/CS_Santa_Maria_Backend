@@ -92,7 +92,22 @@ export class WorkshopComponent implements OnInit {
     // Habilitar form en formato eedición
     this.activeForm = true;
     this.isEditForm = false;
+    this.changeImage = false;
+    this.selectedImg = null;
+    this.workShopObj.home = 0;
+    this.inHomeChk = false;
+    this.workShopObj.title = K_BLANK;
+    this.workShopObj.description_home = K_BLANK;
     this.workShopObj.image = "default_image.jpg";
+    this.workShopObj.subtitle = K_BLANK;
+    this.workShopObj.price = 0;
+    this.workShopObj.address = K_BLANK;
+    this.workShopObj.session_date = K_BLANK;
+    this.workShopObj.session_start = K_BLANK;
+    this.workShopObj.session_end = K_BLANK;
+    this.workShopObj.sessions = 0;
+    this.workShopObj.description = K_BLANK;
+    this.workShopObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -111,7 +126,7 @@ export class WorkshopComponent implements OnInit {
     this.inHomeChk = (workShop.home == 1) ? true : false;
     this.workShopObj.title = workShop.title;
     this.workShopObj.description_home = workShop.description_home;
-    this.workShopObj.image = workShop.image;
+    this.workShopObj.image = (workShop.image) ? workShop.image : "default_image.jpg";
     this.workShopObj.subtitle = workShop.subtitle;
     this.workShopObj.price = workShop.price;
     this.workShopObj.address = workShop.address;
@@ -139,9 +154,7 @@ export class WorkshopComponent implements OnInit {
     console.log(this.workShopObj);
 
     if(this.isEditForm){
-      console.log("Call update");
       if(this.changeImage && this.selectedImg != null){
-        console.log("Call image");
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.workshopImg = img['message'];
           this.workShopObj.image = this.workshopImg;
@@ -158,21 +171,23 @@ export class WorkshopComponent implements OnInit {
         });
       }
     } else{
-      console.log("Call new");
+      if(this.changeImage && this.selectedImg != null){
+        this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
+          this.workshopImg = img['message'];
+          this.workShopObj.image = this.workshopImg;
+          this.uploadSuccess = false;
+          this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
+            this.getWorkShopsByPage(this.page);
+            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+          });
+        });
+      } else{
+        this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
+          this.getWorkShopsByPage(this.page);
+          this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+        });
+      }
     }
-
-    // if(form.invalid){
-    //   return;
-    // }
-    // this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-    //   this.sliderImg = img['message'];
-    //   this.sliderObj.image = this.sliderImg;
-      // this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-      //   this.getWorkShopsByPage();
-      //   this.onCancel();
-      //   this.toastr.success('Se ha editado la cabecera', 'Actualizado');
-      // });
-    // });
   }
 
   onFileChanged($event){

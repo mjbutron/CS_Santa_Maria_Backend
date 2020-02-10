@@ -63,6 +63,11 @@ export class DataApiService {
     return this.http.get(url_api);
   }
 
+  createWorkshop(workshop: WorkshopInterface){
+    const url_api = this.url + '/admin/api/workshops/new';
+    return this.http.post(url_api, JSON.stringify(workshop), this.httpOptions);
+  }
+
   updateWorkshopById(workshop: WorkshopInterface){
     const url_api = this.url + '/admin/api/workshops/update/' + workshop.id;
     return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions);
