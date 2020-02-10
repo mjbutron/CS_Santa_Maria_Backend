@@ -115,4 +115,10 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(infoContact), this.httpOptions);
   }
 
+// OPINIONS API
+  getAllOpinions(){
+    const url_api = this.url + '/api/allOpinion';
+    return this.http.get(url_api);
+  }
+
 }

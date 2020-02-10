@@ -250,9 +250,12 @@
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
             <h5>Opiniones (Pagina de inicio)
-              <span style="font-size: 1.7em; color: #0095A6;">
-                <i class="fas fa-plus-square float-right"></i>
-              </span>
+              <a [routerLink]="" data-toggle="modal" data-target="#exampleModal" >
+                <span style="font-size: 1.7em; color: #0095A6;">
+                  <i class="fas fa-plus-square float-right"></i>
+                </span>
+              </a>
+
             </h5>
           </div>
           <div class="card-body">
@@ -261,6 +264,7 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
+                      <th>Imagen</th>
                       <th>Nombre</th>
                       <th>Comentario</th>
                       <th>Valoración</th>
@@ -269,65 +273,21 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Nombre Usuario</td>
-                      <td class="align-middle">
-                        Comentario del usuario
-                      </td>
-                      <td>
-                        <span style="font-size: 0.7em; color: gold;">
-                          <i class="fas fa-star" ></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </span>
-                      </td>
-                      <td>22/10/2019</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nombre Usuario</td>
-                      <td class="align-middle">
-                        La leche de pantalla, la mejor que comprado de 27 pulgadas, ideal para videojuegos,
-                        nitidez increíble la resolución fantástica, no hay pegas una maravilla que no
-                        tiene nada de marcó y es todo pantalla, es una maravilla de pantalla.
-                      </td>
-                      <td>
-                        <span style="font-size: 0.7em; color: gold;">
-                          <i class="fas fa-star" ></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </span>
-                      </td>
-                      <td>22/10/2019</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Nombre Usuario</td>
-                      <td class="align-middle">
-                        Comentario del usuario
-                      </td>
-                      <td>
-                        <span style="font-size: 0.7em; color: gold;">
-                          <i class="fas fa-star" ></i>
-                          <i class="fas fa-star"></i>
-                        </span>
-                      </td>
-                      <td>22/10/2019</td>
-                      <td >
-                        <a class="btn btn-sm btn-outline-lightning rounded-0">
-                          <i class="far fa-trash-alt"></i>
-                        </a>
-                      </td>
+                      <tr *ngFor="let opinion of opinions">
+                        <td><img [src]="path+opinion.image" name="picture" id="picture" class="card-img-top" alt="..."/></td>
+                        <td>{{opinion.name}}</td>
+                        <td>{{opinion.commentary}}</td>
+                        <td>
+                          <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
+                            <i class="fas fa-star"></i>
+                          </span>
+                        </td>
+                        <td>{{opinion.create_date | date}}</td>
+                        <td >
+                          <a class="btn btn-sm btn-outline-lightning rounded-0">
+                            <i class="far fa-trash-alt"></i>
+                          </a>
+                        </td>
                     </tr>
                   </tbody>
                 </table>
@@ -340,23 +300,27 @@
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Crear nueva opinión</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <form >
+          <div class="row p-2">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="title">Nombre/Título</label>
+                <input name="title" id="title" type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -11,6 +11,7 @@ import { SliderInterface } from 'src/app/models/slider-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
 import { CourseInterface } from 'src/app/models/course-interface';
+import { OpinionInterface } from 'src/app/models/opinion-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
@@ -49,6 +50,9 @@ export class DashboardComponent implements OnInit {
   course: CourseInterface[] = [];
   numCrs: number;
   nextDateCrs: string;
+  // Opinions
+  opinions: OpinionInterface[] = [];
+  numOpn: number;
   // Errors
   errors = "";
   // Load
@@ -66,6 +70,7 @@ export class DashboardComponent implements OnInit {
     this.getAllWorkshops();
     this.getAllSlider();
     this.getAllCourses();
+    this.getAllOpinions();
   }
 
   getAllServices(){
@@ -115,6 +120,16 @@ export class DashboardComponent implements OnInit {
     }, (err) => {
       this.errors = err;
       this.isLoaded = false;
+    });
+  }
+
+  getAllOpinions(){
+    this.dataApi.getAllOpinions()
+    .subscribe((allOpinions: OpinionInterface[]) => {
+      this.opinions = allOpinions;
+      this.numOpn = allOpinions.length;
+    }, (err) => {
+      this.errors = err;
     });
   }
 
@@ -187,5 +202,13 @@ export class DashboardComponent implements OnInit {
 
   scrollToDiv() {
       this.subsScrollDiv.nativeElement.scrollIntoView(true);
+  }
+
+  counter(index: number) {
+    let list = new Array();
+    for(let i=0; i<index; i++){
+      list.push(i);
+    }
+    return list;
   }
 }
