@@ -142,6 +142,21 @@ export class WorkshopComponent implements OnInit {
       }, 200);
   }
 
+  onDeleteWorkshop(workShop: WorkshopInterface){
+    console.log("Eliminar");    
+    // this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
+    //   this.getWorkShopsByPage(this.page);
+    //   this.isEditForm = false;
+    //   this.activeForm = false;
+    //   this.uploadSuccess = false;
+    //   this.changeImage = false;
+    //   this.toastr.success('Se ha eliminado el taller', 'Eliminado');
+    // }, (err) => {
+    //   this.errors = err;
+    //   this.toastr.error('No se ha podido eliminar el taller o no existe', 'Error');
+    // });
+  }
+
   onEditImage(){
     this.changeImage = true;
   }
@@ -151,8 +166,6 @@ export class WorkshopComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
-    console.log(this.workShopObj);
-
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

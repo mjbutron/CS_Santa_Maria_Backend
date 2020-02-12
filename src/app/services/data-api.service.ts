@@ -73,6 +73,11 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions);
   }
 
+  deleteWorkshopById(workshopId: string){
+    const url_api = this.url + '/admin/api/workshops/delete/' + workshopId;
+    return this.http.delete(url_api, this.httpOptions);
+  }
+
 // COURSE API
   getAllCourses(){
     const url_api = this.url + '/api/courses';
