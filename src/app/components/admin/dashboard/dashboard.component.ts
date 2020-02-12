@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getAllOpinions(){
+  getAllOpinions() {
     this.dataApi.getAllOpinions()
     .subscribe((allOpinions: OpinionInterface[]) => {
       this.opinions = allOpinions;

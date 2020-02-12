@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -143,18 +144,37 @@ export class WorkshopComponent implements OnInit {
   }
 
   onDeleteWorkshop(workShop: WorkshopInterface){
-    console.log("Eliminar");    
-    // this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
-    //   this.getWorkShopsByPage(this.page);
-    //   this.isEditForm = false;
-    //   this.activeForm = false;
-    //   this.uploadSuccess = false;
-    //   this.changeImage = false;
-    //   this.toastr.success('Se ha eliminado el taller', 'Eliminado');
-    // }, (err) => {
-    //   this.errors = err;
-    //   this.toastr.error('No se ha podido eliminar el taller o no existe', 'Error');
-    // });
+    Swal.fire({
+      title: '¿Seguro que deseas eliminar el taller?',
+      text: "Atención: Esta acción no se puede deshacer.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#0095A6',
+      confirmButtonText: '¡Sí, eliminar!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
+          this.getWorkShopsByPage(this.page);
+          this.isEditForm = false;
+          this.activeForm = false;
+          this.uploadSuccess = false;
+          this.changeImage = false;
+          Swal.fire(
+            '¡Eliminado!',
+            'Se ha eliminado el taller seleccionado.',
+            'success'
+          )
+        }, (err) => {
+          Swal.fire(
+            '¡Error!',
+            'No se ha podido eliminar el taller.',
+            'error'
+          )
+        });
+      }
+    });
   }
 
   onEditImage(){
