@@ -1,0 +1,174 @@
+<div #subsScroll id="scroll"></div>
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Opiniones ({{numOpinions}} resultados)
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onNewOpinion()" >
+              <span  style="font-size: 1.7em; color: #0095A6;">
+                <i class="fas fa-plus-square float-right"></i>
+              </span>
+            </a>
+            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
+              <i class="fas fa-plus-square float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la opinión"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Comentario</th>
+                    <th>Valoración</th>
+                    <th>Inicio</th>
+                    <th>Fecha</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let opinion of opinions">
+                    <td class="align-middle">
+                      {{opinion.name}}
+                    </td>
+                    <td>{{opinion.commentary}}</td>
+                    <td>
+                      <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </td>
+                    <td *ngIf="opinion.home==0">
+                      <i class="fas fa-minus"></i>
+                    </td>
+                    <td *ngIf="opinion.home==1">
+                      <i class="fas fa-check"></i>
+                    </td>
+                    <td>{{opinion.create_date | date}}</td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onEditOpinion(opinion)" title="Ver/Editar">
+                        <i class="far fa-edit"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onDeleteOpinion(opinion)" title="Eliminar">
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination (pageEmitter)="goToPage($event)" [page]="page" [totalPages]="totalPages" [numElements]="numOpinions" [numberPage]="numberPage"></app-pagination>
+    </div>
+  </div>
+
+<div #editOpinion id="editOp"></div>
+  <div *ngIf="activeForm" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5 *ngIf="isEditForm">Editar opinión</h5>
+            <h5 *ngIf="!isEditForm">Crear opinión</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit( opinionForm )" #opinionForm="ngForm" enctype="multipart/form-data">
+            <div class="row p-2">
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="name">Nombre del usuario</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="OpinionObj.name" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="rating">Valoración (<span style="font-size: 0.7em; color: gold;">
+                      <i class="fas fa-star"></i>
+                    </span>)</label>
+                  <input name="rating" id="rating" type="number" [(ngModel)]="OpinionObj.rating" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="commentary">Comentario</label>
+                  <textarea name="commentary" id="commentary" [(ngModel)]="OpinionObj.commentary" rows="4" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="home">Página de inicio</label>
+                  <input name="home" id="home" type="checkbox" [(ngModel)]="inHomeChk"
+                    data-md-icheck (change)="toggleVisibility($event)"
+                    class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Avatar de usuario</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="picture">Visualización</label>
+                  <div class="card-body">
+                    <div class="col mb-4">
+                      <div class="card h-100">
+                        <img [src]="path+OpinionObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <button *ngIf="!changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onEditImage()">Editar imagen
+                </button>
+                <button *ngIf="changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onCancelEditImage()">Cancelar
+                </button>
+              </div>
+            </div>
+            <div *ngIf="changeImage" class="row p-2">
+              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
+              <div class="col-md-12">
+                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button *ngIf="isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  <button *ngIf="!isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(opinionForm)">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

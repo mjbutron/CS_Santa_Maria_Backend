@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { SliderInterface } from '../models/slider-interface';
 import { ContactInterface } from 'src/app/models/contact-interface';
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
+import { OpinionInterface } from 'src/app/models/opinion-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions);
   }
 
-  deleteWorkshopById(workshopId: string){
+  deleteWorkshopById(workshopId: number){
     const url_api = this.url + '/admin/api/workshops/delete/' + workshopId;
     return this.http.delete(url_api, this.httpOptions);
   }
@@ -124,6 +125,26 @@ export class DataApiService {
   getAllOpinions(){
     const url_api = this.url + '/api/allOpinion';
     return this.http.get(url_api);
+  }
+
+  getOpinionsByPage(page: Number){
+    const url_api = this.url + '/api/opinionsByPage/' + page;
+    return this.http.get(url_api);
+  }
+
+  createOpinion(opinion: OpinionInterface){
+    const url_api = this.url + '/admin/api/opinions/new';
+    return this.http.post(url_api, JSON.stringify(opinion), this.httpOptions);
+  }
+
+  updateOpinionById(opinion: OpinionInterface){
+    const url_api = this.url + '/admin/api/opinions/update/' + opinion.id;
+    return this.http.put(url_api, JSON.stringify(opinion), this.httpOptions);
+  }
+
+  deleteOpinionById(opinionId: number){
+    const url_api = this.url + '/admin/api/opinions/delete/' + opinionId;
+    return this.http.delete(url_api, this.httpOptions);
   }
 
 }

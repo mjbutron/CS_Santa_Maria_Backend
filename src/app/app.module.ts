@@ -22,6 +22,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { ContactComponent } from './components/admin/contact/contact.component';
 import { WorkshopComponent } from './components/admin/workshop/workshop.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
+import { OpinionComponent } from './components/admin/opinion/opinion.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -38,7 +39,8 @@ registerLocaleData(localeEs);
     DashboardComponent,
     ContactComponent,
     WorkshopComponent,
-    PaginationComponent
+    PaginationComponent,
+    OpinionComponent
   ],
   imports: [
     BrowserModule,

@@ -7,28 +7,28 @@ import Swal from 'sweetalert2';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 
-import { WorkshopInterface } from 'src/app/models/workshop-interface';
+import { OpinionInterface } from 'src/app/models/opinion-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 
 @Component({
-  selector: 'app-workshop',
-  templateUrl: './workshop.component.html',
-  styleUrls: ['./workshop.component.css']
+  selector: 'app-opinion',
+  templateUrl: './opinion.component.html',
+  styleUrls: ['./opinion.component.css']
 })
-export class WorkshopComponent implements OnInit {
+export class OpinionComponent implements OnInit {
 
   // Path
   path = "http://localhost/apiRest/uploads/";
-  // Workshops
-  workShopObj: WorkshopInterface;
-  workShops: WorkshopInterface[] = [];
-  workshopImg: string;
+  // Opinions
+  OpinionObj: OpinionInterface;
+  opinions: OpinionInterface[] = [];
+  opinionImg: string;
   inHomeChk: boolean;
   // Form
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
-  // Workshops - Image
+  // Opinions - Image
   selectedImg: File;
   uploadSuccess: boolean;
   // Errors
@@ -40,20 +40,20 @@ export class WorkshopComponent implements OnInit {
   // Total de paginas
   public totalPages: number;
   // Total de elementos
-  public numWorkShops: number;
+  public numOpinions: number;
   // Elementos por página
   private numResults: number = 10;
   // Scroll
   @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
   // Scroll Form
-  @ViewChild("editWorkshop", { static: true }) editWorkshop: ElementRef;
+  @ViewChild("editOpinion", { static: true }) editOpinion: ElementRef;
   // Form
   activeForm = false;
   isEditForm = false;
   changeImage = false;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
-    this.workShopObj = new WorkshopInterface();
+    this.OpinionObj = new OpinionInterface();
     this.inHomeChk = false;
   }
 
@@ -63,89 +63,67 @@ export class WorkshopComponent implements OnInit {
     this.changeImage = false;
     this.uploadSuccess = false;
     this.scrollToDiv();
-    this.getWorkShopsByPage(this.page);
+    this.getOpinionsByPage(this.page);
   }
 
   goToPage(page: number){
     this.page = page;
-    this.getWorkShopsByPage(page);
+    this.getOpinionsByPage(page);
   }
 
-  // getAllWorkshops(){
-  //   this.dataApi.getAllWorkshops()
-  //   .subscribe((allWorkshops: WorkshopInterface[]) => {
-  //     this.workShops = allWorkshops;
-  //   }, (err) => {
-  //     this.errors = err;
-  //   });
-  // }
-
-  getWorkShopsByPage(page: Number) {
-    this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
-        this.workShops = data['allWorkshops'];
-        this.numWorkShops = data['total'];
+  getOpinionsByPage(page: Number) {
+    this.dataApi.getOpinionsByPage(page).subscribe((data) =>{
+        this.opinions = data['allOpinions'];
+        this.numOpinions = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
     });
   }
 
-  onNewWorkshop() {
+  onNewOpinion() {
     // Habilitar form en formato eedición
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
     this.selectedImg = null;
-    this.workShopObj.home = 0;
+
+    this.OpinionObj.home = 0;
     this.inHomeChk = false;
-    this.workShopObj.title = K_BLANK;
-    this.workShopObj.description_home = K_BLANK;
-    this.workShopObj.image = "default_image.jpg";
-    this.workShopObj.subtitle = K_BLANK;
-    this.workShopObj.price = 0;
-    this.workShopObj.address = K_BLANK;
-    this.workShopObj.session_date = K_BLANK;
-    this.workShopObj.session_start = K_BLANK;
-    this.workShopObj.session_end = K_BLANK;
-    this.workShopObj.sessions = 0;
-    this.workShopObj.description = K_BLANK;
-    this.workShopObj.user_id = 1;
+    this.OpinionObj.name = K_BLANK;
+    this.OpinionObj.image = "default_image.jpg";
+    this.OpinionObj.commentary = K_BLANK;
+    this.OpinionObj.rating = 0;
+    this.OpinionObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
   }
 
-  onEditWorkshop(workShop: WorkshopInterface) {
+  onEditOpinion(opinion: OpinionInterface) {
     // Habilitar form en formato eedición
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
     // Setear valores al ui
-    this.workShopObj.id = workShop.id;
-    this.workShopObj.home = workShop.home;
-    this.inHomeChk = (workShop.home == 1) ? true : false;
-    this.workShopObj.title = workShop.title;
-    this.workShopObj.description_home = workShop.description_home;
-    this.workShopObj.image = (workShop.image) ? workShop.image : "default_image.jpg";
-    this.workShopObj.subtitle = workShop.subtitle;
-    this.workShopObj.price = workShop.price;
-    this.workShopObj.address = workShop.address;
-    this.workShopObj.session_date = workShop.session_date;
-    this.workShopObj.session_start = workShop.session_start;
-    this.workShopObj.session_end = workShop.session_end;
-    this.workShopObj.sessions = workShop.sessions;
-    this.workShopObj.description = workShop.description;
-    this.workShopObj.user_id = workShop.user_id;
+    this.OpinionObj.id = opinion.id;
+    this.OpinionObj.home = opinion.home;
+    this.inHomeChk = (opinion.home == 1) ? true : false;
+    this.OpinionObj.name = opinion.name;
+    this.OpinionObj.commentary = opinion.commentary;
+    this.OpinionObj.image = (opinion.image) ? opinion.image : "default_image.jpg";
+    this.OpinionObj.rating = opinion.rating;
+    this.OpinionObj.user_id = opinion.user_id;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
   }
 
-  onDeleteWorkshop(workShop: WorkshopInterface){
+  onDeleteOpinion(opinion: OpinionInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el taller?',
+      title: '¿Seguro que deseas eliminar esta opinión?',
       text: "Atención: Esta acción no se puede deshacer.",
       icon: 'warning',
       showCancelButton: true,
@@ -155,21 +133,21 @@ export class WorkshopComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
+        this.dataApi.deleteOpinionById(opinion.id).subscribe((data) => {
+          this.getOpinionsByPage(this.page);
           this.isEditForm = false;
           this.activeForm = false;
           this.uploadSuccess = false;
           this.changeImage = false;
           Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado el taller seleccionado.',
+            '¡Eliminada!',
+            'Se ha eliminado la opinión seleccionada.',
             'success'
           )
         }, (err) => {
           Swal.fire(
             '¡Error!',
-            'No se ha podido eliminar el taller.',
+            'No se ha podido eliminar la opinión.',
             'error'
           )
         });
@@ -189,39 +167,40 @@ export class WorkshopComponent implements OnInit {
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.workshopImg = img['message'];
-          this.workShopObj.image = this.workshopImg;
+          this.opinionImg = img['message'];
+          this.OpinionObj.image = this.opinionImg;
           this.uploadSuccess = false;
-          this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+          this.dataApi.updateOpinionById(this.OpinionObj).subscribe((data) => {
+            this.getOpinionsByPage(this.page);
+            this.toastr.success('Se ha actualizado la opinión', 'Actualizada');
           });
         });
       } else{
-        this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+        this.dataApi.updateOpinionById(this.OpinionObj).subscribe((data) => {
+          this.getOpinionsByPage(this.page);
+          this.toastr.success('Se ha actualizado la opinión', 'Actualizada');
         });
       }
     } else{
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.workshopImg = img['message'];
-          this.workShopObj.image = this.workshopImg;
+          this.opinionImg = img['message'];
+          this.OpinionObj.image = this.opinionImg;
           this.uploadSuccess = false;
-          this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+          this.dataApi.createOpinion(this.OpinionObj).subscribe((data) => {
+            this.getOpinionsByPage(this.page);
+            this.toastr.success('Se ha creado una nueva opinión', 'Añadida');
           });
         });
       } else{
-        this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+        this.dataApi.createOpinion(this.OpinionObj).subscribe((data) => {
+          this.getOpinionsByPage(this.page);
+          this.toastr.success('Se ha creado una nueva opinión', 'Añadida');
         });
       }
     }
   }
+
 
   onFileChanged($event){
     if($event != null){
@@ -251,11 +230,19 @@ export class WorkshopComponent implements OnInit {
   }
 
   scrollToForm() {
-      this.editWorkshop.nativeElement.scrollIntoView({behavior:"smooth"});
+      this.editOpinion.nativeElement.scrollIntoView({behavior:"smooth"});
   }
 
   toggleVisibility(e){
-    this.workShopObj.home = (this.inHomeChk) ? 1 : 0;
-
+    this.OpinionObj.home = (this.inHomeChk) ? 1 : 0;
   }
+
+  counter(index: number) {
+    let list = new Array();
+    for(let i=0; i<index; i++){
+      list.push(i);
+    }
+    return list;
+  }
+
 }

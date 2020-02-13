@@ -51,8 +51,9 @@ export class DashboardComponent implements OnInit {
   numCrs: number;
   nextDateCrs: string;
   // Opinions
-  opinions: OpinionInterface[] = [];
+  opnInHome: OpinionInterface[] = [];
   numOpn: number;
+  nextDateOpn: string;
   // Errors
   errors = "";
   // Load
@@ -126,8 +127,13 @@ export class DashboardComponent implements OnInit {
   getAllOpinions() {
     this.dataApi.getAllOpinions()
     .subscribe((allOpinions: OpinionInterface[]) => {
-      this.opinions = allOpinions;
+      for(let opnHome of allOpinions){
+        if(opnHome.home == 1){
+          this.opnInHome.push(opnHome);
+        }
+      }    
       this.numOpn = allOpinions.length;
+      this.nextDateOpn = allOpinions[0].create_date;
     }, (err) => {
       this.errors = err;
     });

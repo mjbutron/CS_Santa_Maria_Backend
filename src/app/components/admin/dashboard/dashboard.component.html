@@ -84,16 +84,16 @@
               <i class="fa fa-comments" aria-hidden="true"></i>
             </div>
             <div class="ml-auto">
-              <p class="card-label text-right text-muted">Entradas del blog</p>
-              <h4 class="card-text text-right ">--</h4>
+              <p class="card-label text-right text-muted">Opiniones</p>
+              <h4 class="card-text text-right ">{{numOpn}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex ">
-          <small class="text-muted">Ult. entrada: </small>
+          <small class="text-muted">Ult. añadida: </small>
           <small class="text-info ml-auto">
             <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
-            6/11/2019
+            {{nextDateOpn | date}}
           </small>
         </div>
       </div>
@@ -199,7 +199,7 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Talleres (Página de inicio)
+            <h5>Talleres en página de inicio
               <a href="http://localhost:4300/#/admin/talleres">
                 <span style="font-size: 1.7em; color: #0095A6;">
                   <i class="fas fa-edit float-right"></i>
@@ -249,13 +249,12 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Opiniones (Pagina de inicio)
-              <a [routerLink]="" data-toggle="modal" data-target="#exampleModal" >
+            <h5>Opiniones en página de inicio
+              <a href="http://localhost:4300/#/admin/opiniones">
                 <span style="font-size: 1.7em; color: #0095A6;">
-                  <i class="fas fa-plus-square float-right"></i>
+                  <i class="fas fa-edit float-right"></i>
                 </span>
               </a>
-
             </h5>
           </div>
           <div class="card-body">
@@ -269,11 +268,10 @@
                       <th>Comentario</th>
                       <th>Valoración</th>
                       <th>Fecha</th>
-                      <th>Quitar</th>
                     </tr>
                   </thead>
                   <tbody>
-                      <tr *ngFor="let opinion of opinions">
+                      <tr *ngFor="let opinion of opnInHome">
                         <td><img [src]="path+opinion.image" name="picture" id="picture" class="card-img-top" alt="..."/></td>
                         <td>{{opinion.name}}</td>
                         <td>{{opinion.commentary}}</td>
@@ -283,11 +281,6 @@
                           </span>
                         </td>
                         <td>{{opinion.create_date | date}}</td>
-                        <td >
-                          <a class="btn btn-sm btn-outline-lightning rounded-0">
-                            <i class="far fa-trash-alt"></i>
-                          </a>
-                        </td>
                     </tr>
                   </tbody>
                 </table>
@@ -295,36 +288,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Crear nueva opinión</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form >
-          <div class="row p-2">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="title">Nombre/Título</label>
-                <input name="title" id="title" type="text" class="form-control">
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
