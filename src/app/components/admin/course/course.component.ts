@@ -7,28 +7,29 @@ import Swal from 'sweetalert2';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 
-import { WorkshopInterface } from 'src/app/models/workshop-interface';
+import { CourseInterface } from 'src/app/models/course-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 
 @Component({
-  selector: 'app-workshop',
-  templateUrl: './workshop.component.html',
-  styleUrls: ['./workshop.component.css']
+  selector: 'app-course',
+  templateUrl: './course.component.html',
+  styleUrls: ['./course.component.css']
 })
-export class WorkshopComponent implements OnInit {
+export class CourseComponent implements OnInit {
 
   // Path
   path = "http://localhost/apiRest/uploads/";
-  // Workshops
-  workShopObj: WorkshopInterface;
-  workShops: WorkshopInterface[] = [];
-  workshopImg: string;
-  inHomeChk: boolean;
+  // Courses
+  courseObj: CourseInterface;
+  courses: CourseInterface[] = [];
+  courseImg: string;
+  inOfferChk: boolean;
+  inNewChk: boolean;
   // Form
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
-  // Workshops - Image
+  // Courses - Image
   selectedImg: File;
   uploadSuccess: boolean;
   // Errors
@@ -40,21 +41,22 @@ export class WorkshopComponent implements OnInit {
   // Total de paginas
   public totalPages: number;
   // Total de elementos
-  public numWorkShops: number;
+  public numCourses: number;
   // Elementos por página
   private numResults: number = 10;
   // Scroll
   @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
   // Scroll Form
-  @ViewChild("editWorkshop", { static: true }) editWorkshop: ElementRef;
+  @ViewChild("editCourse", { static: true }) editCourse: ElementRef;
   // Form
   activeForm = false;
   isEditForm = false;
   changeImage = false;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
-    this.workShopObj = new WorkshopInterface();
-    this.inHomeChk = false;
+    this.courseObj = new CourseInterface();
+    this.inOfferChk = false;
+    this.inNewChk = false;
   }
 
   ngOnInit() {
@@ -63,80 +65,89 @@ export class WorkshopComponent implements OnInit {
     this.changeImage = false;
     this.uploadSuccess = false;
     this.scrollToDiv();
-    this.getWorkShopsByPage(this.page);
+    this.getCoursesByPage(this.page);
   }
 
   goToPage(page: number){
     this.page = page;
-    this.getWorkShopsByPage(page);
+    this.getCoursesByPage(page);
   }
 
-  getWorkShopsByPage(page: Number) {
-    this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
-        this.workShops = data['allWorkshops'];
-        this.numWorkShops = data['total'];
+  getCoursesByPage(page: Number) {
+    this.dataApi.getCoursesByPage(page).subscribe((data) =>{
+        this.courses = data['allCourses'];
+        this.numCourses = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
     });
   }
 
-  onNewWorkshop() {
+  onNewCourse() {
     // Habilitar form en formato eedición
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
     this.selectedImg = null;
-    this.workShopObj.home = 0;
-    this.inHomeChk = false;
-    this.workShopObj.title = K_BLANK;
-    this.workShopObj.description_home = K_BLANK;
-    this.workShopObj.image = "default_image.jpg";
-    this.workShopObj.subtitle = K_BLANK;
-    this.workShopObj.price = 0;
-    this.workShopObj.address = K_BLANK;
-    this.workShopObj.session_date = K_BLANK;
-    this.workShopObj.session_start = K_BLANK;
-    this.workShopObj.session_end = K_BLANK;
-    this.workShopObj.sessions = 0;
-    this.workShopObj.description = K_BLANK;
-    this.workShopObj.user_id = 1;
+    this.inOfferChk = false;
+    this.inNewChk = true;
+
+    this.courseObj.title = K_BLANK;
+    this.courseObj.description = K_BLANK;
+    this.courseObj.image = "default_image.jpg";
+    this.courseObj.new_course = 1;
+    this.courseObj.offer = 0;
+    this.courseObj.address = K_BLANK;
+    this.courseObj.session_date = K_BLANK;
+    this.courseObj.session_start = K_BLANK;
+    this.courseObj.session_end = K_BLANK;
+    this.courseObj.sessions = 0;
+    this.courseObj.hours = 0;
+    this.courseObj.level = K_BLANK;
+    this.courseObj.places = 0;
+    this.courseObj.free_places = 0;
+    this.courseObj.price = 0;
+    this.courseObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
   }
 
-  onEditWorkshop(workShop: WorkshopInterface) {
+  onEditCourse(course: CourseInterface) {
     // Habilitar form en formato eedición
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
     // Setear valores al ui
-    this.workShopObj.id = workShop.id;
-    this.workShopObj.home = workShop.home;
-    this.inHomeChk = (workShop.home == 1) ? true : false;
-    this.workShopObj.title = workShop.title;
-    this.workShopObj.description_home = workShop.description_home;
-    this.workShopObj.image = (workShop.image) ? workShop.image : "default_image.jpg";
-    this.workShopObj.subtitle = workShop.subtitle;
-    this.workShopObj.price = workShop.price;
-    this.workShopObj.address = workShop.address;
-    this.workShopObj.session_date = workShop.session_date;
-    this.workShopObj.session_start = workShop.session_start;
-    this.workShopObj.session_end = workShop.session_end;
-    this.workShopObj.sessions = workShop.sessions;
-    this.workShopObj.description = workShop.description;
-    this.workShopObj.user_id = workShop.user_id;
+    this.courseObj.id = course.id;
+    this.courseObj.title = course.title;
+    this.courseObj.description = course.description;
+    this.courseObj.image = (course.image) ? course.image : "default_image.jpg";
+    this.courseObj.new_course = course.new_course;
+    this.inNewChk = (course.new_course == 1) ? true : false;
+    this.courseObj.offer = course.offer;
+    this.inOfferChk = (course.offer == 1) ? true : false;
+    this.courseObj.address = course.address;
+    this.courseObj.session_date = course.session_date;
+    this.courseObj.session_start = course.session_start;
+    this.courseObj.session_end = course.session_end;
+    this.courseObj.sessions = course.sessions;
+    this.courseObj.hours = course.hours;
+    this.courseObj.level = course.level;
+    this.courseObj.places = course.places;
+    this.courseObj.free_places = course.free_places;
+    this.courseObj.price = course.price;
+    this.courseObj.user_id = course.user_id;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
   }
 
-  onDeleteWorkshop(workShop: WorkshopInterface){
+  onDeleteCourse(course: CourseInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el taller?',
+      title: '¿Seguro que deseas eliminar el curso?',
       text: "Atención: Esta acción no se puede deshacer.",
       icon: 'warning',
       showCancelButton: true,
@@ -146,21 +157,21 @@ export class WorkshopComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
+        this.dataApi.deleteCourseById(course.id).subscribe((data) => {
+          this.getCoursesByPage(this.page);
           this.isEditForm = false;
           this.activeForm = false;
           this.uploadSuccess = false;
           this.changeImage = false;
           Swal.fire(
             '¡Eliminado!',
-            'Se ha eliminado el taller seleccionado.',
+            'Se ha eliminado el curso seleccionado.',
             'success'
           )
         }, (err) => {
           Swal.fire(
             '¡Error!',
-            'No se ha podido eliminar el taller.',
+            'No se ha podido eliminar el curso.',
             'error'
           )
         });
@@ -180,35 +191,35 @@ export class WorkshopComponent implements OnInit {
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.workshopImg = img['message'];
-          this.workShopObj.image = this.workshopImg;
+          this.courseImg = img['message'];
+          this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
-          this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+          this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
+            this.getCoursesByPage(this.page);
+            this.toastr.success('Se ha actualizado el curso', 'Actualizado');
           });
         });
       } else{
-        this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+        this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
+          this.getCoursesByPage(this.page);
+          this.toastr.success('Se ha actualizado el curso', 'Actualizado');
         });
       }
     } else{
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.workshopImg = img['message'];
-          this.workShopObj.image = this.workshopImg;
+          this.courseImg = img['message'];
+          this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
-          this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+          this.dataApi.createCourse(this.courseObj).subscribe((data) => {
+            this.getCoursesByPage(this.page);
+            this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
           });
         });
       } else{
-        this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+        this.dataApi.createCourse(this.courseObj).subscribe((data) => {
+          this.getCoursesByPage(this.page);
+          this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
         });
       }
     }
@@ -242,11 +253,13 @@ export class WorkshopComponent implements OnInit {
   }
 
   scrollToForm() {
-      this.editWorkshop.nativeElement.scrollIntoView({behavior:"smooth"});
+      this.editCourse.nativeElement.scrollIntoView({behavior:"smooth"});
   }
 
   toggleVisibility(e){
-    this.workShopObj.home = (this.inHomeChk) ? 1 : 0;
-
+    this.courseObj.new_course = (this.inNewChk) ? 1 : 0;
+    this.courseObj.offer = (this.inOfferChk) ? 1 : 0;
   }
+
+
 }

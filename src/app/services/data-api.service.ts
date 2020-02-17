@@ -7,6 +7,7 @@ import { SliderInterface } from '../models/slider-interface';
 import { ContactInterface } from 'src/app/models/contact-interface';
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
 import { OpinionInterface } from 'src/app/models/opinion-interface';
+import { CourseInterface } from 'src/app/models/course-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,21 @@ export class DataApiService {
   getCoursesByPage(page: Number) {
     const url_api = this.url + '/api/coursesByPage/' + page;
     return this.http.get(url_api);
+  }
+
+  createCourse(course: CourseInterface){
+    const url_api = this.url + '/admin/api/courses/new';
+    return this.http.post(url_api, JSON.stringify(course), this.httpOptions);
+  }
+
+  updateCourseById(course: CourseInterface){
+    const url_api = this.url + '/admin/api/courses/update/' + course.id;
+    return this.http.put(url_api, JSON.stringify(course), this.httpOptions);
+  }
+
+  deleteCourseById(courseId: number){
+    const url_api = this.url + '/admin/api/courses/delete/' + courseId;
+    return this.http.delete(url_api, this.httpOptions);
   }
 
 // CONTACT API

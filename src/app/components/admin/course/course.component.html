@@ -1,0 +1,250 @@
+<div #subsScroll id="scroll"></div>
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Cursos ({{numCourses}} resultados)
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onNewCourse()" >
+              <span  style="font-size: 1.7em; color: #0095A6;">
+                <i class="fas fa-plus-square float-right" title="Añadir"></i>
+              </span>
+            </a>
+            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
+              <i class="fas fa-plus-square float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición del curso"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Precio</th>
+                    <th>Plazas</th>
+                    <th>Libres</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let course of courses">
+                    <td>{{course.title}}</td>
+                    <td class="align-middle">
+                      {{course.session_date | date}}
+                    </td>
+                    <td>{{course.session_start}}</td>
+                    <td>{{course.price}}€</td>
+                    <td>{{course.places}}</td>
+                    <td>{{course.free_places}}</td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onEditCourse(course)" title="Ver/Editar">
+                        <i class="far fa-edit"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onDeleteCourse(course)" title="Eliminar">
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination (pageEmitter)="goToPage($event)" [page]="page" [totalPages]="totalPages" [numElements]="numCourses" [numberPage]="numberPage"></app-pagination>
+    </div>
+  </div>
+
+<div #editCourse id="editCr"></div>
+  <div *ngIf="activeForm" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5 *ngIf="isEditForm">Editar curso</h5>
+            <h5 *ngIf="!isEditForm">Crear curso</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit( courseForm )" #courseForm="ngForm" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>General</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="title">Nombre/Título</label>
+                  <input name="title" id="title" type="text" [(ngModel)]="courseObj.title" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="price">Precio (€)</label>
+                  <input name="price" id="price" type="number" [(ngModel)]="courseObj.price" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="offer">Oferta</label>
+                  <input name="offer" id="offer" type="checkbox" [(ngModel)]="inOfferChk"
+                    data-md-icheck (change)="toggleVisibility($event)"
+                    class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="desc">Descripción/Información del curso</label>
+                  <textarea name="desc" id="desc" [(ngModel)]="courseObj.description" rows="4" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="new">Novedad</label>
+                  <input name="new" id="new" type="checkbox" [(ngModel)]="inNewChk"
+                    data-md-icheck (change)="toggleVisibility($event)"
+                    class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Imagen</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="picture">Visualización</label>
+                  <div class="card-body">
+                    <div class="col mb-4">
+                      <div class="card h-100">
+                        <img [src]="path+courseObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <button *ngIf="!changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onEditImage()">Editar imagen
+                </button>
+                <button *ngIf="changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onCancelEditImage()">Cancelar
+                </button>
+              </div>
+            </div>
+            <div *ngIf="changeImage" class="row p-2">
+              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
+              <div class="col-md-12">
+                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Programación</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="address">Direccion (Donde se imparte)</label>
+                  <input name="address" id="address" type="text" [(ngModel)]="courseObj.address" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="date">Fecha</label>
+                  <input name="date" id="date" type="date" [ngModel]="courseObj.session_date | date:'yyyy-MM-dd'" (ngModelChange)="courseObj.session_date = $event" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="hours">Horas</label>
+                  <input name="hours" id="hours" type="number" [ngModel]="courseObj.hours" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="init_time">Hora de inicio</label>
+                  <input name="time" id="time" type="time" [(ngModel)]="courseObj.session_start" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="end_time">Hora de finalización</label>
+                  <input name="end_time" id="end_time" type="time" [(ngModel)]="courseObj.session_end" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="n_sessions">Número de sesiones</label>
+                  <input name="n_sessions" id="n_sessions" type="number" [(ngModel)]="courseObj.sessions" class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Plazas y Nivel</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="places">Plazas</label>
+                  <input name="places" id="places" type="number" [(ngModel)]="courseObj.places" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="free_places">Plazas libres</label>
+                  <input name="free_places" id="free_places" type="number" [(ngModel)]="courseObj.free_places" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="level">Nivel</label>
+                  <input name="level" id="level" type="text" [(ngModel)]="courseObj.level" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button *ngIf="isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  <button *ngIf="!isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(courseForm)">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

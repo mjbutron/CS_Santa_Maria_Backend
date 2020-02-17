@@ -5,6 +5,7 @@ export class CourseInterface {
   image?: string;
   new_course?: number;
   offer?: number;
+  address?: string;
   session_date?: string;
   session_start?: string;
   session_end?: string;
