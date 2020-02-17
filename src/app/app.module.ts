@@ -23,6 +23,7 @@ import { ContactComponent } from './components/admin/contact/contact.component';
 import { WorkshopComponent } from './components/admin/workshop/workshop.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
 import { OpinionComponent } from './components/admin/opinion/opinion.component';
+import { UserComponent } from './components/admin/user/user.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -40,7 +41,8 @@ registerLocaleData(localeEs);
     ContactComponent,
     WorkshopComponent,
     PaginationComponent,
-    OpinionComponent
+    OpinionComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
