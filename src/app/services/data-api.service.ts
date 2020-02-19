@@ -8,6 +8,7 @@ import { ContactInterface } from 'src/app/models/contact-interface';
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
 import { OpinionInterface } from 'src/app/models/opinion-interface';
 import { CourseInterface } from 'src/app/models/course-interface';
+import { ServiceInterface } from 'src/app/models/service-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,26 @@ export class DataApiService {
   getAllServices(){
     const url_api = this.url + '/api/allServices';
     return this.http.get(url_api);
+  }
+
+  getServicesByPage(page: Number){
+    const url_api = this.url + '/api/servicesByPage/' + page;
+    return this.http.get(url_api);
+  }
+
+  createService(service: ServiceInterface){
+    const url_api = this.url + '/admin/api/services/new';
+    return this.http.post(url_api, JSON.stringify(service), this.httpOptions);
+  }
+
+  updateServiceById(service: ServiceInterface){
+    const url_api = this.url + '/admin/api/services/update/' + service.id;
+    return this.http.put(url_api, JSON.stringify(service), this.httpOptions);
+  }
+
+  deleteServiceById(serviceId: number){
+    const url_api = this.url + '/admin/api/services/delete/' + serviceId;
+    return this.http.delete(url_api, this.httpOptions);
   }
 
 // WORKSHOP API

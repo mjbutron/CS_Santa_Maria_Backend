@@ -25,6 +25,7 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { OpinionComponent } from './components/admin/opinion/opinion.component';
 import { UserComponent } from './components/admin/user/user.component';
 import { CourseComponent } from './components/admin/course/course.component';
+import { ServiceComponent } from './components/admin/service/service.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -44,7 +45,8 @@ registerLocaleData(localeEs);
     PaginationComponent,
     OpinionComponent,
     UserComponent,
-    CourseComponent
+    CourseComponent,
+    ServiceComponent
   ],
   imports: [
     BrowserModule,

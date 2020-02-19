@@ -6,6 +6,7 @@ import { WorkshopComponent } from './components/admin/workshop/workshop.componen
 import { OpinionComponent } from './components/admin/opinion/opinion.component';
 import { UserComponent } from './components/admin/user/user.component';
 import { CourseComponent } from './components/admin/course/course.component';
+import { ServiceComponent } from './components/admin/service/service.component';
 
 const APP_ROUTES: Routes = [
   { path: 'admin/dashboard', component: DashboardComponent }, // TODO only users auth
@@ -14,6 +15,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/opiniones', component: OpinionComponent }, // TODO only users auth
   { path: 'admin/cuenta', component: UserComponent }, // TODO only users auth
   { path: 'admin/cursos', component: CourseComponent }, // TODO only users auth
+  { path: 'admin/servicios', component: ServiceComponent }, // TODO only users auth
   { path: '**', pathMatch: 'full', redirectTo: 'admin/dashboard' }
 ];
 
