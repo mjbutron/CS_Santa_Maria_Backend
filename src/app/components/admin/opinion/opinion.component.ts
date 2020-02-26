@@ -21,7 +21,7 @@ const K_MAX_SIZE = 3000000;
 })
 export class OpinionComponent implements OnInit {
 
-  // Editor HTML
+  // Editor HTML WYSIWYG
   public Editor = ClassicEditor;
   public config = {
         language: 'es',

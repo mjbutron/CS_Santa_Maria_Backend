@@ -9,6 +9,7 @@ import { WorkshopInterface } from 'src/app/models/workshop-interface';
 import { OpinionInterface } from 'src/app/models/opinion-interface';
 import { CourseInterface } from 'src/app/models/course-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
+import { AboutUsInterface } from 'src/app/models/aboutus-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -183,5 +184,31 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/opinions/delete/' + opinionId;
     return this.http.delete(url_api, this.httpOptions);
   }
+
+// ABOUTUS API
+    getAllAboutUs(){
+      const url_api = this.url + '/api/allAboutUs';
+      return this.http.get(url_api);
+    }
+
+    getAboutUsByPage(page: Number){
+      const url_api = this.url + '/api/aboutUsByPage/' + page;
+      return this.http.get(url_api);
+    }
+
+    createAboutUs(aboutus: AboutUsInterface){
+      const url_api = this.url + '/admin/api/aboutus/new';
+      return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions);
+    }
+
+    updateAboutUsById(aboutus: AboutUsInterface){
+      const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
+      return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions);
+    }
+
+    deleteAboutUsId(aboutusId: number){
+      const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
+      return this.http.delete(url_api, this.httpOptions);
+    }
 
 }
