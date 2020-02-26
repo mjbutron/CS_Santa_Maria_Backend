@@ -29,6 +29,7 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
+              "node_modules/@ckeditor/ckeditor5-build-classic/build/translations/es.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js"
             ]

@@ -9,6 +9,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ToastrModule } from 'ngx-toastr';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AgmCoreModule } from '@agm/core';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 // Routes
 import { APP_ROUTING } from './app.routes';
@@ -60,7 +61,8 @@ registerLocaleData(localeEs);
       apiKey: ''
     }),
     APP_ROUTING,
-    DragDropModule
+    DragDropModule,
+    CKEditorModule
   ],
   providers: [
     {provide : LocationStrategy , useClass: HashLocationStrategy},

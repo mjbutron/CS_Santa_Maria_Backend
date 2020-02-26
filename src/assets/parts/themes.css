@@ -138,3 +138,6 @@ body {
  .wrapper.default-theme .text-lightning {
 	 color: #98a4c7;
 }
+.ck-editor__editable_inline {
+    min-height: 200px;
+}

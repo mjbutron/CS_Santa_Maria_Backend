@@ -36,7 +36,7 @@
                     <td class="align-middle">
                       {{opinion.name}}
                     </td>
-                    <td>{{opinion.commentary}}</td>
+                    <td><div [innerHTML]="opinion.commentary"></div></td>
                     <td>
                       <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
                         <i class="fas fa-star"></i>
@@ -104,7 +104,8 @@
               <div class="col-md-10">
                 <div class="form-group">
                   <label for="commentary">Comentario</label>
-                  <textarea name="commentary" id="commentary" [(ngModel)]="OpinionObj.commentary" rows="4" cols="80" class="form-control"></textarea>
+                  <!-- <textarea name="commentary" id="commentary" rows="4" cols="80" class="form-control"></textarea> -->
+                  <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="OpinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor>
                 </div>
               </div>
               <div class="col-md-2">
