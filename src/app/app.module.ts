@@ -27,6 +27,7 @@ import { OpinionComponent } from './components/admin/opinion/opinion.component';
 import { UserComponent } from './components/admin/user/user.component';
 import { CourseComponent } from './components/admin/course/course.component';
 import { ServiceComponent } from './components/admin/service/service.component';
+import { AboutusComponent } from './components/admin/aboutus/aboutus.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -47,7 +48,8 @@ registerLocaleData(localeEs);
     OpinionComponent,
     UserComponent,
     CourseComponent,
-    ServiceComponent
+    ServiceComponent,
+    AboutusComponent
   ],
   imports: [
     BrowserModule,

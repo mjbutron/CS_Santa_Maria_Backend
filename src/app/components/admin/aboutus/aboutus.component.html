@@ -1,0 +1,207 @@
+<div #subsScroll id="scroll"></div>
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Quiénes somos ({{numAboutUs}} resultados)
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onNewAboutUs()" >
+              <span  style="font-size: 1.7em; color: #0095A6;">
+                <i class="fas fa-plus-square float-right" title="Añadir"></i>
+              </span>
+            </a>
+            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
+              <i class="fas fa-plus-square float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la entrada"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Segundo Apellido</th>
+                    <th>Cargo</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let aboutus of aboutUs">
+                    <td>{{aboutus.name}}</td>
+                    <td>{{aboutus.surname1}}</td>
+                    <td>{{aboutus.surname2}}</td>
+                    <td>{{aboutus.position}}</td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onEditAboutUs(aboutus)" title="Ver/Editar">
+                        <i class="far fa-edit"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onDeleteAboutUs(aboutus)" title="Eliminar">
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination (pageEmitter)="goToPage($event)" [page]="page" [totalPages]="totalPages" [numElements]="numAboutUs" [numberPage]="numberPage"></app-pagination>
+    </div>
+  </div>
+
+<div #editAboutUs id="editAu"></div>
+  <div *ngIf="activeForm" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5 *ngIf="isEditForm">Editar entrada</h5>
+            <h5 *ngIf="!isEditForm">Crear entrada</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit( aboutusForm )" #aboutusForm="ngForm" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>General</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="name">Nombre</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="aboutUsObj.name" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="surn1">Primer Apellido</label>
+                  <input name="surn1" id="surn1" type="text" [(ngModel)]="aboutUsObj.surname1" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="surn2">Segundo Apellido</label>
+                  <input name="surn2" id="surn2" type="text" [(ngModel)]="aboutUsObj.surname2" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Biografía</label>
+                  <textarea name="description" id="description" [(ngModel)]="aboutUsObj.description" rows="4" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Imagen</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="picture">Visualización</label>
+                  <div class="card-body">
+                    <div class="col mb-4">
+                      <div class="card h-100">
+                        <img [src]="path+aboutUsObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <button *ngIf="!changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onEditImage()">Editar imagen
+                </button>
+                <button *ngIf="changeImage" type="button" name="button"
+                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  (click)="onCancelEditImage()">Cancelar
+                </button>
+              </div>
+            </div>
+            <div *ngIf="changeImage" class="row p-2">
+              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
+              <div class="col-md-12">
+                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Profesional</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="position">Profesión/Cargo</label>
+                  <input name="position" id="position" type="text" [(ngModel)]="aboutUsObj.position" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="academic_degree">Estudios superior</label>
+                  <input name="academic_degree" id="academic_degree" type="text" [ngModel]="aboutUsObj.academic_degree" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Redes sociales</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_fcbk">Facebook</label>
+                  <input name="user_fcbk" id="user_fcbk" type="text" [(ngModel)]="aboutUsObj.user_fcbk" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_ytube">YouTube</label>
+                  <input name="user_ytube" id="user_ytube" type="text" [(ngModel)]="aboutUsObj.user_ytube" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_insta">Instagram</label>
+                  <input name="user_insta" id="user_insta" type="text" [(ngModel)]="aboutUsObj.user_insta" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button *ngIf="isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  <button *ngIf="!isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(aboutusForm)">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
