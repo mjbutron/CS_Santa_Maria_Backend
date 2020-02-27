@@ -8,6 +8,7 @@ import { CoreService } from '../../../services/core.service';
 })
 export class NavbarComponent implements OnInit {
 
+  // Responsive
   isCollapsed = true;
 
   constructor(private coreService: CoreService) { }

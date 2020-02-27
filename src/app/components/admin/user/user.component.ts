@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-user',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
+  // Scroll
+  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+
   constructor() { }
 
   ngOnInit() {
+    this.scrollToDiv();
+  }
+
+  scrollToDiv() {
+      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
 }

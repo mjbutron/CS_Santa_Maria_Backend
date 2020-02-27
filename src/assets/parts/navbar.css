@@ -89,7 +89,7 @@
  .wrapper nav.navbar .right-nav ul li .nav-link .link-text {
 	 margin-top: 10px;
 	 font-size: 0.9rem;
-	 text-transform: uppercase;
+	 /* text-transform: uppercase; */
 }
  .wrapper nav.navbar .nav-link {
 	 padding: 0;
