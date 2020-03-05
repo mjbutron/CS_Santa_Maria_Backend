@@ -4,14 +4,14 @@
   </button> -->
   <!-- header -->
   <div class="navbar-header pl-2 pr-2 ml-3 text-center">
-    <a class="navbar-brand m-0 w-100" href="#">
+    <a class="navbar-brand m-0 w-100" href="/admin/dashboard">
       <!-- <i class="fa fa-flash mr-1"></i> -->
       <img src="./assets/img/logoIcon.png" alt="lightning logo" width="70px">
       <span class="ml-1 cssm-font">C.S. Santa María</span>
     </a>
   </div>
   <!-- sidebar toggler -->
-  <div class="sidebar-toggler ml-auto mr-3">
+  <div class="sidebar-toggler ml-auto mr-3" *ngIf="globals.isAuth">
     <a class="btn nav-link" (click)="toggleSidebar()"><i class="fa fa-bars"></i></a>
   </div>
   <!-- right menu toggler -->
@@ -21,14 +21,14 @@
       <!-- <span class="navbar-toggler-icon"></span> -->
       <img src="./assets/img/girl.png" class="img-fluid" alt="">
     </button>
-    <span class="user-profile nav-alert bg-danger"></span>
+    <!-- <span class="user-profile nav-alert bg-danger"></span> -->
   </div>
   <!-- left box -->
-  <ul class="navbar-nav flex-fill mt-1 align-items-center left-nav">
+  <ul class="navbar-nav flex-fill mt-1 align-items-center left-nav" *ngIf="globals.isAuth">
     <li class="nav-item navicon">
       <a class="btn nav-link" (click)="toggleSidebarPin()"><i class="fa fa-bars"></i></a>
     </li>
-    <li class="nav-item flex-fill">
+    <li class="nav-item flex-fill" >
       <input class="form-control navbar-search" type="text" placeholder="Buscar . . .">
     </li>
   </ul>
@@ -36,7 +36,7 @@
   <!-- right menu -->
   <div class="collapse navbar-collapse right-nav" id="collapseBasic" [collapse]="isCollapsed">
     <ul class="navbar-nav ">
-      <li class="nav-item">
+      <li class="nav-item"*ngIf="globals.isAuth">
         <a class="btn nav-link">
           <i class="far fa-bell"></i>
           <span class="link-text">Notificaciones</span>
@@ -44,26 +44,24 @@
           <!-- <span class="nav-alert notifications"></span> -->
         </a>
       </li>
-      <!-- <li class="nav-item"> -->
-        <!-- <a class="btn nav-link"> -->
-          <!-- <i class="far fa-envelope"></i> -->
-          <!-- <span class="link-text">Messages</span> -->
-          <!-- <span class="badge badge-pill badge-success">5</span> -->
-          <!-- <span class="nav-alert messages"></span> -->
-        <!-- </a> -->
-      <!-- </li> -->
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="globals.isAuth">
         <a class="btn nav-link" [routerLink]="['admin/cuenta']">
           <i class="far fa-user"></i>
           <span class="link-text">Perfil</span>
         </a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="btn nav-link">
-          <i class="fas fa-cog"></i>
-          <span class="link-text">Setting</span>
+      <li class="nav-item" *ngIf="globals.isAuth">
+        <a class="btn nav-link" [routerLink]="" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="link-text">Cerrar sesión</span>
         </a>
-      </li> -->
+      </li>
+      <li class="nav-item" *ngIf="!globals.isAuth">
+        <a class="btn nav-link" href="http://localhost:4200">
+          <i class="fas fa-arrow-circle-left"></i>
+          <span class="link-text">Volver</span>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
