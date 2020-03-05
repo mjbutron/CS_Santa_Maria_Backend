@@ -11,6 +11,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AgmCoreModule } from '@agm/core';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
+// Utils
+import { Globals } from './common/globals';
+
 // Routes
 import { APP_ROUTING } from './app.routes';
 
@@ -28,6 +31,7 @@ import { UserComponent } from './components/admin/user/user.component';
 import { CourseComponent } from './components/admin/course/course.component';
 import { ServiceComponent } from './components/admin/service/service.component';
 import { AboutusComponent } from './components/admin/aboutus/aboutus.component';
+import { LoginComponent } from './components/admin/login/login.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -49,7 +53,8 @@ registerLocaleData(localeEs);
     UserComponent,
     CourseComponent,
     ServiceComponent,
-    AboutusComponent
+    AboutusComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +72,7 @@ registerLocaleData(localeEs);
     CKEditorModule
   ],
   providers: [
+    Globals,
     {provide : LocationStrategy , useClass: HashLocationStrategy},
     {provide: LOCALE_ID, useValue: 'es'}
   ],

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { CoreService } from './services/core.service';
+import { AuthService } from 'src/app/services/auth.service';
+
+import { Globals } from 'src/app/common/globals';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +11,11 @@ import { CoreService } from './services/core.service';
 })
 export class AppComponent {
   title = 'cssm-dashboard';
+  globals: Globals;
 
-  constructor(private coreService: CoreService) {}
+  constructor(private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
+  }
 
   getClasses() {
     const classes = {

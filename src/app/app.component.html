@@ -1,7 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="wrapper default-theme" [ngClass]="getClasses()">
   <app-navbar></app-navbar>
-  <main>
+  <app-login *ngIf="!globals.isAuth"></app-login>
+  <main *ngIf="globals.isAuth">
     <app-sidebar></app-sidebar>
     <div class="pages container-fluid pt-4 pb-4 pl-4 pr-4 ">
       <router-outlet></router-outlet>
