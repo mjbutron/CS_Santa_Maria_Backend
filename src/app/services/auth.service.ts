@@ -54,6 +54,8 @@ export class AuthService {
 
   logout(): boolean {
     localStorage.removeItem('accessTkn');
+    localStorage.removeItem('username');
+    localStorage.removeItem('rolname');
     this.userToken = '';
     return (this.userToken == '') ? true : false;
   }

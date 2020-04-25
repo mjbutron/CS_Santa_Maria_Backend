@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Globals } from 'src/app/common/globals';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  // Utils
+  globals: Globals;
+
+  constructor(globals: Globals) {
+    this.globals = globals;
+    this.globals.user = localStorage.getItem('username');
+    this.globals.rol = localStorage.getItem('rolname');
+  }
 
   ngOnInit() {
   }

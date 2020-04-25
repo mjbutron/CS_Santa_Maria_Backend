@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.user).subscribe(res => {
       Swal.close();
-      this.globals.user = res['user'].name;
+      localStorage.setItem('username', res['user'].name);
+      localStorage.setItem('rolname', res['user'].rol_name);
       if(this.rememberUser){
         localStorage.setItem('email', this.user.email);
       }else{
