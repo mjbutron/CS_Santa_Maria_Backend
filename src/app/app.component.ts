@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CoreService } from './services/core.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -24,6 +24,7 @@ export class AppComponent {
     }
     return classes;
   }
+
   toggleSidebar() {
     this.coreService.toggleSidebar();
   }

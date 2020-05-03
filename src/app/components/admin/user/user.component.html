@@ -1,5 +1,4 @@
-<div #subsScroll id="scroll" class="panel-header panel-header-sm">
-  <hr>
+<div #subsScroll id="scroll">
 </div>
 <div class="row">
   <div class="col-md-8">
@@ -31,7 +30,12 @@
             <div class="col-md-6 pl-1">
               <div class="form-group">
                 <label for="usr_name">Nombre*</label>
-                <input name="usr_name" id="usr_name" type="text" [(ngModel)]="userObj.name" class="form-control" [disabled]="disabledForm">
+                <input name="usr_name" id="usr_name" type="text" [(ngModel)]="userObj.name"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_name'].errors }"
+                  [disabled]="disabledForm" required>
+                  <div *ngIf="userForm.submitted && userForm.controls['usr_name'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['usr_name'].errors.required">El nombre es obligatorio</div>
+                  </div>
               </div>
             </div>
           </div>
@@ -39,13 +43,23 @@
             <div class="col-md-6 pr-1">
               <div class="form-group">
                 <label for="usr_surname">Apellidos*</label>
-                <input name="usr_surname" id="usr_surname" type="text" [(ngModel)]="userObj.surname" class="form-control" [disabled]="disabledForm">
+                <input name="usr_surname" id="usr_surname" type="text" [(ngModel)]="userObj.surname"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_surname'].errors }"
+                  [disabled]="disabledForm" required>
+                  <div *ngIf="userForm.submitted && userForm.controls['usr_surname'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['usr_surname'].errors.required">Los apellidos son obligatorio</div>
+                  </div>
               </div>
             </div>
             <div class="col-md-6 pl-1">
               <div class="form-group">
                 <label for="usr_telephone">Teléfono*</label>
-                <input name="usr_telephone" id="usr_telephone" type="text" [(ngModel)]="userObj.telephone" class="form-control" [disabled]="disabledForm">
+                <input name="usr_telephone" id="usr_telephone" type="text" [(ngModel)]="userObj.telephone"
+                  class="form-control"  [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_telephone'].errors }"
+                  [disabled]="disabledForm" required>
+                  <div *ngIf="userForm.submitted && userForm.controls['usr_telephone'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['usr_telephone'].errors.required">El teléfono es obligatorio</div>
+                  </div>
               </div>
             </div>
           </div>
@@ -174,22 +188,22 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="localaddress">Contraseña actual*</label>
-                <input name="localaddress" id="localaddress" type="password" class="form-control" [disabled]="disabledFormPass">
+                <label for="curr_Pass">Contraseña actual*</label>
+                <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass" class="form-control" [disabled]="disabledFormPass">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="ftr_phone">Nueva contraseña*</label>
-                <input name="ftr_phone" id="ftr_phone" type="password" class="form-control" [disabled]="disabledFormPass">
+                <label for="new_Pass">Nueva contraseña*</label>
+                <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass" class="form-control" [disabled]="disabledFormPass">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="ftr_time">Repetir nueva contraeña*</label>
-                <input name="ftr_time" id="ftr_time" type="password" class="form-control" [disabled]="disabledFormPass">
+                <label for="repet_NewPass">Repetir nueva contraeña*</label>
+                <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass" class="form-control" [disabled]="disabledFormPass">
               </div>
             </div>
           </div>

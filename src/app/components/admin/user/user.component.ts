@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
   // Utils
   globals: Globals;
   // Scroll
-  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+  element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Errors
   errors = "";
   // Form
@@ -31,20 +31,20 @@ export class UserComponent implements OnInit {
   newPass = "";
   repetNewPass = "";
 
+  element;
+
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals) {
     this.userObj = new UserInterface();
     this.globals = globals;
     this.globals.user = localStorage.getItem('username');
     this.globals.rol = localStorage.getItem('rolname');
+
+    this.element.scrollTop = 0;
+
   }
 
   ngOnInit() {
-    this.scrollToDiv();
     this.getUserProfile();
-  }
-
-  scrollToDiv() {
-      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
   getUserProfile() {
@@ -98,6 +98,15 @@ export class UserComponent implements OnInit {
     }, (err) => {
       this.toastr.error('No se ha podido actualizar la información', 'Ups!');
     });
+  }
+
+  onSubmitPass(form: NgForm){
+    console.log(form);
+
+    if(form.invalid){
+      return;
+    }
+
   }
 
 }
