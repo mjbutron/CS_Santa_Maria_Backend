@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.user = new UserInterface();
-    if(localStorage.getItem('email')){
-      this.user.email = localStorage.getItem('email');
+    if(localStorage.getItem('rememberEmail')){
+      this.user.email = localStorage.getItem('rememberEmail');
       this.rememberUser = true;
     }
   }
@@ -47,11 +47,13 @@ export class LoginComponent implements OnInit {
       Swal.close();
       localStorage.setItem('username', res['user'].name);
       localStorage.setItem('rolname', res['user'].rol_name);
+      localStorage.setItem('email', this.user.email);
       if(this.rememberUser){
-        localStorage.setItem('email', this.user.email);
+        localStorage.setItem('rememberEmail', this.user.email);
       }else{
-        localStorage.removeItem('email');
+        localStorage.removeItem('rememberEmail');
       }
+      localStorage.setItem('email', this.user.email);
       this.globals.isAuth = true;
       this.router.navigateByUrl('/admin/dashboard');
     }, (err) => {

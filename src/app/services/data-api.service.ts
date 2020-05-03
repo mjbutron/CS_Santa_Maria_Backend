@@ -10,6 +10,7 @@ import { OpinionInterface } from 'src/app/models/opinion-interface';
 import { CourseInterface } from 'src/app/models/course-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
 import { AboutUsInterface } from 'src/app/models/aboutus-interface';
+import { UserInterface } from 'src/app/models/user-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -186,29 +187,44 @@ export class DataApiService {
   }
 
 // ABOUTUS API
-    getAllAboutUs(){
-      const url_api = this.url + '/api/allAboutUs';
-      return this.http.get(url_api);
-    }
+  getAllAboutUs(){
+    const url_api = this.url + '/api/allAboutUs';
+    return this.http.get(url_api);
+  }
 
-    getAboutUsByPage(page: Number){
-      const url_api = this.url + '/api/aboutUsByPage/' + page;
-      return this.http.get(url_api);
-    }
+  getAboutUsByPage(page: Number){
+    const url_api = this.url + '/api/aboutUsByPage/' + page;
+    return this.http.get(url_api);
+  }
 
-    createAboutUs(aboutus: AboutUsInterface){
-      const url_api = this.url + '/admin/api/aboutus/new';
-      return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions);
-    }
+  createAboutUs(aboutus: AboutUsInterface){
+    const url_api = this.url + '/admin/api/aboutus/new';
+    return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions);
+  }
 
-    updateAboutUsById(aboutus: AboutUsInterface){
-      const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
-      return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions);
-    }
+  updateAboutUsById(aboutus: AboutUsInterface){
+    const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
+    return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions);
+  }
 
-    deleteAboutUsId(aboutusId: number){
-      const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
-      return this.http.delete(url_api, this.httpOptions);
-    }
+  deleteAboutUsId(aboutusId: number){
+    const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
+    return this.http.delete(url_api, this.httpOptions);
+  }
 
+// USER PROFILE API
+  getUserProfile(user: UserInterface){
+    const url_api = this.url + '/admin/api/userProfile';
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
+  updateUserProfile(user: UserInterface){
+    const url_api = this.url + '/admin/api/userProfile/update/' + user.id;
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
+  updatePassword(user: UserInterface){
+    const url_api = this.url + '/admin/api/userProfile/updatePass/' + user.id;
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+  }
 }

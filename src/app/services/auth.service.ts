@@ -56,6 +56,7 @@ export class AuthService {
     localStorage.removeItem('accessTkn');
     localStorage.removeItem('username');
     localStorage.removeItem('rolname');
+    localStorage.removeItem('email');
     this.userToken = '';
     return (this.userToken == '') ? true : false;
   }

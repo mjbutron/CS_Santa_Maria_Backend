@@ -6,36 +6,46 @@
     <div class="card">
       <div class="card-header">
         <div class="card-title mb-1 p-3">
-          <h5>Perfil de usuario</h5>
+          <h5>Perfil de usuario
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onEditUser()" >
+              <span  style="font-size: 1.5em; color: #0095A6;">
+                <i class="fas fa-edit float-right" title="Editar"></i>
+              </span>
+            </a>
+            <span *ngIf="activeForm" style="font-size: 1.5em; color: #adb5bd;">
+              <i class="fas fa-edit float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la opinión"></i>
+            </span>
+          </h5>
         </div>
       </div>
       <div class="card-body">
-        <form>
+        <form (ngSubmit)="onSubmitUser( userForm )" #userForm="ngForm" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-6 pr-1">
               <div class="form-group">
-                <label for="usr_email">Email</label>
-                <input name="usr_email" id="usr_email" type="email" class="form-control">
+                <label for="usr_email">Email*</label>
+                <input name="usr_email" id="usr_email" type="email" [(ngModel)]="userObj.email" class="form-control" disabled>
               </div>
             </div>
             <div class="col-md-6 pl-1">
               <div class="form-group">
-                <label for="usr_name">Nombre</label>
-                <input name="usr_name" id="usr_name" type="text" class="form-control">
+                <label for="usr_name">Nombre*</label>
+                <input name="usr_name" id="usr_name" type="text" [(ngModel)]="userObj.name" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 pr-1">
               <div class="form-group">
-                <label for="usr_surname">Apellidos</label>
-                <input name="usr_surname" id="usr_surname" type="text" class="form-control">
+                <label for="usr_surname">Apellidos*</label>
+                <input name="usr_surname" id="usr_surname" type="text" [(ngModel)]="userObj.surname" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
             <div class="col-md-6 pl-1">
               <div class="form-group">
-                <label for="usr_telephone">Teléfono</label>
-                <input name="usr_telephone" id="usr_telephone" type="text" class="form-control">
+                <label for="usr_telephone">Teléfono*</label>
+                <input name="usr_telephone" id="usr_telephone" type="text" [(ngModel)]="userObj.telephone" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
           </div>
@@ -43,7 +53,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="usr_address">Dirección</label>
-                <input name="usr_address" id="usr_address" type="text" class="form-control">
+                <input name="usr_address" id="usr_address" type="text" [(ngModel)]="userObj.address" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
           </div>
@@ -51,19 +61,19 @@
             <div class="col-md-4 pr-1">
               <div class="form-group">
                 <label for="usr_city">Población</label>
-                <input name="usr_city" id="usr_city" type="text" class="form-control">
+                <input name="usr_city" id="usr_city" type="text" [(ngModel)]="userObj.city" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
             <div class="col-md-4 px-1">
               <div class="form-group">
                 <label for="usr_province">Provincia</label>
-                <input name="usr_province" id="usr_province" type="text" class="form-control">
+                <input name="usr_province" id="usr_province" type="text" [(ngModel)]="userObj.province" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
             <div class="col-md-4 pl-1">
               <div class="form-group">
                 <label for="usr_poscode">Código Postal</label>
-                <input name="usr_poscode" id="usr_poscode" type="number" class="form-control">
+                <input name="usr_poscode" id="usr_poscode" type="number" [(ngModel)]="userObj.zipcode" class="form-control" [disabled]="disabledForm">
               </div>
             </div>
           </div>
@@ -71,8 +81,18 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="usr_about">Acerca de mí</label>
-                <textarea name="usr_about" id="usr_about" rows="4" cols="80" class="form-control"></textarea>
+                <textarea name="usr_about" id="usr_about" rows="4" cols="80"  [(ngModel)]="userObj.aboutme" class="form-control" [disabled]="disabledForm"></textarea>
               </div>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-md-6">
+                <button type="submit" name="submit"
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledForm">Actualizar</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" name="clear"
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEdit()" [hidden]="disabledForm">Cancelar</button>
             </div>
           </div>
         </form>
@@ -86,12 +106,10 @@
       </div>
       <div class="card-body">
         <div class="author">
-          <a href="#">
             <img class="avatar border-gray" src="./assets/img/girl.png" alt="...">
-            <h5 class="title">Admin</h5>
-          </a>
+            <h5 class="title" style="color: #0095A6;">{{globals.user}}</h5>
           <p class="description">
-            Administrador
+            {{globals.rol}}
           </p>
         </div>
         <p class="description text-center">
@@ -109,6 +127,83 @@
         <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
           <i class="fab fa-instagram"></i>
         </button>
+      </div>
+    </div>
+    <div class="card" style="padding: 8px;">
+      <span  style="font-size: 1em; color: #0095A6;">
+        <i class="fas fa-bell"></i> 8 Notificaciones sin leer
+      </span>
+    </div>
+    <div class="card" style="padding: 8px;">
+      <span  style="font-size: 1em; color: #0095A6;">
+        <i class="fas fa-sign-out-alt"></i> Últ. conexión 28/04/2020
+      </span>
+    </div>
+    <div class="card" style="padding: 8px;">
+      <span  style="font-size: 1em; color: #0095A6;">
+        <i class="far fa-comments"></i> Últ. entrada del blog 18/03/2020
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title mb-1 p-3">
+          <h5>
+            <span  style="font-size: 0.8em; color: #eb6f00;">
+              <i class="fas fa-exclamation-triangle" title="Precaución"></i>
+            </span>
+            Modificar contraseña
+            <a *ngIf="!activeFormPass" [routerLink]="" (click)="onEditPassword()" >
+              <span  style="font-size: 1.5em; color: #0095A6;">
+                <i class="fas fa-edit float-right" title="Editar"></i>
+              </span>
+            </a>
+            <span *ngIf="activeFormPass" style="font-size: 1.5em; color: #adb5bd;">
+              <i class="fas fa-edit float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la opinión"></i>
+            </span>
+          </h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="onSubmitPass( passForm )" #passForm="ngForm" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="localaddress">Contraseña actual*</label>
+                <input name="localaddress" id="localaddress" type="password" class="form-control" [disabled]="disabledFormPass">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="ftr_phone">Nueva contraseña*</label>
+                <input name="ftr_phone" id="ftr_phone" type="password" class="form-control" [disabled]="disabledFormPass">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="ftr_time">Repetir nueva contraeña*</label>
+                <input name="ftr_time" id="ftr_time" type="password" class="form-control" [disabled]="disabledFormPass">
+              </div>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-md-6">
+                <button type="submit" name="submit"
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormPass">Modificar</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" name="clear"
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass()" [hidden]="disabledFormPass">Cancelar</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
