@@ -150,7 +150,7 @@
     </div>
     <div class="card" style="padding: 8px;">
       <span  style="font-size: 1em; color: #0095A6;">
-        <i class="fas fa-sign-out-alt"></i> Últ. conexión 28/04/2020
+        <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.lastLogin | date}}
       </span>
     </div>
     <div class="card" style="padding: 8px;">
@@ -189,7 +189,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="curr_Pass">Contraseña actual*</label>
-                <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass" class="form-control" [disabled]="disabledFormPass">
+                <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass"
+                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['curr_Pass'].errors }"
+                  [disabled]="disabledFormPass" required>
+                  <div *ngIf="passForm.submitted && passForm.controls['curr_Pass'].errors" class="invalid-feedback">
+                      <div *ngIf="passForm.controls['curr_Pass'].errors.required">Contraseña obligatoria</div>
+                  </div>
               </div>
             </div>
           </div>
@@ -197,13 +202,23 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="new_Pass">Nueva contraseña*</label>
-                <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass" class="form-control" [disabled]="disabledFormPass">
+                <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass"
+                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['new_Pass'].errors }"
+                  [disabled]="disabledFormPass" required>
+                  <div *ngIf="passForm.submitted && passForm.controls['new_Pass'].errors" class="invalid-feedback">
+                      <div *ngIf="passForm.controls['new_Pass'].errors.required">Nueva contraseña obligatoria</div>
+                  </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="repet_NewPass">Repetir nueva contraeña*</label>
-                <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass" class="form-control" [disabled]="disabledFormPass">
+                <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass"
+                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['repet_NewPass'].errors }"
+                  [disabled]="disabledFormPass" required>
+                  <div *ngIf="passForm.submitted && passForm.controls['repet_NewPass'].errors" class="invalid-feedback">
+                      <div *ngIf="passForm.controls['repet_NewPass'].errors.required">Repetir nueva contraseña</div>
+                  </div>
               </div>
             </div>
           </div>
@@ -214,7 +229,7 @@
             </div>
             <div class="col-md-6">
                 <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass()" [hidden]="disabledFormPass">Cancelar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass(passForm)" [hidden]="disabledFormPass">Cancelar</button>
             </div>
           </div>
         </form>

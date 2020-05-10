@@ -223,8 +223,16 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
   }
 
-  updatePassword(user: UserInterface){
+  updatePassword(user: UserInterface, newPass: string){
+    user.password = newPass;
     const url_api = this.url + '/admin/api/userProfile/updatePass/' + user.id;
     return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
   }
+
+  checkPassword(user: UserInterface, currPass: string){
+    user.password = currPass;
+    const url_api = this.url + '/admin/api/checkPassword';
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
 }

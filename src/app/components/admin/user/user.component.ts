@@ -28,10 +28,11 @@ export class UserComponent implements OnInit {
   disabledFormPass = true;
   // Pass
   currentPass = "";
+  errorCurrentPass = "";
   newPass = "";
+  errorNewPass = "";
   repetNewPass = "";
-
-  element;
+  errorRepetNewPass = "";
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals) {
     this.userObj = new UserInterface();
@@ -60,6 +61,7 @@ export class UserComponent implements OnInit {
       this.userObj.zipcode = data['zipcode'];
       this.userObj.aboutme = data['aboutme'];
       this.userObj.password = data['password'];
+      this.userObj.lastLogin = data['last_login'];
     }, (err) => {
       this.errors = err;
     });
@@ -81,9 +83,10 @@ export class UserComponent implements OnInit {
     this.activeFormPass = true;
   }
 
-  onCancelEditPass() {
+  onCancelEditPass(form: NgForm) {
     this.activeFormPass = false;
     this.disabledFormPass = true;
+    form.reset();
   }
 
   onSubmitUser(form: NgForm){
@@ -105,8 +108,28 @@ export class UserComponent implements OnInit {
 
     if(form.invalid){
       return;
+    } else if(this.currentPass == this.newPass){
+      console.log("Contraseñas iguales"); // TODO: Cambiar error en front
+      return;
+    } else if(this.newPass != this.repetNewPass){
+      console.log("Contraseñas no coinciden"); // TODO: Cambiar error en front
     }
 
+    this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
+        if(data['check']){
+          this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
+            this.toastr.success('Se ha actualizado la contraseña', 'Actualizado');
+            this.onCancelEditPass(form);
+          }, (err) => {
+            this.errors = err;
+            this.toastr.error('No se ha podido actualizar la contraseña', 'Ups!');
+          });
+        } else{
+          console.log("false");
+        }
+    }, (err) => {
+      this.errors = err;
+    });
   }
 
 }
