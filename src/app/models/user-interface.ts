@@ -10,6 +10,9 @@ export class UserInterface {
   zipcode?: number;
   aboutme?: string;
   password?: string;
+  userFcbk: string;
+  userYtube: string;
+  userInsta: string;
   lastLogin: string;
   createDate?: string;
   updateDate?: string;

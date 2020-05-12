@@ -20,13 +20,18 @@ export class UserComponent implements OnInit {
   globals: Globals;
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  // Scroll Social Form
+  @ViewChild("editSocial", { static: true }) editSocial: ElementRef;
   // Errors
   errors = "";
   // Form
   activeForm = false;
   activeFormPass = false;
+  activeFormSocial = false;
   disabledForm = true;
   disabledFormPass = true;
+  disabledFormSocial = true;
+
   // Pass
   currentPass = "";
   errorCurrentPass = "";
@@ -62,6 +67,9 @@ export class UserComponent implements OnInit {
       this.userObj.zipcode = data['zipcode'];
       this.userObj.aboutme = data['aboutme'];
       this.userObj.password = data['password'];
+      this.userObj.userFcbk = data['user_fcbk'];
+      this.userObj.userYtube = data['user_ytube'];
+      this.userObj.userInsta = data['user_insta'];
       this.userObj.lastLogin = data['last_login'];
     }, (err) => {
       this.errors = err;
@@ -90,6 +98,17 @@ export class UserComponent implements OnInit {
     form.reset();
   }
 
+  onEditSocial() {
+    this.disabledFormSocial = false;
+    this.activeFormSocial = true;
+  }
+
+  onCancelEditSocial() {
+    this.getUserProfile();
+    this.activeFormSocial = false;
+    this.disabledFormSocial = true;
+  }
+
   onSubmitUser(form: NgForm){
     if(form.invalid){
       return;
@@ -104,8 +123,20 @@ export class UserComponent implements OnInit {
     });
   }
 
+  onSubmitSocial(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
+      this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      this.activeFormSocial = false;
+      this.disabledFormSocial = true;
+    }, (err) => {
+      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+    });
+  }
+
   onSubmitPass(form: NgForm){
-    console.log(form);
 
     if(form.invalid){
       return;
@@ -142,6 +173,15 @@ export class UserComponent implements OnInit {
     }, (err) => {
       this.errors = err;
     });
+  }
+
+  scrollToForm() {
+      this.editSocial.nativeElement.scrollIntoView({behavior:"smooth"});
+  }
+
+  goToLink(url: string){
+    console.log(url);
+    window.open(url, "_blank");
   }
 
 }

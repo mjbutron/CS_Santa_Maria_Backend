@@ -132,14 +132,27 @@
       </div>
       <hr>
       <div class="button-container">
-        <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <i class="fab fa-facebook-f"></i>
+        <div *ngIf="!userObj.userFcbk && !userObj.userYtube && !userObj.userInsta" class="">
+          <a [routerLink]="" (click)="scrollToForm()" >
+            <span  style="font-size: 1em; color: #0095A6;">
+              <i class="fas fa-hashtag"></i> Añada una red social...
+            </span>
+          </a>
+        </div>
+        <button *ngIf="userObj.userFcbk" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.userFcbk)" title="Facebook" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
         </button>
-        <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <i class="fab fa-youtube"></i>
+        <button *ngIf="userObj.userYtube" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.userYtube)" title="Youtube" target="_blank">
+            <i class="fab fa-youtube"></i>
+          </a>
         </button>
-        <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <i class="fab fa-instagram"></i>
+        <button *ngIf="userObj.userInsta" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.userInsta)" title="Instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
         </button>
       </div>
     </div>
@@ -161,6 +174,62 @@
   </div>
 </div>
 
+<div #editSocial id="editSc" class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title mb-1 p-3">
+          <h5>Redes sociales
+            <a *ngIf="!activeFormSocial" [routerLink]="" (click)="onEditSocial()" >
+              <span  style="font-size: 1.5em; color: #0095A6;">
+                <i class="fas fa-edit float-right" title="Editar"></i>
+              </span>
+            </a>
+            <span *ngIf="activeFormSocial" style="font-size: 1.5em; color: #adb5bd;">
+              <i class="fas fa-edit float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
+            </span>
+          </h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="onSubmitSocial( socialForm )" #socialForm="ngForm" enctype="multipart/form-data">
+          <div class="row p-2">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="user_fcbk">Facebook</label>
+                <input name="user_fcbk" id="user_fcbk" type="text" [(ngModel)]="userObj.userFcbk" class="form-control" [disabled]="disabledFormSocial">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="user_ytube">YouTube</label>
+                <input name="user_ytube" id="user_ytube" type="text" [(ngModel)]="userObj.userYtube" class="form-control" [disabled]="disabledFormSocial">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="user_insta">Instagram</label>
+                <input name="user_insta" id="user_insta" type="text" [(ngModel)]="userObj.userInsta" class="form-control" [disabled]="disabledFormSocial">
+              </div>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-md-6">
+                <button type="submit" name="submit"
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormSocial">Modificar</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" name="clear"
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditSocial()" [hidden]="disabledFormSocial">Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -178,7 +247,7 @@
             </a>
             <span *ngIf="activeFormPass" style="font-size: 1.5em; color: #adb5bd;">
               <i class="fas fa-edit float-right"
-              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la opinión"></i>
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la contraseña"></i>
             </span>
           </h5>
         </div>
