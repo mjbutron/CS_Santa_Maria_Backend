@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
 
@@ -109,10 +110,17 @@ export class UserComponent implements OnInit {
     if(form.invalid){
       return;
     } else if(this.currentPass == this.newPass){
-      console.log("Contraseñas iguales"); // TODO: Cambiar error en front
+      Swal.fire({
+        icon: 'error',
+        text: '¡La nueva contraseña es igual a la anterior!'
+      });
       return;
     } else if(this.newPass != this.repetNewPass){
-      console.log("Contraseñas no coinciden"); // TODO: Cambiar error en front
+      Swal.fire({
+        icon: 'error',
+        text: '¡Las contraseñas no coinciden!'
+      });
+      return;
     }
 
     this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
@@ -125,7 +133,11 @@ export class UserComponent implements OnInit {
             this.toastr.error('No se ha podido actualizar la contraseña', 'Ups!');
           });
         } else{
-          console.log("false");
+          Swal.fire({
+            icon: 'error',
+            text: '¡La contraseña actual es incorrecta!'
+          });
+          return;
         }
     }, (err) => {
       this.errors = err;

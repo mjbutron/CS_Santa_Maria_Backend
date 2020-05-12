@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { AuthService } from 'src/app/services/auth.service';
 
+import { DataApiService } from 'src/app/services/data-api.service';
 import { Globals } from 'src/app/common/globals';
 
 @Component({
@@ -15,8 +16,12 @@ export class NavbarComponent implements OnInit {
   isCollapsed = true;
   // Utils
   globals: Globals;
+  // User
+  userObj = {
+    email: ""
+  };
 
-  constructor(private auth: AuthService, private coreService: CoreService, globals: Globals) {
+  constructor(private auth: AuthService, private dataApi: DataApiService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
   }
 
@@ -31,9 +36,13 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout(){
-    if(this.auth.logout()){
-      window.location.href = 'http://localhost:4200';
-    }
+    this.dataApi.logout(localStorage.getItem('email')).subscribe((data) => {
+      if(this.auth.logout()){
+        window.location.href = 'http://localhost:4200';
+      }
+    }, (err) => {
+        console.log(err);
+    });
   }
 
 }

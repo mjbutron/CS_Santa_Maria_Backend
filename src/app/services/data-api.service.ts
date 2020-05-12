@@ -19,6 +19,10 @@ export class DataApiService {
 
   url = environment.urlApiRest;
 
+  userEmail = {
+    email: ""
+  };
+
   httpOptions = {
   headers: new HttpHeaders({
     "Content-type": "application/json",
@@ -233,6 +237,13 @@ export class DataApiService {
     user.password = currPass;
     const url_api = this.url + '/admin/api/checkPassword';
     return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
+// USER LOGOUT
+  logout(email: string){
+    this.userEmail.email = email;
+    const url_api = this.url + '/admin/logout';
+    return this.http.put(url_api, JSON.stringify(this.userEmail), this.httpOptions);
   }
 
 }

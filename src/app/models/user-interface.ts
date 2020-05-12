@@ -10,7 +10,7 @@ export class UserInterface {
   zipcode?: number;
   aboutme?: string;
   password?: string;
-  lastLogin: date;
+  lastLogin: string;
   createDate?: string;
   updateDate?: string;
   rolId?: string;
