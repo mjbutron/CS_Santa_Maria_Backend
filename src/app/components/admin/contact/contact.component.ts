@@ -16,7 +16,7 @@ export class ContactComponent implements OnInit {
   // Info Obj
   infoObj: ContactInterface;
   // Scroll
-  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+  element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Errors
   errors = "";
   // Coordinates
@@ -25,17 +25,14 @@ export class ContactComponent implements OnInit {
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) {
     this.infoObj = new ContactInterface();
+
+    this.element.scrollTop = 0;
   }
 
   ngOnInit() {
-    this.scrollToDiv();
     this.getHomeInfo();
     this.getFooterInfo();
     this.getContactInfo();
-  }
-
-  scrollToDiv() {
-      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
   getHomeInfo(){
