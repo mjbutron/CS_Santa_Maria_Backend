@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   // Path
   path = "http://localhost/apiRest/uploads/";
   // Scroll
-  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+  element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Form
   disabledForm = true;
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
@@ -61,10 +61,11 @@ export class DashboardComponent implements OnInit {
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
+
+    this.element.scrollTop = 0;
   }
 
   ngOnInit() {
-    this.scrollToDiv();
     this.uploadSuccess = false;
     this.isLoaded = false;
     this.getAllServices();
@@ -131,7 +132,7 @@ export class DashboardComponent implements OnInit {
         if(opnHome.home == 1){
           this.opnInHome.push(opnHome);
         }
-      }    
+      }
       this.numOpn = allOpinions.length;
       this.nextDateOpn = allOpinions[0].create_date;
     }, (err) => {
@@ -204,10 +205,6 @@ export class DashboardComponent implements OnInit {
     } else{
       return;
     }
-  }
-
-  scrollToDiv() {
-      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
   counter(index: number) {
