@@ -5,7 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
 
 import { DataApiService } from 'src/app/services/data-api.service';
+import { CoreService } from 'src/app/services/core.service';
+
 import { UserInterface } from 'src/app/models/user-interface';
+
+const K_BLANK = '';
+const K_MAX_SIZE = 3000000;
 
 @Component({
   selector: 'app-user',
@@ -14,6 +19,8 @@ import { UserInterface } from 'src/app/models/user-interface';
 })
 export class UserComponent implements OnInit {
 
+  // Path
+  path = "http://localhost/apiRest/uploads/";
   // User Obj
   userObj: UserInterface;
   // Utils
@@ -22,6 +29,8 @@ export class UserComponent implements OnInit {
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Scroll Social Form
   @ViewChild("editSocial", { static: true }) editSocial: ElementRef;
+  // Scroll Image Form
+  @ViewChild("editImage", { static: true }) editImage: ElementRef;
   // Errors
   errors = "";
   // Form
@@ -32,6 +41,15 @@ export class UserComponent implements OnInit {
   disabledFormPass = true;
   disabledFormSocial = true;
 
+  // User - Image
+  selectedImg: File;
+  userImg: string;
+  uploadSuccess: boolean;
+  activeFormImage: boolean;
+  disabledFormImage: boolean;
+  progress: number = 0;
+  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+
   // Pass
   currentPass = "";
   errorCurrentPass = "";
@@ -40,7 +58,7 @@ export class UserComponent implements OnInit {
   repetNewPass = "";
   errorRepetNewPass = "";
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
     this.userObj = new UserInterface();
     this.globals = globals;
     this.globals.user = localStorage.getItem('username');
@@ -51,6 +69,9 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activeFormImage = false;
+    this.disabledFormImage = true;
+    this.uploadSuccess = false;
     this.getUserProfile();
   }
 
@@ -70,6 +91,7 @@ export class UserComponent implements OnInit {
       this.userObj.userFcbk = data['user_fcbk'];
       this.userObj.userYtube = data['user_ytube'];
       this.userObj.userInsta = data['user_insta'];
+      this.userObj.image = (data['image']) ? data['image'] : "default-avatar.png";
       this.userObj.lastLogin = data['last_login'];
     }, (err) => {
       this.errors = err;
@@ -109,6 +131,17 @@ export class UserComponent implements OnInit {
     this.disabledFormSocial = true;
   }
 
+  onEditImage(){
+    this.disabledFormImage = false;
+    this.activeFormImage = true;
+  }
+
+  onCancelEditImage(){
+    this.activeFormImage = false;
+    this.disabledFormImage = true;
+    this.uploadSuccess = false;
+  }
+
   onSubmitUser(form: NgForm){
     if(form.invalid){
       return;
@@ -123,7 +156,26 @@ export class UserComponent implements OnInit {
     });
   }
 
+  onSubmitImage(form: NgForm){
+    if(this.activeFormImage && this.selectedImg != null){
+      console.log("Entra");
+      this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
+        this.userImg = img['message'];
+        console.log(this.userImg);
+
+        this.userObj.image = this.userImg;
+        this.uploadSuccess = false;
+        this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
+          this.getUserProfile();
+          this.toastr.success('Se ha actualizado el avatar', 'Actualizado');
+        });
+      });
+    }
+  }
+
   onSubmitSocial(form: NgForm){
+    console.log(form);
+
     if(form.invalid){
       return;
     }
@@ -184,4 +236,30 @@ export class UserComponent implements OnInit {
     window.open(url, "_blank");
   }
 
+  scrollToChangeImage(){
+    this.editImage.nativeElement.scrollIntoView({behavior:"smooth"});
+  }
+
+  onFileChanged($event){
+    if($event != null){
+      this.selectedImg = $event.target.files[0];
+      if(this.selectedImg.size > K_MAX_SIZE){
+        this.imageFile.nativeElement.value = K_BLANK;
+        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+        return;
+      } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación progreso
+          }, 500);
+        }
+        this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0;
+        }, 2500);
+      }
+    } else{
+      return;
+    }
+  }
 }

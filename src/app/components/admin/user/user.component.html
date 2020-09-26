@@ -1,5 +1,3 @@
-<div #subsScroll id="scroll">
-</div>
 <div class="row">
   <div class="col-md-8">
     <div class="card">
@@ -120,7 +118,9 @@
       </div>
       <div class="card-body">
         <div class="author">
-            <img class="avatar border-gray" src="./assets/img/girl.png" alt="...">
+            <a [routerLink]="" (click)="scrollToChangeImage()" >
+              <img class="avatar border-gray" [src]="path+userObj.image" name="picture" id="picture" />
+            </a>
             <h5 class="title" style="color: #0095A6;">{{globals.user}}</h5>
           <p class="description">
             {{globals.rol}}
@@ -198,20 +198,42 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="user_fcbk">Facebook</label>
-                <input name="user_fcbk" id="user_fcbk" type="text" [(ngModel)]="userObj.userFcbk" class="form-control" [disabled]="disabledFormSocial">
+                <input name="user_fcbk" id="user_fcbk" type="url" pattern="https?://.+" [(ngModel)]="userObj.userFcbk" class="form-control"
+                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_fcbk'].errors }" [disabled]="disabledFormSocial">
+                <div *ngIf="socialForm.submitted && socialForm.controls['user_fcbk'].errors" class="invalid-feedback">
+                    <div *ngIf="socialForm.controls['user_fcbk'].errors">Formato no válido.</div>
+                </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="user_ytube">YouTube</label>
-                <input name="user_ytube" id="user_ytube" type="text" [(ngModel)]="userObj.userYtube" class="form-control" [disabled]="disabledFormSocial">
+                <input name="user_ytube" id="user_ytube" type="url" pattern="https?://.+" [(ngModel)]="userObj.userYtube" class="form-control"
+                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_ytube'].errors }" [disabled]="disabledFormSocial">
+                <div *ngIf="socialForm.submitted && socialForm.controls['user_ytube'].errors" class="invalid-feedback">
+                    <div *ngIf="socialForm.controls['user_ytube'].errors">Formato no válido.</div>
+                </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="user_insta">Instagram</label>
-                <input name="user_insta" id="user_insta" type="text" [(ngModel)]="userObj.userInsta" class="form-control" [disabled]="disabledFormSocial">
+                <input name="user_insta" id="user_insta" type="url" pattern="https?://.+" [(ngModel)]="userObj.userInsta" class="form-control"
+                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_insta'].errors }" [disabled]="disabledFormSocial">
+                <div *ngIf="socialForm.submitted && socialForm.controls['user_insta'].errors" class="invalid-feedback">
+                    <div *ngIf="socialForm.controls['user_insta'].errors">Formato no válido.</div>
+                </div>
               </div>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-md-12">
+              <p class="cssm-subtitle" [hidden]="disabledFormSocial">
+                <span  style="font-size: 0.8em; color: #eb6f00;" [hidden]="disabledFormSocial">
+                  <i class="fas fa-exclamation-triangle" title="Atención">  </i>
+                </span>
+                Insertar enlaces completos, copiados desde la barra de direcciones (https://www...).
+              </p>
             </div>
           </div>
           <div class="row p-2">
@@ -226,6 +248,66 @@
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<div #editImage id="editIm" class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title mb-1 p-3">
+          <h5>Cambiar avatar
+            <a *ngIf="!activeFormImage" [routerLink]="" (click)="onEditImage()" >
+              <span  style="font-size: 1.5em; color: #0095A6;">
+                <i class="fas fa-edit float-right" title="Editar"></i>
+              </span>
+            </a>
+            <span *ngIf="activeFormImage" style="font-size: 1.5em; color: #adb5bd;">
+              <i class="fas fa-edit float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
+            </span>
+          </h5>
+        </div>
+      </div>
+      <form (ngSubmit)="onSubmitImage( imageForm )" #imageForm="ngForm" enctype="multipart/form-data">
+        <div class="row p-2">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <div class="card-body">
+                <div class="col mb-3">
+                  <div class="card h-100">
+                    <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+        <div *ngIf="activeFormImage" class="row p-2">
+          <div class="col-md-6">
+            <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)">
+            <!-- <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span> -->
+          </div>
+          <div class="col-md-6">
+            <div class="progress form-group" *ngIf="progress > 0">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-md-6">
+              <button type="submit" name="submit"
+              class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">Modificar</button>
+          </div>
+          <div class="col-md-6">
+              <button type="button" name="clear"
+              class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">Cancelar</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -306,40 +388,3 @@
     </div>
   </div>
 </div>
-
-
-<!-- <table class="table">
-  <caption>List of users</caption>
-  <thead>
-    <tr>
-      <th></th>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th style="border-left: 6px solid red;"></th>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th></th>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th></th>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table> -->
