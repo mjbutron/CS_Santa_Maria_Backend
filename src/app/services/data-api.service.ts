@@ -246,4 +246,41 @@ export class DataApiService {
     return this.http.put(url_api, JSON.stringify(this.userEmail), this.httpOptions);
   }
 
+// ROLES API
+  getAllRoles(){
+    const url_api = this.url + '/api/allRoles';
+    return this.http.get(url_api);
+  }
+
+// USERS API
+  getAllUsers(){
+    const url_api = this.url + '/api/allUsers';
+    return this.http.get(url_api);
+  }
+
+  getUsersByPage(page: Number){
+    const url_api = this.url + '/api/usersByPage/' + page;
+    return this.http.get(url_api);
+  }
+
+  createUser(user: UserInterface){
+    const url_api = this.url + '/admin/api/users/new';
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
+  updateUserById(user: UserInterface){
+    const url_api = this.url + '/admin/api/users/update/' + user.id;
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+  }
+
+  deleteUserById(userId: number){
+    const url_api = this.url + '/admin/api/users/delete/' + userId;
+    return this.http.delete(url_api, this.httpOptions);
+  }
+
+  lockUserById(userId: number){
+    const url_api = this.url + '/admin/api/users/lock/' + userId;
+    return this.http.post(url_api, this.httpOptions);
+  }
+
 }

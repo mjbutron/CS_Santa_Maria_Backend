@@ -79,6 +79,7 @@ export class UserComponent implements OnInit {
     this.userObj.email = localStorage.getItem('email');
     this.dataApi.getUserProfile(this.userObj).subscribe((data) =>{
       this.userObj.id = data['id'];
+      this.userObj.active = data['active'];
       this.userObj.name = data['name'];
       this.userObj.surname = data['surname'];
       this.userObj.telephone = data['telephone'];

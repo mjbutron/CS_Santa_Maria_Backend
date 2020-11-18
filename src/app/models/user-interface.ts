@@ -1,5 +1,6 @@
 export class UserInterface {
-  id?: string;
+  id?: number;
+  active?: number;
   name?: string;
   surname?: string;
   email?: string;
@@ -17,5 +18,5 @@ export class UserInterface {
   lastLogin?: string;
   createDate?: string;
   updateDate?: string;
-  rolId?: string;
+  rolId?: number;
 }

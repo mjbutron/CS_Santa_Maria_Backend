@@ -9,10 +9,11 @@ import { CourseComponent } from './components/admin/course/course.component';
 import { ServiceComponent } from './components/admin/service/service.component';
 import { AboutusComponent } from './components/admin/aboutus/aboutus.component';
 import { LoginComponent } from './components/admin/login/login.component';
+import { UsermgtComponent } from './components/admin/user/usermgt/usermgt.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const APP_ROUTES: Routes = [
-  { path: 'login', component: LoginComponent }, // TODO only users auth
+  { path: 'login', component: LoginComponent },
   { path: 'admin/dashboard', component: DashboardComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/contacto', component: ContactComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/talleres', component: WorkshopComponent, canActivate: [AuthGuard] }, // TODO only users auth
@@ -21,6 +22,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/cursos', component: CourseComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/servicios', component: ServiceComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/nosotras', component: AboutusComponent, canActivate: [AuthGuard] }, // TODO only users auth
+  { path: 'admin/usuarios', component: UsermgtComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: '**', pathMatch: 'full', redirectTo: 'login' }
 ];
 

@@ -1,0 +1,192 @@
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Gestión de usuarios ({{numUsers}} usuarios)
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onNewUser()" >
+              <span  style="font-size: 1.7em; color: #0095A6;">
+                <i class="fas fa-plus-square float-right" title="Añadir"></i>
+              </span>
+            </a>
+            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
+              <i class="fas fa-plus-square float-right"
+              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición del usuario"></i>
+            </span>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Rol</th>
+                    <th>Activo</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of users">
+                    <td class="align-middle"><img [src]="path+user.image" name="picture" id="picture" width="100" alt="..."/></td>
+                    <td class="align-middle">{{user.name}}</td>
+                    <td class="align-middle">{{user.surname}}</td>
+                    <td class="align-middle">{{user.email}}</td>
+                    <td class="align-middle">{{user.telephone}}</td>
+                    <td class="align-middle">{{user.rol_name}}</td>
+                    <td *ngIf="user.active==0">
+                      <i class="fas fa-minus"></i>
+                    </td>
+                    <td *ngIf="user.active==1">
+                      <i class="fas fa-check"></i>
+                    </td>
+                    <td>
+                    <td class="align-middle">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onEditUser(user)" title="Ver/Editar">
+                        <i class="far fa-edit"></i>
+                      </a>
+                    </td>
+                    <td class="align-middle">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onLockUser(user)" title="Activar/Desactivar">
+                        <i class="fas fa-user-lock"></i>
+                      </a>
+                    </td>
+                    <td class="align-middle">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onDeleteUser(user)" title="Eliminar">
+                        <i class="far fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination (pageEmitter)="goToPage($event)" [page]="page" [totalPages]="totalPages" [numElements]="numUsers" [numberPage]="numberPage"></app-pagination>
+    </div>
+  </div>
+
+<div #editUser id="editUsr"></div>
+  <div *ngIf="activeForm" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5 *ngIf="isEditForm">Editar usuario</h5>
+            <h5 *ngIf="!isEditForm">Crear usuario</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit( userForm )" #userForm="ngForm" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>General</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="title">Nombre</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="userObj.name" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="surname">Apellidos</label>
+                  <input name="surname" id="surname" type="text" [(ngModel)]="userObj.surname" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input name="email" id="email" type="email" [(ngModel)]="userObj.email" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="telephone">Teléfono</label>
+                  <input name="telephone" id="telephone" type="text" [(ngModel)]="userObj.telephone" class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Dirección</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="address">Dirección</label>
+                  <input name="address" id="address" type="text" [(ngModel)]="userObj.address" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="zipcode">Código postal</label>
+                  <input name="zipcode" id="zipcode" type="number" [(ngModel)]="userObj.zipcode" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="city">Ciudad</label>
+                  <input name="city" id="city" type="text" [(ngModel)]="userObj.city" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="province">Provincia</label>
+                  <input name="province" id="province" type="text" [(ngModel)]="userObj.province" class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Rol</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="rolId">Rol del usuario</label>
+                  <select type="number" name="userRolId" [(ngModel)]="userRolId"(ngModelChange)="toNumber()" class="form-control">
+                    <option *ngFor="let rol of roles" [ngValue]="rol.id">{{rol.rol_name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button *ngIf="isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  <button *ngIf="!isEditForm" type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(userForm)">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
