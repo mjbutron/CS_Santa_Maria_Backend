@@ -26,15 +26,14 @@ export class UsermgtComponent implements OnInit {
   // User
   userObj: UserInterface;
   users: UserInterface[] = [];
-  userImg: string;
   // Utils
   globals: Globals;
-  // Users - Image
-  selectedImg: File;
-  uploadSuccess: boolean;
+  alertLockStr = "";
+  actionLockStr = "";
+  actionTextLockStr = "";
   // Role
-  userRolId: number = 0;
-  roles: RolInterface;
+  userRol : RolInterface;
+  roles: RolInterface[] = [];
   // Errors
   errors = "";
   // Numeros páginas
@@ -56,7 +55,6 @@ export class UsermgtComponent implements OnInit {
   // Form
   activeForm = false;
   isEditForm = false;
-  changeImage = false;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.userObj = new UserInterface();
@@ -67,8 +65,6 @@ export class UsermgtComponent implements OnInit {
   ngOnInit() {
     this.activeForm = false;
     this.isEditForm = false;
-    this.changeImage = false;
-    this.uploadSuccess = false;
     this.getUsersByPage(this.page);
   }
 
@@ -87,28 +83,24 @@ export class UsermgtComponent implements OnInit {
   }
 
   getAllRoles() {
-    this.dataApi.getAllRoles().subscribe((allRoles: RolInterface) =>{
+    this.dataApi.getAllRoles().subscribe((allRoles: RolInterface[]) =>{
         this.roles = allRoles;
     });
-  }
-
-  toNumber(){
-    
-    console.log(this.userRolId);
   }
 
   onNewUser() {
     // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = false;
-    this.changeImage = false;
-    this.selectedImg = null;
 
-    // this.serviceObj.title = K_BLANK;
-    // this.serviceObj.image = "default_image.jpg";
-    // this.serviceObj.subtitle = K_BLANK;
-    // this.serviceObj.description = K_BLANK;
-    // this.serviceObj.user_id = 1;
+    // Setear valores por defecto
+    this.userObj.name = K_BLANK;
+    this.userObj.surname = K_BLANK;
+    this.userObj.email = K_BLANK;
+    this.userObj.address = K_BLANK;
+    this.userObj.city = K_BLANK;
+    this.userObj.province = K_BLANK;
+
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -119,15 +111,21 @@ export class UsermgtComponent implements OnInit {
     // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = true;
-    this.changeImage = false;
-    this.selectedImg = null;
+
     // Setear valores al ui
-    // this.serviceObj.id = service.id;
-    // this.serviceObj.title = service.title;
-    // this.serviceObj.image = (service.image) ? service.image : "default_image.jpg";
-    // this.serviceObj.subtitle = service.subtitle;
-    // this.serviceObj.description = service.description;
-    // this.serviceObj.user_id = service.user_id;
+    this.userObj.id = user.id;
+    this.userObj.name = user.name;
+    this.userObj.surname = user.surname;
+    this.userObj.email = user.email;
+    this.userObj.telephone = user.telephone;
+    this.userObj.address = user.address;
+    this.userObj.city = user.city;
+    this.userObj.province = user.province;
+    this.userObj.zipcode = user.zipcode;
+    this.userObj.rol_id = user.rol_id;
+    // Buscamos el objeto rol según un identificador
+    this.userRol = this.roles.find(e => e.id === user.rol_id);
+
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -150,8 +148,6 @@ export class UsermgtComponent implements OnInit {
           this.getUsersByPage(this.page);
           this.isEditForm = false;
           this.activeForm = false;
-          this.uploadSuccess = false;
-          this.changeImage = false;
           Swal.fire(
             '¡Eliminado!',
             'Se ha eliminado el usuario seleccionado.',
@@ -169,97 +165,62 @@ export class UsermgtComponent implements OnInit {
   }
 
   onLockUser(user: UserInterface){
-    // Swal.fire({
-    //   title: '¿Seguro que deseas eliminar el usuario?',
-    //   text: "Atención: Esta acción no se puede deshacer.",
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#d33',
-    //   cancelButtonColor: '#0095A6',
-    //   confirmButtonText: '¡Sí, eliminar!',
-    //   cancelButtonText: 'Cancelar'
-    // }).then((result) => {
-    //   if (result.value) {
-    //     this.dataApi.deleteUserById(user.id).subscribe((data) => {
-    //       this.getUsersByPage(this.page);
-    //       this.isEditForm = false;
-    //       this.activeForm = false;
-    //       this.uploadSuccess = false;
-    //       this.changeImage = false;
-    //       Swal.fire(
-    //         '¡Eliminado!',
-    //         'Se ha eliminado el usuario seleccionado.',
-    //         'success'
-    //       )
-    //     }, (err) => {
-    //       Swal.fire(
-    //         '¡Error!',
-    //         'No se ha podido eliminar el usuario.',
-    //         'error'
-    //       )
-    //     });
-    //   }
-    // });
-  }
 
-  onEditImage(){
-    this.changeImage = true;
-  }
+    if(1 == user.active){
+      this.alertLockStr = "¿Seguro que deseas bloquear este usuario?";
+      this.actionLockStr = "¡Bloqueado!";
+      this.actionTextLockStr = "Se ha bloqueado el usuario.";
+    }
+    else{
+      this.alertLockStr = "¿Seguro que deseas desbloquear este usuario?";
+      this.actionLockStr = "¡Desbloqueado!";
+      this.actionTextLockStr = "Se ha desbloqueado el usuario.";
+    }
 
-  onCancelEditImage(){
-    this.changeImage = false;
+    Swal.fire({
+      title: this.alertLockStr,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#0095A6',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        user.active = (user.active == 0) ? 1 : 0;
+        this.dataApi.updateUserById(user).subscribe((data) => {
+          this.getUsersByPage(this.page);
+          this.isEditForm = false;
+          this.activeForm = false;
+          Swal.fire(
+            this.actionLockStr,
+            this.actionTextLockStr,
+            'success'
+          )
+        }, (err) => {
+          Swal.fire(
+            '¡Error!',
+            'No se ha podido realizar la acción.',
+            'error'
+          )
+        });
+      }
+    });
   }
 
   onSubmit(form: NgForm){
     if(this.isEditForm){
-      if(this.changeImage && this.selectedImg != null){
-        this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.userImg = img['message'];
-          this.userObj.image = this.userImg;
-          this.uploadSuccess = false;
-          this.dataApi.updateUserById(this.userObj).subscribe((data) => {
-            this.getUsersByPage(this.page);
-            this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
-          });
-        });
-      } else{
-        this.dataApi.updateUserById(this.userObj).subscribe((data) => {
-          this.getUsersByPage(this.page);
-          this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
-        });
-      }
+      this.userObj.rol_id = this.userRol.id;
+      this.dataApi.updateUserById(this.userObj).subscribe((data) => {
+        this.getUsersByPage(this.page);
+        this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
+      });
     } else{
-      if(this.changeImage && this.selectedImg != null){
-        this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-          this.userImg = img['message'];
-          this.userObj.image = this.userImg;
-          this.uploadSuccess = false;
-          this.dataApi.createUser(this.userObj).subscribe((data) => {
-            this.getUsersByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
-          });
-        });
-      } else{
-        this.dataApi.createUser(this.userObj).subscribe((data) => {
-          this.getUsersByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
-        });
-      }
-    }
-  }
-
-  onFileChanged($event){
-    if($event != null){
-      this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
-        return;
-      } else{
-        this.uploadSuccess = true;
-      }
-    } else{
-      return;
+      this.userObj.rol_id = this.userRol.id;
+      this.dataApi.createUser(this.userObj).subscribe((data) => {
+        this.getUsersByPage(this.page);
+        this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
+      });
     }
   }
 
@@ -267,8 +228,6 @@ export class UsermgtComponent implements OnInit {
     form.reset();
     this.isEditForm = false;
     this.activeForm = false;
-    this.uploadSuccess = false;
-    this.changeImage = false;
   }
 
   scrollToForm() {

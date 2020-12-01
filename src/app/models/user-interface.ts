@@ -18,5 +18,5 @@ export class UserInterface {
   lastLogin?: string;
   createDate?: string;
   updateDate?: string;
-  rolId?: number;
+  rol_id?: number;
 }

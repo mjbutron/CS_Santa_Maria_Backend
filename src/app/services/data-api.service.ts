@@ -277,10 +277,4 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/users/delete/' + userId;
     return this.http.delete(url_api, this.httpOptions);
   }
-
-  lockUserById(userId: number){
-    const url_api = this.url + '/admin/api/users/lock/' + userId;
-    return this.http.post(url_api, this.httpOptions);
-  }
-
 }
