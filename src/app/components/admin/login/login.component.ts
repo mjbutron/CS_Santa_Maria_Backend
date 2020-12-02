@@ -60,8 +60,7 @@ export class LoginComponent implements OnInit {
       this.globals.isAuth = false;
       Swal.fire({
         icon: 'error',
-        title: '¡Nombre de usuario o contraseña incorrectos!',
-        text: err.error.error.message
+        title: err.error.message
       });
     });
   }

@@ -36,15 +36,15 @@ export class UsermgtComponent implements OnInit {
   roles: RolInterface[] = [];
   // Errors
   errors = "";
-  // Numeros páginas
+  // Number pages
   public numberPage: number[] = [];
-  // Página actual
+  // Current page
   public page: number = 1;
-  // Total de paginas
+  // Total pages
   public totalPages: number = 0;
   // Total de elementos
   public numUsers: number = 0;
-  // Elementos por página
+  // Elements by pages
   private numResults: number = 10;
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
@@ -55,10 +55,13 @@ export class UsermgtComponent implements OnInit {
   // Form
   activeForm = false;
   isEditForm = false;
+  // User in session
+  userInSession = "";
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.userObj = new UserInterface();
     this.element.scrollTop = 0;
+    this.userInSession = localStorage.getItem('email');
     this.getAllRoles();
   }
 
