@@ -55,9 +55,11 @@ export class LoginComponent implements OnInit {
       }
       localStorage.setItem('email', this.user.email);
       this.globals.isAuth = true;
+      this.globals.isChangePass = (res['user'].change_pass == 0) ? false : true;
       this.router.navigateByUrl('/admin/dashboard');
     }, (err) => {
       this.globals.isAuth = false;
+      this.globals.isChangePass = false;
       Swal.fire({
         icon: 'error',
         title: err.error.message

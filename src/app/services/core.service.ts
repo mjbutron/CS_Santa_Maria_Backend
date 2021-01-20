@@ -3,10 +3,14 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 
+import { Globals } from 'src/app/common/globals';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CoreService {
+
+  globals: Globals;
 
   isSidebarPinned = false;
   isSidebarToggeled = false;
@@ -20,7 +24,9 @@ export class CoreService {
     })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, globals: Globals) {
+    this.globals = globals;
+  }
 
   toggleSidebar() {
     this.isSidebarToggeled = ! this.isSidebarToggeled;

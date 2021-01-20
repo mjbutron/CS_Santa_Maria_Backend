@@ -11,6 +11,7 @@ export class UserInterface {
   zipcode?: number;
   aboutme?: string;
   password?: string;
+  change_pass?: number;
   userFcbk?: string;
   userYtube?: string;
   userInsta?: string;

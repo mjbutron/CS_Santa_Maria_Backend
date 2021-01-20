@@ -33,11 +33,11 @@ body {
 	 color: #9ba2b9;
 }
  .wrapper.default-theme nav.navbar .nav-alert {
-	 border-color: #2f3546;
+	 border-color: #04c1c3;
 }
  .wrapper.default-theme nav.navbar .nav-alert.notifications {
 	 background-color: #ff61c5;
-	 box-shadow: 0px 0px 4px #ff61c5;
+	 box-shadow: 0px 0px 8px #ff61c5;
 }
  .wrapper.default-theme nav.navbar .nav-alert.messages {
 	 background-color: #61b8ff;

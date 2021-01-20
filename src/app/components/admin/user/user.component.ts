@@ -211,6 +211,7 @@ export class UserComponent implements OnInit {
         if(data['check']){
           this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
             this.toastr.success('Se ha actualizado la contraseña', 'Actualizado');
+            this.globals.isChangePass = true;
             this.onCancelEditPass(form);
           }, (err) => {
             this.errors = err;

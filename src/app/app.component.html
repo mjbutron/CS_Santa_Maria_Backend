@@ -4,6 +4,14 @@
   <main *ngIf="globals.isAuth">
     <app-sidebar></app-sidebar>
     <div id="rtrSup" class="pages container-fluid pt-4 pb-4 pl-4 pr-4 ">
+      <div *ngIf="globals.isAuth && !globals.isChangePass" class="alert alert-danger text-center" role="alert">
+        <span  style="font-size: 1.0em; color: #eb6f00;">
+          <i class="fas fa-exclamation-triangle" title="Precaución"></i>
+        </span>
+        <a [routerLink]="['admin/cuenta']" style="color: #0095A6;">
+          ¡Hola! Por favor, cambie la contraseña desde su perfil para completar el registro del usuario.
+        </a>
+      </div>
       <router-outlet></router-outlet>
       <hr>
       <app-footer></app-footer>
