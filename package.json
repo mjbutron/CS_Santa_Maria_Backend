@@ -29,6 +29,7 @@
     "elliptic": ">=6.5.3",
     "hamburgers": "^1.1.3",
     "http-proxy": ">=1.18.1",
+    "ini": ">=1.3.6",
     "jquery": "^3.5.1",
     "kind-of": ">=6.0.3",
     "lodash": ">=4.17.19",
@@ -44,7 +45,9 @@
     "sweetalert2": "^9.17.2",
     "tree-kill": ">=1.2.2",
     "tslib": "^1.14.1",
+    "webpack-subresource-integrity": ">=1.5.1",
     "websocket-extensions": ">=0.1.4",
+    "yargs-parser": ">=13.1.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
