@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CoreService } from './services/core.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { DataApiService } from 'src/app/services/data-api.service';
 
 import { Globals } from 'src/app/common/globals';
 
@@ -13,7 +14,7 @@ export class AppComponent {
   title = 'cssm-dashboard';
   globals: Globals;
 
-  constructor(private coreService: CoreService, globals: Globals) {
+  constructor(private coreService: CoreService, globals: Globals, private dataApi: DataApiService) {
     this.globals = globals;
   }
 
@@ -28,5 +29,4 @@ export class AppComponent {
   toggleSidebar() {
     this.coreService.toggleSidebar();
   }
-
 }

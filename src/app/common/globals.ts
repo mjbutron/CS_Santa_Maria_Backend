@@ -5,5 +5,5 @@ export class Globals {
   rol: string = 'rolDummy';
   user: string = 'userDummy';
   isAuth: boolean = false;
-  isChangePass: boolean = false;
+  isChangePass: boolean = true;
 }
