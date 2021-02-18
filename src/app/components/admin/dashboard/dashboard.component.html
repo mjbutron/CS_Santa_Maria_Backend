@@ -227,7 +227,7 @@
                           <div class="progress-bar bg-danger" style="width: 35% ;"></div>
                         </div> -->
                       </td>
-                      <td>{{workshop.session_start}} - {{workshop.session_end}}</td>
+                      <td>{{workshop.session_start | timeWithoutSec}} - {{workshop.session_end | timeWithoutSec}}</td>
                       <td>{{workshop.price}}€</td>
                     </tr>
                   </tbody>

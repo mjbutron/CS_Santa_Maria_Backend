@@ -38,6 +38,9 @@ import { UsermgtComponent } from './components/admin/user/usermgt/usermgt.compon
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 
+// Pipes
+import { TimeWithoutSecPipe } from './pipes/time-without-sec.pipe';
+
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -56,7 +59,8 @@ registerLocaleData(localeEs);
     ServiceComponent,
     AboutusComponent,
     LoginComponent,
-    UsermgtComponent
+    UsermgtComponent,
+    TimeWithoutSecPipe
   ],
   imports: [
     BrowserModule,

@@ -37,7 +37,7 @@
                     <td class="align-middle">
                       {{workshop.session_date | date}}
                     </td>
-                    <td>{{workshop.session_start}}</td>
+                    <td>{{workshop.session_start | timeWithoutSec}}</td>
                     <td>{{workshop.price}}€</td>
                     <td *ngIf="workshop.home==0">
                       <i class="fas fa-minus"></i>

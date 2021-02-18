@@ -38,7 +38,7 @@
                     <td class="align-middle">
                       {{course.session_date | date}}
                     </td>
-                    <td>{{course.session_start}}</td>
+                    <td>{{course.session_start | timeWithoutSec}}</td>
                     <td>{{course.price}}€</td>
                     <td>{{course.places}}</td>
                     <td>{{course.free_places}}</td>
