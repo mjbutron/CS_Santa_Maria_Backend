@@ -80,9 +80,11 @@
         </div>
         <div class="card-footer d-flex ">
           <small class="text-muted">Próximo Curso: </small>
-          <small class="text-info ml-auto">
-            <!-- <i class="fa fa-caret-down" aria-hidden="true"></i> -->
+          <small class="text-success ml-auto" *ngIf="isNextCrs">
             {{nextDateCrs | date}}
+          </small>
+          <small class="text-danger ml-auto" *ngIf="!isNextCrs">
+            {{nextDateCrs}}
           </small>
         </div>
       </div>

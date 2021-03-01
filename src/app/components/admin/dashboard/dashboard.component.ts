@@ -16,6 +16,7 @@ import { OpinionInterface } from 'src/app/models/opinion-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_NO_DATE = '--/--/----';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit {
   // Course
   course: CourseInterface[] = [];
   numCrs: number;
+  isNextCrs = false;
   nextDateCrs: string;
   // Opinions
   opnInHome: OpinionInterface[] = [];
@@ -109,7 +111,7 @@ export class DashboardComponent implements OnInit {
         }
       }
       if(!this.isNextWsp){
-        this.nextDateWsp = '--/--/----'
+        this.nextDateWsp = K_NO_DATE;
       }
     }, (err) => {
       this.errors = err;
@@ -130,11 +132,17 @@ export class DashboardComponent implements OnInit {
     .subscribe((allCourses: CourseInterface[]) => {
       this.course = allCourses;
       this.numCrs = allCourses.length;
-      this.nextDateCrs = this.course[0].create_date;
-      this.isLoaded = true;
+      for(let crsDate of allCourses){
+        if(!this.isNextCrs && this.todayDate < crsDate.session_date){
+          this.isNextCrs = true;
+          this.nextDateCrs = crsDate.session_date;
+        }
+      }
+      if(!this.isNextCrs){
+        this.nextDateCrs = K_NO_DATE;
+      }
     }, (err) => {
       this.errors = err;
-      this.isLoaded = false;
     });
   }
 
