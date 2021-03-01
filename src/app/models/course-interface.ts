@@ -1,5 +1,6 @@
 export class CourseInterface {
   id?: number;
+  active?: number;
   title?: string;
   description?: string;
   image?: string;

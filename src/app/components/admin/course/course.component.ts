@@ -52,6 +52,10 @@ export class CourseComponent implements OnInit {
   activeForm = false;
   isEditForm = false;
   changeImage = false;
+  // Utils
+  alertActiveStr = "";
+  actionActiveStr = "";
+  actionTextActiveStr = "";
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.courseObj = new CourseInterface();
@@ -261,5 +265,48 @@ export class CourseComponent implements OnInit {
     this.courseObj.offer = (this.inOfferChk) ? 1 : 0;
   }
 
+  onActiveCourse(course: CourseInterface){
+
+    if(1 == course.active){
+      this.alertActiveStr = "¿Seguro que deseas desactivar este curso?";
+      this.actionActiveStr = "¡Desactivado!";
+      this.actionTextActiveStr = "Se ha desactivado el curso.";
+    }
+    else{
+      this.alertActiveStr = "¿Seguro que deseas activar este curso?";
+      this.actionActiveStr = "¡Activado!";
+      this.actionTextActiveStr = "Se ha activado el curso.";
+    }
+
+    Swal.fire({
+      title: this.alertActiveStr,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#0095A6',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        course.active = (course.active == 0) ? 1 : 0;
+        this.dataApi.updateCourseById(course).subscribe((data) => {
+          this.getCoursesByPage(this.page);
+          this.isEditForm = false;
+          this.activeForm = false;
+          Swal.fire(
+            this.actionActiveStr,
+            this.actionTextActiveStr,
+            'success'
+          )
+        }, (err) => {
+          Swal.fire(
+            '¡Error!',
+            'No se ha podido realizar la acción.',
+            'error'
+          )
+        });
+      }
+    });
+  }
 
 }
