@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { NgForm } from '@angular/forms';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 
@@ -45,6 +46,7 @@ export class DashboardComponent implements OnInit {
   // Workshop
   wspInHome: WorkshopInterface[] = [];
   numWsp: number;
+  isNextWsp = false;
   nextDateWsp: string;
   // Course
   course: CourseInterface[] = [];
@@ -58,6 +60,8 @@ export class DashboardComponent implements OnInit {
   errors = "";
   // Load
   isLoaded: boolean;
+  // Today date
+  todayDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
@@ -97,7 +101,16 @@ export class DashboardComponent implements OnInit {
         }
       }
       this.numWsp = allWorkshops.length;
-      this.nextDateWsp = allWorkshops[0].session_date;
+      // this.nextDateWsp = allWorkshops[this.numWsp-1].session_date;
+      for(let wspDate of allWorkshops){
+        if(!this.isNextWsp && this.todayDate < wspDate.session_date){
+          this.isNextWsp = true;
+          this.nextDateWsp = wspDate.session_date;
+        }
+      }
+      if(!this.isNextWsp){
+        this.nextDateWsp = '--/--/----'
+      }
     }, (err) => {
       this.errors = err;
     });
