@@ -1,5 +1,6 @@
 export class ServiceInterface {
   id?: number;
+  active?: number;
   title?: string;
   image?: string;
   subtitle?: string;

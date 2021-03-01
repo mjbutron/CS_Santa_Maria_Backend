@@ -50,6 +50,10 @@ export class ServiceComponent implements OnInit {
   activeForm = false;
   isEditForm = false;
   changeImage = false;
+  // Utils
+  alertActiveStr = "";
+  actionActiveStr = "";
+  actionTextActiveStr = "";
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.serviceObj = new ServiceInterface();
@@ -224,5 +228,49 @@ export class ServiceComponent implements OnInit {
 
   scrollToForm() {
       this.editService.nativeElement.scrollIntoView({behavior:"smooth"});
+  }
+
+  onActiveService(service: ServiceInterface){
+
+    if(1 == service.active){
+      this.alertActiveStr = "¿Seguro que deseas desactivar este servicio?";
+      this.actionActiveStr = "¡Desactivado!";
+      this.actionTextActiveStr = "Se ha desactivado el servicio.";
+    }
+    else{
+      this.alertActiveStr = "¿Seguro que deseas activar este servicio?";
+      this.actionActiveStr = "¡Activado!";
+      this.actionTextActiveStr = "Se ha activado el servicio.";
+    }
+
+    Swal.fire({
+      title: this.alertActiveStr,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#0095A6',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        service.active = (service.active == 0) ? 1 : 0;
+        this.dataApi.updateServiceById(service).subscribe((data) => {
+          this.getServicesByPage(this.page);
+          this.isEditForm = false;
+          this.activeForm = false;
+          Swal.fire(
+            this.actionActiveStr,
+            this.actionTextActiveStr,
+            'success'
+          )
+        }, (err) => {
+          Swal.fire(
+            '¡Error!',
+            'No se ha podido realizar la acción.',
+            'error'
+          )
+        });
+      }
+    });
   }
 }

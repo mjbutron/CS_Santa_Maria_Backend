@@ -170,14 +170,14 @@ export class UsermgtComponent implements OnInit {
   onLockUser(user: UserInterface){
 
     if(1 == user.active){
-      this.alertLockStr = "¿Seguro que deseas bloquear este usuario?";
-      this.actionLockStr = "¡Bloqueado!";
-      this.actionTextLockStr = "Se ha bloqueado el usuario.";
+      this.alertLockStr = "¿Seguro que deseas desactivar este usuario?";
+      this.actionLockStr = "¡Desactivado!";
+      this.actionTextLockStr = "Se ha desactivado el usuario.";
     }
     else{
-      this.alertLockStr = "¿Seguro que deseas desbloquear este usuario?";
-      this.actionLockStr = "¡Desbloqueado!";
-      this.actionTextLockStr = "Se ha desbloqueado el usuario.";
+      this.alertLockStr = "¿Seguro que deseas activar este usuario?";
+      this.actionLockStr = "¡Activado!";
+      this.actionTextLockStr = "Se ha activado el usuario.";
     }
 
     Swal.fire({

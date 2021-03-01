@@ -25,6 +25,7 @@
                     <th>Imagen</th>
                     <th>Servicio</th>
                     <th>Información</th>
+                    <th>Activo</th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -34,6 +35,19 @@
                     <td class="align-middle"><img [src]="path+service.image" name="picture" id="picture" width="100" alt="..."/></td>
                     <td class="align-middle">{{service.title}}</td>
                     <td class="align-middle">{{service.subtitle}}</td>
+                    <td  class="align-middle" *ngIf="service.active==0">
+                      <i class="fas fa-minus"></i>
+                    </td>
+                    <td  class="align-middle" *ngIf="service.active==1">
+                      <i class="fas fa-check"></i>
+                    </td>
+                    <td class="align-middle">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onActiveService(service)" title="Activa/Desactiva el servicio. Esto hará que sea visible o no para los usuarios de la web.">
+                        <i class="far fa-eye-slash" *ngIf="service.active==1"></i>
+                        <i class="far fa-eye" *ngIf="service.active==0"></i>
+                      </a>
+                    </td>
                     <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onEditService(service)" title="Ver/Editar">
