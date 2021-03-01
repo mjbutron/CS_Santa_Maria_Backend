@@ -1,5 +1,6 @@
 export class WorkshopInterface {
   id?: number;
+  active?: number;
   home?: number;
   title?: string;
   description_home?: string;

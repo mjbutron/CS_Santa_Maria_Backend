@@ -27,6 +27,7 @@
                     <th>Hora</th>
                     <th>Precio</th>
                     <th>Inicio</th>
+                    <th>Activo</th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -44,6 +45,19 @@
                     </td>
                     <td *ngIf="workshop.home==1">
                       <i class="fas fa-check"></i>
+                    </td>
+                    <td  class="align-middle" *ngIf="workshop.active==0">
+                      <i class="fas fa-minus"></i>
+                    </td>
+                    <td  class="align-middle" *ngIf="workshop.active==1">
+                      <i class="fas fa-check"></i>
+                    </td>
+                    <td class="align-middle">
+                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                          (click)="onActiveWorkshop(workshop)" title="Activa/Desactiva el taller. Esto hará que sea visible o no para los usuarios de la web.">
+                        <i class="far fa-eye-slash" *ngIf="workshop.active==1"></i>
+                        <i class="far fa-eye" *ngIf="workshop.active==0"></i>
+                      </a>
                     </td>
                     <td>
                       <a class="btn btn-sm btn-outline-lightning rounded-0"

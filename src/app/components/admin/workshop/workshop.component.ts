@@ -51,6 +51,10 @@ export class WorkshopComponent implements OnInit {
   activeForm = false;
   isEditForm = false;
   changeImage = false;
+  // Utils
+  alertActiveStr = "";
+  actionActiveStr = "";
+  actionTextActiveStr = "";
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.workShopObj = new WorkshopInterface();
@@ -247,6 +251,50 @@ export class WorkshopComponent implements OnInit {
 
   toggleVisibility(e){
     this.workShopObj.home = (this.inHomeChk) ? 1 : 0;
-
   }
+
+  onActiveWorkshop(workshop: WorkshopInterface){
+
+    if(1 == workshop.active){
+      this.alertActiveStr = "¿Seguro que deseas desactivar este taller?";
+      this.actionActiveStr = "¡Desactivado!";
+      this.actionTextActiveStr = "Se ha desactivado el taller.";
+    }
+    else{
+      this.alertActiveStr = "¿Seguro que deseas activar este taller?";
+      this.actionActiveStr = "¡Activado!";
+      this.actionTextActiveStr = "Se ha activado el taller.";
+    }
+
+    Swal.fire({
+      title: this.alertActiveStr,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#0095A6',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        workshop.active = (workshop.active == 0) ? 1 : 0;
+        this.dataApi.updateWorkshopById(workshop).subscribe((data) => {
+          this.getWorkShopsByPage(this.page);
+          this.isEditForm = false;
+          this.activeForm = false;
+          Swal.fire(
+            this.actionActiveStr,
+            this.actionTextActiveStr,
+            'success'
+          )
+        }, (err) => {
+          Swal.fire(
+            '¡Error!',
+            'No se ha podido realizar la acción.',
+            'error'
+          )
+        });
+      }
+    });
+  }
+
 }
