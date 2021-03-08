@@ -1,5 +1,7 @@
-<div #subsScroll id="scroll"></div>
-<div>
+<div id="preloader" *ngIf="!isLoaded">
+  <div id="loader" *ngIf="!isLoaded"></div>
+</div>
+<div *ngIf="isLoaded">
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">

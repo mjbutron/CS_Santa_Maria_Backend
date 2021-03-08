@@ -43,9 +43,9 @@ export class ServiceComponent implements OnInit {
   // Elementos por página
   private numResults: number = 10;
   // Scroll
-  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+  element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Scroll Form
-  @ViewChild("editService", { static: true }) editService: ElementRef;
+  @ViewChild("editService", { static: false }) editService: ElementRef;
   // Form
   activeForm = false;
   isEditForm = false;
@@ -54,17 +54,20 @@ export class ServiceComponent implements OnInit {
   alertActiveStr = "";
   actionActiveStr = "";
   actionTextActiveStr = "";
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.serviceObj = new ServiceInterface();
+    this.element.scrollTop = 0;
   }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
     this.changeImage = false;
     this.uploadSuccess = false;
-    this.scrollToDiv();
     this.getServicesByPage(this.page);
   }
 
@@ -79,7 +82,11 @@ export class ServiceComponent implements OnInit {
         this.numServices = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-    });
+        this.isLoaded = true;
+      }, (err) => {
+        this.isLoaded = false;
+        this.errors = err;
+      });
   }
 
   onNewService() {
@@ -220,10 +227,6 @@ export class ServiceComponent implements OnInit {
     this.activeForm = false;
     this.uploadSuccess = false;
     this.changeImage = false;
-  }
-
-  scrollToDiv() {
-      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
   scrollToForm() {
