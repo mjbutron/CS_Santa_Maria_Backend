@@ -1,4 +1,7 @@
-<div>
+<div id="preloader" *ngIf="!isLoaded">
+  <div id="loader" *ngIf="!isLoaded"></div>
+</div>
+<div *ngIf="isLoaded">
   <h4 class="mb-4 text-muted">Dashboard </h4>
   <div class="row">
     <div class="col-md-6 col-lg-3 mb-4">

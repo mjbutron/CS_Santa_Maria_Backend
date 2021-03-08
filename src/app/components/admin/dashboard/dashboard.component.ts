@@ -67,7 +67,6 @@ export class DashboardComponent implements OnInit {
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
-
     this.element.scrollTop = 0;
   }
 
@@ -87,10 +86,8 @@ export class DashboardComponent implements OnInit {
       this.services = allServices;
       this.numSrv = allServices.length;
       this.lastDateSrv = this.services[0].create_date;
-      this.isLoaded = true;
     }, (err) => {
       this.errors = err;
-      this.isLoaded = false;
     });
   }
 
@@ -156,7 +153,9 @@ export class DashboardComponent implements OnInit {
       }
       this.numOpn = allOpinions.length;
       this.nextDateOpn = allOpinions[0].create_date;
+      this.isLoaded = true;
     }, (err) => {
+      this.isLoaded = false;
       this.errors = err;
     });
   }
