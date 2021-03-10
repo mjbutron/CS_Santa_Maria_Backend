@@ -45,9 +45,9 @@ export class CourseComponent implements OnInit {
   // Elementos por página
   private numResults: number = 10;
   // Scroll
-  @ViewChild("subsScroll", { static: true }) subsScrollDiv: ElementRef;
+  element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Scroll Form
-  @ViewChild("editCourse", { static: true }) editCourse: ElementRef;
+  @ViewChild("editCourse", { static: false }) editCourse: ElementRef;
   // Form
   activeForm = false;
   isEditForm = false;
@@ -56,19 +56,22 @@ export class CourseComponent implements OnInit {
   alertActiveStr = "";
   actionActiveStr = "";
   actionTextActiveStr = "";
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.courseObj = new CourseInterface();
     this.inOfferChk = false;
     this.inNewChk = false;
+    this.element.scrollTop = 0;
   }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
     this.changeImage = false;
     this.uploadSuccess = false;
-    this.scrollToDiv();
     this.getCoursesByPage(this.page);
   }
 
@@ -83,7 +86,14 @@ export class CourseComponent implements OnInit {
         this.numCourses = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-    });
+        // Temporal - comprobar carga de datos y reintentos
+        setTimeout (() => {
+             this.isLoaded = true;
+          }, 1000);
+      }, (err) => {
+        this.isLoaded = false;
+        this.errors = err;
+      });
   }
 
   onNewCourse() {
@@ -250,10 +260,6 @@ export class CourseComponent implements OnInit {
     this.activeForm = false;
     this.uploadSuccess = false;
     this.changeImage = false;
-  }
-
-  scrollToDiv() {
-      this.subsScrollDiv.nativeElement.scrollIntoView(true);
   }
 
   scrollToForm() {

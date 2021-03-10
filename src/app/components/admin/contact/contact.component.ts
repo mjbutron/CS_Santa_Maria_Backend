@@ -22,14 +22,16 @@ export class ContactComponent implements OnInit {
   // Coordinates
   lat = 0.0;
   lon = 0.0;
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) {
     this.infoObj = new ContactInterface();
-
     this.element.scrollTop = 0;
   }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.getHomeInfo();
     this.getFooterInfo();
     this.getContactInfo();
@@ -43,7 +45,12 @@ export class ContactComponent implements OnInit {
       this.infoObj.home_fcbk = data[0]['home_fcbk'];
       this.infoObj.home_ytube = data[0]['home_ytube'];
       this.infoObj.home_insta = data[0]['home_insta'];
+      // Temporal - comprobar carga de datos y reintentos
+      setTimeout (() => {
+           this.isLoaded = true;
+        }, 1000);
     }, (err) => {
+      this.isLoaded = false;
       this.errors = err;
     });
   }

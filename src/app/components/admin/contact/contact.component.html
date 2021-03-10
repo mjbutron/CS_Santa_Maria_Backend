@@ -1,4 +1,7 @@
-<div class="main-content">
+<div id="preloader" *ngIf="!isLoaded">
+  <div id="loader" *ngIf="!isLoaded"></div>
+</div>
+<div class="main-content" *ngIf="isLoaded">
   <div class="row">
     <div class="col-md-12">
       <div class="card">

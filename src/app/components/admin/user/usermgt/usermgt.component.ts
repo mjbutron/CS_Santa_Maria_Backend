@@ -49,7 +49,7 @@ export class UsermgtComponent implements OnInit {
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Scroll Form
-  @ViewChild("editUser", { static: true }) editUser: ElementRef;
+  @ViewChild("editUser", { static: false }) editUser: ElementRef;
   // Form
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
   // Form
@@ -57,6 +57,8 @@ export class UsermgtComponent implements OnInit {
   isEditForm = false;
   // User in session
   userInSession = "";
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.userObj = new UserInterface();
@@ -66,6 +68,7 @@ export class UsermgtComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
     this.getUsersByPage(this.page);
@@ -82,7 +85,14 @@ export class UsermgtComponent implements OnInit {
         this.numUsers = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-    });
+        // Temporal - comprobar carga de datos y reintentos
+        setTimeout (() => {
+             this.isLoaded = true;
+          }, 1000);
+      }, (err) => {
+        this.isLoaded = false;
+        this.errors = err;
+      });
   }
 
   getAllRoles() {

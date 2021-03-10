@@ -1,4 +1,7 @@
-<div class="row">
+<div id="preloader" *ngIf="!isLoaded">
+  <div id="loader" *ngIf="!isLoaded"></div>
+</div>
+<div class="row" *ngIf="isLoaded">
   <div class="col-md-8">
     <div class="card">
       <div class="card-header">
@@ -174,216 +177,222 @@
   </div>
 </div>
 
-<div #editSocial id="editSc" class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title mb-1 p-3">
-          <h5>Redes sociales
-            <a *ngIf="!activeFormSocial" [routerLink]="" (click)="onEditSocial()" >
-              <span  style="font-size: 1.5em; color: #0095A6;">
-                <i class="fas fa-edit float-right" title="Editar"></i>
-              </span>
-            </a>
-            <span *ngIf="activeFormSocial" style="font-size: 1.5em; color: #adb5bd;">
-              <i class="fas fa-edit float-right"
-              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
-            </span>
-          </h5>
-        </div>
-      </div>
-      <div class="card-body">
-        <form (ngSubmit)="onSubmitSocial( socialForm )" #socialForm="ngForm" enctype="multipart/form-data">
-          <div class="row p-2">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="user_fcbk">Facebook</label>
-                <input name="user_fcbk" id="user_fcbk" type="url" pattern="https?://.+" [(ngModel)]="userObj.userFcbk" class="form-control"
-                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_fcbk'].errors }" [disabled]="disabledFormSocial">
-                <div *ngIf="socialForm.submitted && socialForm.controls['user_fcbk'].errors" class="invalid-feedback">
-                    <div *ngIf="socialForm.controls['user_fcbk'].errors">Formato no válido.</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="user_ytube">YouTube</label>
-                <input name="user_ytube" id="user_ytube" type="url" pattern="https?://.+" [(ngModel)]="userObj.userYtube" class="form-control"
-                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_ytube'].errors }" [disabled]="disabledFormSocial">
-                <div *ngIf="socialForm.submitted && socialForm.controls['user_ytube'].errors" class="invalid-feedback">
-                    <div *ngIf="socialForm.controls['user_ytube'].errors">Formato no válido.</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="user_insta">Instagram</label>
-                <input name="user_insta" id="user_insta" type="url" pattern="https?://.+" [(ngModel)]="userObj.userInsta" class="form-control"
-                [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_insta'].errors }" [disabled]="disabledFormSocial">
-                <div *ngIf="socialForm.submitted && socialForm.controls['user_insta'].errors" class="invalid-feedback">
-                    <div *ngIf="socialForm.controls['user_insta'].errors">Formato no válido.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row p-2">
-            <div class="col-md-12">
-              <p class="cssm-subtitle" [hidden]="disabledFormSocial">
-                <span  style="font-size: 0.8em; color: #eb6f00;" [hidden]="disabledFormSocial">
-                  <i class="fas fa-exclamation-triangle" title="Atención">  </i>
+<div *ngIf="isLoaded">
+  <div #editSocial id="editSc" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5>Redes sociales
+              <a *ngIf="!activeFormSocial" [routerLink]="" (click)="onEditSocial()" >
+                <span  style="font-size: 1.5em; color: #0095A6;">
+                  <i class="fas fa-edit float-right" title="Editar"></i>
                 </span>
-                Insertar enlaces completos, copiados desde la barra de direcciones (https://www...).
-              </p>
-            </div>
-          </div>
-          <div class="row p-2">
-            <div class="col-md-6">
-                <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormSocial">Modificar</button>
-            </div>
-            <div class="col-md-6">
-                <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditSocial()" [hidden]="disabledFormSocial">Cancelar</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div #editImage id="editIm" class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title mb-1 p-3">
-          <h5>Cambiar avatar
-            <a *ngIf="!activeFormImage" [routerLink]="" (click)="onEditImage()" >
-              <span  style="font-size: 1.5em; color: #0095A6;">
-                <i class="fas fa-edit float-right" title="Editar"></i>
+              </a>
+              <span *ngIf="activeFormSocial" style="font-size: 1.5em; color: #adb5bd;">
+                <i class="fas fa-edit float-right"
+                data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
               </span>
-            </a>
-            <span *ngIf="activeFormImage" style="font-size: 1.5em; color: #adb5bd;">
-              <i class="fas fa-edit float-right"
-              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
-            </span>
-          </h5>
+            </h5>
+          </div>
         </div>
-      </div>
-      <form (ngSubmit)="onSubmitImage( imageForm )" #imageForm="ngForm" enctype="multipart/form-data">
-        <div class="row p-2">
-          <div class="col-md-4"></div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="card-body">
-                <div class="col mb-3">
-                  <div class="card h-100">
-                    <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmitSocial( socialForm )" #socialForm="ngForm" enctype="multipart/form-data">
+            <div class="row p-2">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_fcbk">Facebook</label>
+                  <input name="user_fcbk" id="user_fcbk" type="url" pattern="https?://.+" [(ngModel)]="userObj.userFcbk" class="form-control"
+                  [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_fcbk'].errors }" [disabled]="disabledFormSocial">
+                  <div *ngIf="socialForm.submitted && socialForm.controls['user_fcbk'].errors" class="invalid-feedback">
+                      <div *ngIf="socialForm.controls['user_fcbk'].errors">Formato no válido.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_ytube">YouTube</label>
+                  <input name="user_ytube" id="user_ytube" type="url" pattern="https?://.+" [(ngModel)]="userObj.userYtube" class="form-control"
+                  [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_ytube'].errors }" [disabled]="disabledFormSocial">
+                  <div *ngIf="socialForm.submitted && socialForm.controls['user_ytube'].errors" class="invalid-feedback">
+                      <div *ngIf="socialForm.controls['user_ytube'].errors">Formato no válido.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="user_insta">Instagram</label>
+                  <input name="user_insta" id="user_insta" type="url" pattern="https?://.+" [(ngModel)]="userObj.userInsta" class="form-control"
+                  [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_insta'].errors }" [disabled]="disabledFormSocial">
+                  <div *ngIf="socialForm.submitted && socialForm.controls['user_insta'].errors" class="invalid-feedback">
+                      <div *ngIf="socialForm.controls['user_insta'].errors">Formato no válido.</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4"></div>
-        </div>
-        <div *ngIf="activeFormImage" class="row p-2">
-          <div class="col-md-6">
-            <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)">
-            <!-- <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span> -->
-          </div>
-          <div class="col-md-6">
-            <div class="progress form-group" *ngIf="progress > 0">
-              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <p class="cssm-subtitle" [hidden]="disabledFormSocial">
+                  <span  style="font-size: 0.8em; color: #eb6f00;" [hidden]="disabledFormSocial">
+                    <i class="fas fa-exclamation-triangle" title="Atención">  </i>
+                  </span>
+                  Insertar enlaces completos, copiados desde la barra de direcciones (https://www...).
+                </p>
+              </div>
             </div>
-          </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormSocial">Modificar</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditSocial()" [hidden]="disabledFormSocial">Cancelar</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="row p-2">
-          <div class="col-md-6">
-              <button type="submit" name="submit"
-              class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">Modificar</button>
-          </div>
-          <div class="col-md-6">
-              <button type="button" name="clear"
-              class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">Cancelar</button>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title mb-1 p-3">
-          <h5>
-            <span  style="font-size: 0.8em; color: #eb6f00;">
-              <i class="fas fa-exclamation-triangle" title="Precaución"></i>
-            </span>
-            Modificar contraseña
-            <a *ngIf="!activeFormPass" [routerLink]="" (click)="onEditPassword()" >
-              <span  style="font-size: 1.5em; color: #0095A6;">
-                <i class="fas fa-edit float-right" title="Editar"></i>
+<div *ngIf="isLoaded">
+  <div #editImage id="editIm" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5>Cambiar avatar
+              <a *ngIf="!activeFormImage" [routerLink]="" (click)="onEditImage()" >
+                <span  style="font-size: 1.5em; color: #0095A6;">
+                  <i class="fas fa-edit float-right" title="Editar"></i>
+                </span>
+              </a>
+              <span *ngIf="activeFormImage" style="font-size: 1.5em; color: #adb5bd;">
+                <i class="fas fa-edit float-right"
+                data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
               </span>
-            </a>
-            <span *ngIf="activeFormPass" style="font-size: 1.5em; color: #adb5bd;">
-              <i class="fas fa-edit float-right"
-              data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la contraseña"></i>
-            </span>
-          </h5>
-        </div>
-      </div>
-      <div class="card-body">
-        <form (ngSubmit)="onSubmitPass( passForm )" #passForm="ngForm" enctype="multipart/form-data">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="curr_Pass">Contraseña actual*</label>
-                <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass"
-                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['curr_Pass'].errors }"
-                  [disabled]="disabledFormPass" required>
-                  <div *ngIf="passForm.submitted && passForm.controls['curr_Pass'].errors" class="invalid-feedback">
-                      <div *ngIf="passForm.controls['curr_Pass'].errors.required">Contraseña obligatoria</div>
-                  </div>
-              </div>
-            </div>
+            </h5>
           </div>
-          <div class="row">
-            <div class="col-md-6">
+        </div>
+        <form (ngSubmit)="onSubmitImage( imageForm )" #imageForm="ngForm" enctype="multipart/form-data">
+          <div class="row p-2">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
               <div class="form-group">
-                <label for="new_Pass">Nueva contraseña*</label>
-                <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass"
-                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['new_Pass'].errors }"
-                  [disabled]="disabledFormPass" required>
-                  <div *ngIf="passForm.submitted && passForm.controls['new_Pass'].errors" class="invalid-feedback">
-                      <div *ngIf="passForm.controls['new_Pass'].errors.required">Nueva contraseña obligatoria</div>
+                <div class="card-body">
+                  <div class="col mb-3">
+                    <div class="card h-100">
+                      <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                    </div>
                   </div>
+                </div>
               </div>
             </div>
+            <div class="col-md-4"></div>
+          </div>
+          <div *ngIf="activeFormImage" class="row p-2">
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="repet_NewPass">Repetir nueva contraeña*</label>
-                <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass"
-                  class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['repet_NewPass'].errors }"
-                  [disabled]="disabledFormPass" required>
-                  <div *ngIf="passForm.submitted && passForm.controls['repet_NewPass'].errors" class="invalid-feedback">
-                      <div *ngIf="passForm.controls['repet_NewPass'].errors.required">Repetir nueva contraseña</div>
-                  </div>
+              <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)">
+              <!-- <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span> -->
+            </div>
+            <div class="col-md-6">
+              <div class="progress form-group" *ngIf="progress > 0">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
               </div>
             </div>
           </div>
           <div class="row p-2">
             <div class="col-md-6">
                 <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormPass">Modificar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">Modificar</button>
             </div>
             <div class="col-md-6">
                 <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass(passForm)" [hidden]="disabledFormPass">Cancelar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">Cancelar</button>
             </div>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoaded">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title mb-1 p-3">
+            <h5>
+              <span  style="font-size: 0.8em; color: #eb6f00;">
+                <i class="fas fa-exclamation-triangle" title="Precaución"></i>
+              </span>
+              Modificar contraseña
+              <a *ngIf="!activeFormPass" [routerLink]="" (click)="onEditPassword()" >
+                <span  style="font-size: 1.5em; color: #0095A6;">
+                  <i class="fas fa-edit float-right" title="Editar"></i>
+                </span>
+              </a>
+              <span *ngIf="activeFormPass" style="font-size: 1.5em; color: #adb5bd;">
+                <i class="fas fa-edit float-right"
+                data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la contraseña"></i>
+              </span>
+            </h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmitPass( passForm )" #passForm="ngForm" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="curr_Pass">Contraseña actual*</label>
+                  <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass"
+                    class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['curr_Pass'].errors }"
+                    [disabled]="disabledFormPass" required>
+                    <div *ngIf="passForm.submitted && passForm.controls['curr_Pass'].errors" class="invalid-feedback">
+                        <div *ngIf="passForm.controls['curr_Pass'].errors.required">Contraseña obligatoria</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="new_Pass">Nueva contraseña*</label>
+                  <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass"
+                    class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['new_Pass'].errors }"
+                    [disabled]="disabledFormPass" required>
+                    <div *ngIf="passForm.submitted && passForm.controls['new_Pass'].errors" class="invalid-feedback">
+                        <div *ngIf="passForm.controls['new_Pass'].errors.required">Nueva contraseña obligatoria</div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="repet_NewPass">Repetir nueva contraeña*</label>
+                  <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass"
+                    class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['repet_NewPass'].errors }"
+                    [disabled]="disabledFormPass" required>
+                    <div *ngIf="passForm.submitted && passForm.controls['repet_NewPass'].errors" class="invalid-feedback">
+                        <div *ngIf="passForm.controls['repet_NewPass'].errors.required">Repetir nueva contraseña</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-6">
+                  <button type="submit" name="submit"
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormPass">Modificar</button>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass(passForm)" [hidden]="disabledFormPass">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

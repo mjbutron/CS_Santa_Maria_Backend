@@ -153,7 +153,10 @@ export class DashboardComponent implements OnInit {
       }
       this.numOpn = allOpinions.length;
       this.nextDateOpn = allOpinions[0].create_date;
-      this.isLoaded = true;
+      // Temporal - comprobar carga de datos y reintentos
+      setTimeout (() => {
+           this.isLoaded = true;
+        }, 1000);
     }, (err) => {
       this.isLoaded = false;
       this.errors = err;

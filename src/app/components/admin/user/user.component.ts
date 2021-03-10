@@ -28,9 +28,9 @@ export class UserComponent implements OnInit {
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Scroll Social Form
-  @ViewChild("editSocial", { static: true }) editSocial: ElementRef;
+  @ViewChild("editSocial", { static: false }) editSocial: ElementRef;
   // Scroll Image Form
-  @ViewChild("editImage", { static: true }) editImage: ElementRef;
+  @ViewChild("editImage", { static: false }) editImage: ElementRef;
   // Errors
   errors = "";
   // Form
@@ -40,7 +40,6 @@ export class UserComponent implements OnInit {
   disabledForm = true;
   disabledFormPass = true;
   disabledFormSocial = true;
-
   // User - Image
   selectedImg: File;
   userImg: string;
@@ -49,7 +48,6 @@ export class UserComponent implements OnInit {
   disabledFormImage: boolean;
   progress: number = 0;
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
-
   // Pass
   currentPass = "";
   errorCurrentPass = "";
@@ -57,18 +55,20 @@ export class UserComponent implements OnInit {
   errorNewPass = "";
   repetNewPass = "";
   errorRepetNewPass = "";
+  // Load
+  isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
     this.userObj = new UserInterface();
     this.globals = globals;
     this.globals.user = localStorage.getItem('username');
     this.globals.rol = localStorage.getItem('rolname');
-
     this.element.scrollTop = 0;
 
   }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.activeFormImage = false;
     this.disabledFormImage = true;
     this.uploadSuccess = false;
@@ -94,7 +94,12 @@ export class UserComponent implements OnInit {
       this.userObj.userInsta = data['user_insta'];
       this.userObj.image = (data['image']) ? data['image'] : "default-avatar.png";
       this.userObj.lastLogin = data['last_login'];
+      // Temporal - comprobar carga de datos y reintentos
+      setTimeout (() => {
+           this.isLoaded = true;
+        }, 1000);
     }, (err) => {
+      this.isLoaded = false;
       this.errors = err;
     });
   }

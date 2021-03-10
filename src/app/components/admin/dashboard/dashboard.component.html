@@ -212,11 +212,8 @@
 
 
   <div>
-
     <div class="row">
-
       <div class="col-md-12 mb-4">
-
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
             <h5>Talleres en página de inicio
@@ -239,17 +236,22 @@
                       <th>Precio</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody *ngIf="wspInHome?.length">
                     <tr *ngFor="let workshop of wspInHome">
                       <td>{{workshop.title}}</td>
                       <td class="align-middle">
                         {{workshop.session_date | date}}
                         <!-- <div class="progress" style="height: 3px;">
-                          <div class="progress-bar bg-danger" style="width: 35% ;"></div>
+                          <div class="progress-bar bg-danger" style="width: 15% ;"></div>
                         </div> -->
                       </td>
-                      <td>{{workshop.session_start | timeWithoutSec}} - {{workshop.session_end | timeWithoutSec}}</td>
-                      <td>{{workshop.price}}€</td>
+                      <td class="align-middle">{{workshop.session_start | timeWithoutSec}} - {{workshop.session_end | timeWithoutSec}}</td>
+                      <td class="align-middle">{{workshop.price}}€</td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="!wspInHome?.length">
+                    <tr>
+                      <td colspan="4" align="center"><b>No hay talleres visibles en la pagina de inicio</b></td>
                     </tr>
                   </tbody>
                 </table>
@@ -290,17 +292,22 @@
                       <th>Fecha</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody *ngIf="opnInHome?.length">
                       <tr *ngFor="let opinion of opnInHome">
-                        <td><img [src]="path+opinion.image" name="picture" id="picture" class="card-img-top reduce-img" alt="..."/></td>
-                        <td>{{opinion.name}}</td>
-                        <td>{{opinion.commentary}}</td>
-                        <td>
+                        <td class="align-middle"><img [src]="path+opinion.image" name="picture" id="picture" class="card-img-top reduce-img" alt="..."/></td>
+                        <td class="align-middle">{{opinion.name}}</td>
+                        <td class="align-middle">{{opinion.commentary}}</td>
+                        <td class="align-middle">
                           <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
                             <i class="fas fa-star"></i>
                           </span>
                         </td>
-                        <td>{{opinion.create_date | date}}</td>
+                        <td class="align-middle">{{opinion.create_date | date}}</td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="!opnInHome?.length">
+                    <tr>
+                      <td colspan="5" align="center"><b>No hay opiniones visibles en la pagina de inicio</b></td>
                     </tr>
                   </tbody>
                 </table>

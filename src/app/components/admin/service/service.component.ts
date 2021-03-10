@@ -82,7 +82,10 @@ export class ServiceComponent implements OnInit {
         this.numServices = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        this.isLoaded = true;
+        // Temporal - comprobar carga de datos y reintentos
+        setTimeout (() => {
+             this.isLoaded = true;
+          }, 1000);
       }, (err) => {
         this.isLoaded = false;
         this.errors = err;

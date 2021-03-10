@@ -32,7 +32,7 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="services?.length">
                   <tr *ngFor="let service of services">
                     <td class="align-middle"><img [src]="path+service.image" name="picture" id="picture" width="100" alt="..."/></td>
                     <td class="align-middle">{{service.title}}</td>
@@ -62,6 +62,11 @@
                         <i class="far fa-trash-alt"></i>
                       </a>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!services?.length">
+                  <tr>
+                    <td colspan="6" align="center"><b>No existen registros</b></td>
                   </tr>
                 </tbody>
               </table>
