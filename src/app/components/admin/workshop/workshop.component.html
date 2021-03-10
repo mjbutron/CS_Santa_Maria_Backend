@@ -6,7 +6,7 @@
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
-          <h5>Talleres ({{numWorkShops}} resultados)
+          <h5><b>Talleres ({{numWorkShops}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewWorkshop()" >
               <span  style="font-size: 1.7em; color: #0095A6;">
                 <i class="fas fa-plus-square float-right" title="Añadir"></i>
@@ -34,7 +34,7 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="workShops?.length">
                   <tr *ngFor="let workshop of workShops">
                     <td>{{workshop.title}}</td>
                     <td class="align-middle">
@@ -73,6 +73,11 @@
                         <i class="far fa-trash-alt"></i>
                       </a>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!workShops?.length">
+                  <tr>
+                    <td colspan="8" class="table-info" align="center">No existen registros</td>
                   </tr>
                 </tbody>
               </table>

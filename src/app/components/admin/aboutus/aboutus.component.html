@@ -6,7 +6,7 @@
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
-          <h5>Quiénes somos ({{numAboutUs}} resultados)
+          <h5><b>Quiénes somos ({{numAboutUs}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewAboutUs()" >
               <span  style="font-size: 1.7em; color: #0095A6;">
                 <i class="fas fa-plus-square float-right" title="Añadir"></i>
@@ -32,7 +32,7 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="aboutUs?.length">
                   <tr *ngFor="let aboutus of aboutUs">
                     <td>{{aboutus.name}}</td>
                     <td>{{aboutus.surname1}}</td>
@@ -50,6 +50,11 @@
                         <i class="far fa-trash-alt"></i>
                       </a>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!aboutUs?.length">
+                  <tr>
+                    <td colspan="6" class="table-info" align="center">No existen registros</td>
                   </tr>
                 </tbody>
               </table>

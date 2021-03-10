@@ -130,7 +130,7 @@
       <div class="col-md-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Cabecera principal (Slider) </h5>
+            <h5><b>Cabecera principal (Slider)</b></h5>
             <p class="cssm-subtitle">Cambia el orden arrastrando la imagen o modifica la cabecera seleccionando una de ellas.</p>
           </div>
           <div class="card-body">
@@ -150,7 +150,7 @@
           </div>
 
           <div class="card-title mb-1 p-3">
-            <h5>Editar cabecera</h5>
+            <h5><b>Editar cabecera</b></h5>
           </div>
           <div class="card-body">
             <form (ngSubmit)="onSubmit( sliderForm )" #sliderForm="ngForm" enctype="multipart/form-data">
@@ -216,7 +216,7 @@
       <div class="col-md-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Talleres en página de inicio
+            <h5><b>Talleres en página de inicio</b>
               <a href="http://localhost:4300/#/admin/talleres">
                 <span style="font-size: 1.7em; color: #0095A6;">
                   <i class="fas fa-edit float-right"></i>
@@ -251,7 +251,7 @@
                   </tbody>
                   <tbody *ngIf="!wspInHome?.length">
                     <tr>
-                      <td colspan="4" align="center"><b>No hay talleres visibles en la pagina de inicio</b></td>
+                      <td colspan="4" class="table-info" align="center">No hay talleres visibles en la pagina de inicio</td>
                     </tr>
                   </tbody>
                 </table>
@@ -271,7 +271,7 @@
 
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Opiniones en página de inicio
+            <h5><b>Opiniones en página de inicio</b>
               <a href="http://localhost:4300/#/admin/opiniones">
                 <span style="font-size: 1.7em; color: #0095A6;">
                   <i class="fas fa-edit float-right"></i>
@@ -307,7 +307,7 @@
                   </tbody>
                   <tbody *ngIf="!opnInHome?.length">
                     <tr>
-                      <td colspan="5" align="center"><b>No hay opiniones visibles en la pagina de inicio</b></td>
+                      <td colspan="5" class="table-info" align="center">No hay opiniones visibles en la pagina de inicio</td>
                     </tr>
                   </tbody>
                 </table>
