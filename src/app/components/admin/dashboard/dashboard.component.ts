@@ -17,6 +17,7 @@ import { OpinionInterface } from 'src/app/models/opinion-interface';
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 const K_NO_DATE = '--/--/----';
+const K_NUM_ZERO = 0;
 
 @Component({
   selector: 'app-dashboard',
@@ -43,6 +44,7 @@ export class DashboardComponent implements OnInit {
   // Service
   services: ServiceInterface[] = [];
   numSrv: number;
+  isLastSrv = false;
   lastDateSrv: string;
   // Workshop
   wspInHome: WorkshopInterface[] = [];
@@ -57,6 +59,7 @@ export class DashboardComponent implements OnInit {
   // Opinions
   opnInHome: OpinionInterface[] = [];
   numOpn: number;
+  isLastOpn = false;
   nextDateOpn: string;
   // Errors
   errors = "";
@@ -83,9 +86,17 @@ export class DashboardComponent implements OnInit {
   getAllServices(){
     this.dataApi.getAllServices()
     .subscribe((allServices: ServiceInterface[]) => {
-      this.services = allServices;
-      this.numSrv = allServices.length;
-      this.lastDateSrv = this.services[0].create_date;
+      if(0 < allServices.length){
+        this.services = allServices;
+        this.numSrv = allServices.length;
+        this.lastDateSrv = this.services[0].create_date;
+        this.isLastSrv = true;
+      }
+      else{
+        this.isLastSrv = false;
+        this.numSrv = K_NUM_ZERO;
+        this.lastDateSrv = K_NO_DATE;
+      }
     }, (err) => {
       this.errors = err;
     });
@@ -143,16 +154,44 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getAllServices(){
+    this.dataApi.getAllServices()
+    .subscribe((allServices: ServiceInterface[]) => {
+      if(0 < allServices.length){
+        this.services = allServices;
+        this.numSrv = allServices.length;
+        this.lastDateSrv = this.services[0].create_date;
+        this.isLastSrv = true;
+      }
+      else{
+        this.isLastSrv = false;
+        this.numSrv = K_NUM_ZERO;
+        this.lastDateSrv = K_NO_DATE;
+      }
+    }, (err) => {
+      this.errors = err;
+    });
+  }
+
   getAllOpinions() {
     this.dataApi.getAllOpinions()
     .subscribe((allOpinions: OpinionInterface[]) => {
-      for(let opnHome of allOpinions){
-        if(opnHome.home == 1){
-          this.opnInHome.push(opnHome);
+      if(0 < allOpinions.length){
+        for(let opnHome of allOpinions){
+          if(opnHome.home == 1){
+            this.opnInHome.push(opnHome);
+          }
         }
+        this.numOpn = allOpinions.length;
+        this.nextDateOpn = allOpinions[0].create_date;
+        this.isLastOpn = true;
       }
-      this.numOpn = allOpinions.length;
-      this.nextDateOpn = allOpinions[0].create_date;
+      else{
+        this.isLastOpn = false;
+        this.numOpn = K_NUM_ZERO;
+        this.nextDateOpn = K_NO_DATE;
+      }
+
       // Temporal - comprobar carga de datos y reintentos
       setTimeout (() => {
            this.isLoaded = true;
