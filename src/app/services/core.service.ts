@@ -29,6 +29,12 @@ export class CoreService {
     })
   };
 
+  httpOptionsUpload = {
+  headers: new HttpHeaders({
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImFkbWluQHNtbWF0cm9uYXMuY29tIn0.cD-C7PiCeQSm8LtpmAkizzG4K4UTSEh88pavRdk8Yso"
+    })
+  };
+
   constructor(private http: HttpClient, globals: Globals) {
     this.globals = globals;
 
@@ -72,7 +78,7 @@ export class CoreService {
     var uploadData = new FormData();
     uploadData.append('image', image);
     uploadData.append('path', this.pathServerImg);
-    return this.http.post(url_api, uploadData, this.httpOptions);
+    return this.http.post(url_api, uploadData, this.httpOptionsUpload);
   }
 
   testSchedule(){

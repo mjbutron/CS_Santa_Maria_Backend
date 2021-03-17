@@ -103,7 +103,7 @@
                   <label for="rating">Valoración (<span style="font-size: 0.7em; color: gold;">
                       <i class="fas fa-star"></i>
                     </span>)</label>
-                  <input name="rating" id="rating" type="number" [(ngModel)]="OpinionObj.rating" class="form-control">
+                  <input name="rating" id="rating" type="number" min="0" max="5" [(ngModel)]="OpinionObj.rating" class="form-control">
                 </div>
               </div>
             </div>

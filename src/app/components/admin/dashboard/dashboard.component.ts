@@ -154,25 +154,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getAllServices(){
-    this.dataApi.getAllServices()
-    .subscribe((allServices: ServiceInterface[]) => {
-      if(0 < allServices.length){
-        this.services = allServices;
-        this.numSrv = allServices.length;
-        this.lastDateSrv = this.services[0].create_date;
-        this.isLastSrv = true;
-      }
-      else{
-        this.isLastSrv = false;
-        this.numSrv = K_NUM_ZERO;
-        this.lastDateSrv = K_NO_DATE;
-      }
-    }, (err) => {
-      this.errors = err;
-    });
-  }
-
   getAllOpinions() {
     this.dataApi.getAllOpinions()
     .subscribe((allOpinions: OpinionInterface[]) => {
