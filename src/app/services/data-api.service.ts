@@ -74,7 +74,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allServices';
     return this.http.get(url_api)
     .pipe(
-      this.delayRetry(2000, 5),
+      this.delayRetry(2000, 3),
       catchError( err => {
         console.error(err);
         return of( err );
@@ -87,7 +87,7 @@ export class DataApiService {
     const url_api = this.url + '/api/servicesByPage/' + page;
     return this.http.get(url_api)
     .pipe(
-      this.delayRetry(2000, 5),
+      this.delayRetry(2000, 3),
       catchError( err => {
         console.error(err);
         return of( err );
@@ -100,9 +100,12 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/new';
     return this.http.post(url_api, JSON.stringify(service), this.httpOptions)
     .pipe(
+      this.delayRetry(2000, 3),
       catchError( err => {
+        console.error(err);
         return of( err );
-      })
+      }),
+      shareReplay()
     )
   }
 
@@ -110,7 +113,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/update/' + service.id;
     return this.http.put(url_api, JSON.stringify(service), this.httpOptions)
     .pipe(
-      this.delayRetry(2000, 5),
+      this.delayRetry(2000, 3),
       catchError( err => {
         console.error(err);
         return of( err );
@@ -123,9 +126,12 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/delete/' + serviceId;
     return this.http.delete(url_api, this.httpOptions)
     .pipe(
+      this.delayRetry(2000, 3),
       catchError( err => {
+        console.error(err);
         return of( err );
-      })
+      }),
+      shareReplay()
     )
   }
 

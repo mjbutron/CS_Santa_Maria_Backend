@@ -141,6 +141,7 @@ export class ServiceComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         this.dataApi.deleteServiceById(service.id).subscribe((res) => {
           if (K_COD_OK == res.cod){
             this.getServicesByPage(this.page);
@@ -148,12 +149,14 @@ export class ServiceComponent implements OnInit {
             this.activeForm = false;
             this.uploadSuccess = false;
             this.changeImage = false;
+            this.isLoaded = true;
             Swal.fire(
               '¡Eliminado!',
               'Se ha eliminado el servicio seleccionado.',
               'success'
             )
           } else{
+            this.isLoaded = true;
             Swal.fire(
               '¡Error!',
               'Error interno. No se ha podido realizar la acción.',
@@ -174,6 +177,7 @@ export class ServiceComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
@@ -183,8 +187,10 @@ export class ServiceComponent implements OnInit {
           this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
             if (K_COD_OK == res.cod){
               this.getServicesByPage(this.page);
+              this.isLoaded = true;
               this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
             } else{
+              this.isLoaded = true;
               this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
             }
           });
@@ -193,8 +199,10 @@ export class ServiceComponent implements OnInit {
         this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
           if (K_COD_OK == res.cod){
             this.getServicesByPage(this.page);
+            this.isLoaded = true;
             this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
           } else{
+            this.isLoaded = true;
             this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
           }
         });
@@ -208,8 +216,10 @@ export class ServiceComponent implements OnInit {
           this.dataApi.createService(this.serviceObj).subscribe((res) => {
             if (K_COD_OK == res.cod){
               this.getServicesByPage(this.page);
+              this.isLoaded = true;
               this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
             } else{
+              this.isLoaded = true;
               this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
             }
           });
@@ -218,8 +228,10 @@ export class ServiceComponent implements OnInit {
         this.dataApi.createService(this.serviceObj).subscribe((res) => {
           if (K_COD_OK == res.cod){
             this.getServicesByPage(this.page);
+            this.isLoaded = true;
             this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
           } else{
+            this.isLoaded = true;
             this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
           }
         });
@@ -279,13 +291,16 @@ export class ServiceComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        service.active = (service.active == 0) ? 1 : 0;
+        this.isLoaded = false;
+        // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
+        service.active = (service.active == 0) ? 1 : 0;  // Así no tener que hace esto
         this.dataApi.updateServiceById(service).subscribe((res) => {
           if (K_COD_OK == res.cod){
             service.active = auxActive;
             this.getServicesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
+            this.isLoaded = true;
             Swal.fire(
               this.actionActiveStr,
               this.actionTextActiveStr,
@@ -293,6 +308,7 @@ export class ServiceComponent implements OnInit {
             )
           } else{
             service.active = auxActive;
+            this.isLoaded = true;
             Swal.fire(
               '¡Error!',
               'Error interno. No se ha podido realizar la acción.',
