@@ -18,6 +18,7 @@ const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 const K_NO_DATE = '--/--/----';
 const K_NUM_ZERO = 0;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-dashboard',
@@ -84,21 +85,24 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllServices(){
-    this.dataApi.getAllServices()
-    .subscribe((allServices: ServiceInterface[]) => {
-      if(0 < allServices.length){
-        this.services = allServices;
-        this.numSrv = allServices.length;
-        this.lastDateSrv = this.services[0].create_date;
-        this.isLastSrv = true;
+    this.dataApi.getAllServices().subscribe((data) => {
+      if (K_COD_OK == data.cod){
+        if(0 < data['allServices'].length){
+          this.services = data['allServices'];
+          this.numSrv = data['allServices'].length;
+          this.lastDateSrv = this.services[0].create_date;
+          this.isLastSrv = true;
+        }
+        else{
+          this.isLastSrv = false;
+          this.numSrv = K_NUM_ZERO;
+          this.lastDateSrv = K_NO_DATE;
+        }
+        this.isLoaded = true;
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
       }
-      else{
-        this.isLastSrv = false;
-        this.numSrv = K_NUM_ZERO;
-        this.lastDateSrv = K_NO_DATE;
-      }
-    }, (err) => {
-      this.errors = err;
     });
   }
 
@@ -174,11 +178,11 @@ export class DashboardComponent implements OnInit {
       }
 
       // Temporal - comprobar carga de datos y reintentos
-      setTimeout (() => {
-           this.isLoaded = true;
-        }, 1000);
+      // setTimeout (() => {
+      //      this.isLoaded = true;
+      //   }, 1000);
     }, (err) => {
-      this.isLoaded = false;
+      // this.isLoaded = false;
       this.errors = err;
     });
   }

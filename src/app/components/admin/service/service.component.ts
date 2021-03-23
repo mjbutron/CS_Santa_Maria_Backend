@@ -11,6 +11,7 @@ import { ServiceInterface } from 'src/app/models/service-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-service',
@@ -78,18 +79,17 @@ export class ServiceComponent implements OnInit {
 
   getServicesByPage(page: Number) {
     this.dataApi.getServicesByPage(page).subscribe((data) =>{
+      if (K_COD_OK == data.cod){
         this.services = data['allServices'];
         this.numServices = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        // Temporal - comprobar carga de datos y reintentos
-        setTimeout (() => {
-             this.isLoaded = true;
-          }, 1000);
-      }, (err) => {
-        this.isLoaded = false;
-        this.errors = err;
-      });
+        this.isLoaded = true;
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
+    });
   }
 
   onNewService() {
@@ -141,23 +141,25 @@ export class ServiceComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.dataApi.deleteServiceById(service.id).subscribe((data) => {
-          this.getServicesByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          this.uploadSuccess = false;
-          this.changeImage = false;
-          Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado el servicio seleccionado.',
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido eliminar el servicio.',
-            'error'
-          )
+        this.dataApi.deleteServiceById(service.id).subscribe((res) => {
+          if (K_COD_OK == res.cod){
+            this.getServicesByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.uploadSuccess = false;
+            this.changeImage = false;
+            Swal.fire(
+              '¡Eliminado!',
+              'Se ha eliminado el servicio seleccionado.',
+              'success'
+            )
+          } else{
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
@@ -178,15 +180,23 @@ export class ServiceComponent implements OnInit {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
-          this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-            this.getServicesByPage(this.page);
-            this.toastr.success('Se ha actualizado el servicio', 'Actualizado');
+          this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
+            if (K_COD_OK == res.cod){
+              this.getServicesByPage(this.page);
+              this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
+            } else{
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
-        this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-          this.getServicesByPage(this.page);
-          this.toastr.success('Se ha actualizado el servicio', 'Actualizado');
+        this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
+          if (K_COD_OK == res.cod){
+            this.getServicesByPage(this.page);
+            this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
+          } else{
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     } else{
@@ -195,15 +205,23 @@ export class ServiceComponent implements OnInit {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
-          this.dataApi.createService(this.serviceObj).subscribe((data) => {
-            this.getServicesByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+          this.dataApi.createService(this.serviceObj).subscribe((res) => {
+            if (K_COD_OK == res.cod){
+              this.getServicesByPage(this.page);
+              this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+            } else{
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
-        this.dataApi.createService(this.serviceObj).subscribe((data) => {
-          this.getServicesByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+        this.dataApi.createService(this.serviceObj).subscribe((res) => {
+          if (K_COD_OK == res.cod){
+            this.getServicesByPage(this.page);
+            this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+          } else{
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     }
@@ -237,16 +255,18 @@ export class ServiceComponent implements OnInit {
   }
 
   onActiveService(service: ServiceInterface){
-
+    let auxActive = 0;
     if(1 == service.active){
       this.alertActiveStr = "¿Seguro que deseas desactivar este servicio?";
       this.actionActiveStr = "¡Desactivado!";
       this.actionTextActiveStr = "Se ha desactivado el servicio.";
+      auxActive = 1;
     }
     else{
       this.alertActiveStr = "¿Seguro que deseas activar este servicio?";
       this.actionActiveStr = "¡Activado!";
       this.actionTextActiveStr = "Se ha activado el servicio.";
+      auxActive = 0;
     }
 
     Swal.fire({
@@ -260,21 +280,25 @@ export class ServiceComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         service.active = (service.active == 0) ? 1 : 0;
-        this.dataApi.updateServiceById(service).subscribe((data) => {
-          this.getServicesByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          Swal.fire(
-            this.actionActiveStr,
-            this.actionTextActiveStr,
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido realizar la acción.',
-            'error'
-          )
+        this.dataApi.updateServiceById(service).subscribe((res) => {
+          if (K_COD_OK == res.cod){
+            service.active = auxActive;
+            this.getServicesByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            Swal.fire(
+              this.actionActiveStr,
+              this.actionTextActiveStr,
+              'success'
+            )
+          } else{
+            service.active = auxActive;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });

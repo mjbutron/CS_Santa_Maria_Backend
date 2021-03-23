@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+
+import { of, throwError } from 'rxjs';
+import { delay, mergeMap, catchError, retry, retryWhen, shareReplay } from 'rxjs/operators';
 
 import { SliderInterface } from '../models/slider-interface';
 import { ContactInterface } from 'src/app/models/contact-interface';
@@ -11,6 +14,10 @@ import { CourseInterface } from 'src/app/models/course-interface';
 import { ServiceInterface } from 'src/app/models/service-interface';
 import { AboutUsInterface } from 'src/app/models/aboutus-interface';
 import { UserInterface } from 'src/app/models/user-interface';
+
+const getErrorMessage = (maxRetry: number) =>
+'Tried to load resource over XHR for ' + maxRetry + ' times without success.';
+const DEFAULT_MAX_RETRIES = 5;
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +39,17 @@ export class DataApiService {
 
   constructor(private http: HttpClient) { }
 
-// DASH API
-  getCountServices(){
-    const url_api = this.url + '/admin/api/statistics/countServices';
-    return this.http.get(url_api, this.httpOptions);
+// Delay retry
+  delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
+    let retries = maxRetry;
+
+    return (src:Observable<any>) =>
+    src.pipe(
+      retryWhen((errors: Observable<any>) => errors.pipe(
+        delay(delayMs),
+        mergeMap(error => retries-- > 0 ? of(error) : throwError(getErrorMessage(maxRetry)))
+      ))
+    );
   }
 
 // SLIDER API
@@ -58,27 +72,61 @@ export class DataApiService {
 // SERVICES API
   getAllServices(){
     const url_api = this.url + '/api/allServices';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 5),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getServicesByPage(page: Number){
     const url_api = this.url + '/api/servicesByPage/' + page;
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 5),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   createService(service: ServiceInterface){
     const url_api = this.url + '/admin/api/services/new';
-    return this.http.post(url_api, JSON.stringify(service), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(service), this.httpOptions)
+    .pipe(
+      catchError( err => {
+        return of( err );
+      })
+    )
   }
 
   updateServiceById(service: ServiceInterface){
     const url_api = this.url + '/admin/api/services/update/' + service.id;
-    return this.http.put(url_api, JSON.stringify(service), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(service), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 5),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   deleteServiceById(serviceId: number){
     const url_api = this.url + '/admin/api/services/delete/' + serviceId;
-    return this.http.delete(url_api, this.httpOptions);
+    return this.http.delete(url_api, this.httpOptions)
+    .pipe(
+      catchError( err => {
+        return of( err );
+      })
+    )
   }
 
 // WORKSHOP API
