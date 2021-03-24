@@ -32,6 +32,7 @@ export class WorkshopComponent implements OnInit {
   // Workshops - Image
   selectedImg: File;
   uploadSuccess: boolean;
+  progress: number = 0;
   // Errors
   errors = "";
   // Numeros páginas
@@ -270,7 +271,15 @@ export class WorkshopComponent implements OnInit {
         this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
         return;
       } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación de progreso
+          }, 500);
+        }
         this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0; // Eliminación de la barra de progreso
+        }, 2500);
       }
     } else{
       return;
