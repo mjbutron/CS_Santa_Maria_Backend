@@ -31,6 +31,7 @@ export class ServiceComponent implements OnInit {
   // Services - Image
   selectedImg: File;
   uploadSuccess: boolean;
+  progress: number = 0;
   // Errors
   errors = "";
   // Numeros páginas
@@ -61,6 +62,10 @@ export class ServiceComponent implements OnInit {
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.serviceObj = new ServiceInterface();
     this.element.scrollTop = 0;
+    // **********************
+    // Nuevo servicio para activar
+    // Intentar eliminar imagen despues de borrar un servicio/taller/etc
+    // **********************
   }
 
   ngOnInit() {
@@ -187,6 +192,7 @@ export class ServiceComponent implements OnInit {
           this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
             if (K_COD_OK == res.cod){
               this.getServicesByPage(this.page);
+              this.onCancel();
               this.isLoaded = true;
               this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
             } else{
@@ -199,6 +205,7 @@ export class ServiceComponent implements OnInit {
         this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
           if (K_COD_OK == res.cod){
             this.getServicesByPage(this.page);
+            this.onCancel();
             this.isLoaded = true;
             this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
           } else{
@@ -216,6 +223,7 @@ export class ServiceComponent implements OnInit {
           this.dataApi.createService(this.serviceObj).subscribe((res) => {
             if (K_COD_OK == res.cod){
               this.getServicesByPage(this.page);
+              this.onCancel();
               this.isLoaded = true;
               this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
             } else{
@@ -228,6 +236,7 @@ export class ServiceComponent implements OnInit {
         this.dataApi.createService(this.serviceObj).subscribe((res) => {
           if (K_COD_OK == res.cod){
             this.getServicesByPage(this.page);
+            this.onCancel();
             this.isLoaded = true;
             this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
           } else{
@@ -247,15 +256,23 @@ export class ServiceComponent implements OnInit {
         this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
         return;
       } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación de progreso
+          }, 500);
+        }
         this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0; // Eliminación de la barra de progreso
+        }, 2500);
       }
     } else{
       return;
     }
   }
 
-  onCancel(form: NgForm){
-    form.reset();
+  onCancel(){
+    // form.reset();
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;

@@ -153,9 +153,13 @@
               </div>
             </div>
             <div *ngIf="changeImage" class="row p-2">
-              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+              <div class="col-md-6">
+                <div class="progress form-group" *ngIf="progress > 0">
+                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+                </div>
               </div>
             </div>
             <div class="row p-2">
@@ -167,7 +171,7 @@
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(serviceForm)">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>
