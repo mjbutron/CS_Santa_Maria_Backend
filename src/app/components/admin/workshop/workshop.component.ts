@@ -11,6 +11,7 @@ import { WorkshopInterface } from 'src/app/models/workshop-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-workshop',
@@ -80,18 +81,17 @@ export class WorkshopComponent implements OnInit {
 
   getWorkShopsByPage(page: Number) {
     this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
+      if (K_COD_OK == data.cod){
         this.workShops = data['allWorkshops'];
         this.numWorkShops = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        // Temporal - comprobar carga de datos y reintentos
-        setTimeout (() => {
-             this.isLoaded = true;
-          }, 1000);
-      }, (err) => {
-        this.isLoaded = false;
-        this.errors = err;
-      });
+        this.isLoaded = true;
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
+    });
   }
 
   onNewWorkshop() {
@@ -160,23 +160,28 @@ export class WorkshopComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          this.uploadSuccess = false;
-          this.changeImage = false;
-          Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado el taller seleccionado.',
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido eliminar el taller.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            this.getWorkShopsByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.uploadSuccess = false;
+            this.changeImage = false;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Eliminado!',
+              'Se ha eliminado el taller seleccionado.',
+              'success'
+            )
+          } else{
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
@@ -191,6 +196,7 @@ export class WorkshopComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
@@ -198,14 +204,28 @@ export class WorkshopComponent implements OnInit {
           this.workShopObj.image = this.workshopImg;
           this.uploadSuccess = false;
           this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+            if (K_COD_OK == data.cod){
+              this.getWorkShopsByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+          if (K_COD_OK == data.cod){
+            this.getWorkShopsByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     } else{
@@ -215,14 +235,28 @@ export class WorkshopComponent implements OnInit {
           this.workShopObj.image = this.workshopImg;
           this.uploadSuccess = false;
           this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-            this.getWorkShopsByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+            if (K_COD_OK == data.cod){
+              this.getWorkShopsByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+          if (K_COD_OK == data.cod){
+            this.getWorkShopsByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     }
@@ -243,8 +277,8 @@ export class WorkshopComponent implements OnInit {
     }
   }
 
-  onCancel(form: NgForm){
-    form.reset();
+  onCancel(){
+    // form.reset();
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
@@ -260,16 +294,18 @@ export class WorkshopComponent implements OnInit {
   }
 
   onActiveWorkshop(workshop: WorkshopInterface){
-
+    let auxActive = 0;
     if(1 == workshop.active){
       this.alertActiveStr = "¿Seguro que deseas desactivar este taller?";
       this.actionActiveStr = "¡Desactivado!";
       this.actionTextActiveStr = "Se ha desactivado el taller.";
+      auxActive = 1;
     }
     else{
       this.alertActiveStr = "¿Seguro que deseas activar este taller?";
       this.actionActiveStr = "¡Activado!";
       this.actionTextActiveStr = "Se ha activado el taller.";
+      auxActive = 0;
     }
 
     Swal.fire({
@@ -282,25 +318,32 @@ export class WorkshopComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        workshop.active = (workshop.active == 0) ? 1 : 0;
+        this.isLoaded = false;
+        // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
+        workshop.active = (workshop.active == 0) ? 1 : 0; // Así no tener que hace esto
         this.dataApi.updateWorkshopById(workshop).subscribe((data) => {
-          this.getWorkShopsByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          Swal.fire(
-            this.actionActiveStr,
-            this.actionTextActiveStr,
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido realizar la acción.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            workshop.active = auxActive;
+            this.getWorkShopsByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.isLoaded = true;
+            Swal.fire(
+              this.actionActiveStr,
+              this.actionTextActiveStr,
+              'success'
+            )
+          } else{
+            workshop.active = auxActive;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
   }
-
 }

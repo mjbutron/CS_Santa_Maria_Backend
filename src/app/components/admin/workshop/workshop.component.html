@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div *ngIf="isLoaded">
+<div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
@@ -37,16 +37,16 @@
                 </thead>
                 <tbody *ngIf="workShops?.length">
                   <tr *ngFor="let workshop of workShops">
-                    <td>{{workshop.title}}</td>
+                    <td class="align-middle">{{workshop.title}}</td>
                     <td class="align-middle">
                       {{workshop.session_date | date}}
                     </td>
-                    <td>{{workshop.session_start | timeWithoutSec}}</td>
-                    <td>{{workshop.price}}€</td>
-                    <td *ngIf="workshop.home==0">
+                    <td class="align-middle">{{workshop.session_start | timeWithoutSec}}</td>
+                    <td class="align-middle">{{workshop.price}}€</td>
+                    <td class="align-middle" *ngIf="workshop.home==0">
                       <i class="fas fa-minus"></i>
                     </td>
-                    <td *ngIf="workshop.home==1">
+                    <td class="align-middle" *ngIf="workshop.home==1">
                       <i class="fas fa-check"></i>
                     </td>
                     <td  class="align-middle" *ngIf="workshop.active==0">
@@ -62,13 +62,13 @@
                         <i class="far fa-eye" *ngIf="workshop.active==0"></i>
                       </a>
                     </td>
-                    <td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onEditWorkshop(workshop)" title="Ver/Editar">
                         <i class="far fa-edit"></i>
                       </a>
                     </td>
-                    <td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onDeleteWorkshop(workshop)" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
@@ -240,7 +240,7 @@
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(workshopForm)">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>

@@ -62,10 +62,6 @@ export class ServiceComponent implements OnInit {
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.serviceObj = new ServiceInterface();
     this.element.scrollTop = 0;
-    // **********************
-    // Nuevo servicio para activar
-    // Intentar eliminar imagen despues de borrar un servicio/taller/etc
-    // **********************
   }
 
   ngOnInit() {

@@ -107,26 +107,35 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllWorkshops(){
-    this.dataApi.getAllWorkshops()
-    .subscribe((allWorkshops: WorkshopInterface[]) => {
-      for(let wspHome of allWorkshops){
-        if(wspHome.home == 1){
-          this.wspInHome.push(wspHome);
+    this.dataApi.getAllWorkshops().subscribe((data) => {
+      if (K_COD_OK == data.cod){
+        if(0 < data['allWorkshops'].length){
+          for(let wspHome of data['allWorkshops']){
+            if(wspHome.home == 1){
+              this.wspInHome.push(wspHome);
+            }
+          }
+          this.numWsp = data['allWorkshops'].length;
+          for(let wspDate of data['allWorkshops']){
+            if(!this.isNextWsp && this.todayDate < wspDate.session_date){
+              this.isNextWsp = true;
+              this.nextDateWsp = wspDate.session_date;
+            }
+          }
+          if(!this.isNextWsp){
+            this.nextDateWsp = K_NO_DATE;
+          }
         }
-      }
-      this.numWsp = allWorkshops.length;
-      // this.nextDateWsp = allWorkshops[this.numWsp-1].session_date;
-      for(let wspDate of allWorkshops){
-        if(!this.isNextWsp && this.todayDate < wspDate.session_date){
-          this.isNextWsp = true;
-          this.nextDateWsp = wspDate.session_date;
+        else{
+          this.isNextWsp = false;
+          this.numWsp = K_NUM_ZERO;
+          this.nextDateWsp = K_NO_DATE;
         }
+        this.isLoaded = true;
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
       }
-      if(!this.isNextWsp){
-        this.nextDateWsp = K_NO_DATE;
-      }
-    }, (err) => {
-      this.errors = err;
     });
   }
 

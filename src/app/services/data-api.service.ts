@@ -138,27 +138,67 @@ export class DataApiService {
 // WORKSHOP API
   getAllWorkshops(){
     const url_api = this.url + '/api/allWorkshops';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getWorkShopsByPage(page: Number){
     const url_api = this.url + '/api/workshopsByPage/' + page;
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   createWorkshop(workshop: WorkshopInterface){
     const url_api = this.url + '/admin/api/workshops/new';
-    return this.http.post(url_api, JSON.stringify(workshop), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(workshop), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateWorkshopById(workshop: WorkshopInterface){
     const url_api = this.url + '/admin/api/workshops/update/' + workshop.id;
-    return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   deleteWorkshopById(workshopId: number){
     const url_api = this.url + '/admin/api/workshops/delete/' + workshopId;
-    return this.http.delete(url_api, this.httpOptions);
+    return this.http.delete(url_api, this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // COURSE API
