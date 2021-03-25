@@ -11,6 +11,7 @@ import { ServiceInterface } from 'src/app/models/service-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_NUM_ZERO = 0;
 const K_COD_OK = 200;
 
 @Component({
@@ -87,6 +88,7 @@ export class ServiceComponent implements OnInit {
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{
+        this.numServices = K_NUM_ZERO;
         this.isLoaded = true;
         this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
       }
