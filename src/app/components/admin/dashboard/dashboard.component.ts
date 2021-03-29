@@ -149,21 +149,31 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllCourses(){
-    this.dataApi.getAllCourses()
-    .subscribe((allCourses: CourseInterface[]) => {
-      this.course = allCourses;
-      this.numCrs = allCourses.length;
-      for(let crsDate of allCourses){
-        if(!this.isNextCrs && this.todayDate < crsDate.session_date){
-          this.isNextCrs = true;
-          this.nextDateCrs = crsDate.session_date;
+    this.dataApi.getAllCourses().subscribe((data) => {
+        if (K_COD_OK == data.cod){
+          if(0 < data['allCourses'].length){
+            this.course = data['allCourses'];
+            this.numCrs = data['allCourses'].length;
+            for(let crsDate of data['allCourses']){
+              if(!this.isNextCrs && this.todayDate < crsDate.session_date){
+                this.isNextCrs = true;
+                this.nextDateCrs = crsDate.session_date;
+              }
+            }
+            if(!this.isNextCrs){
+              this.nextDateCrs = K_NO_DATE;
+            }
+          }
+          else{
+            this.isNextCrs = false;
+            this.numCrs = K_NUM_ZERO;
+            this.nextDateCrs = K_NO_DATE;
+          }
+          this.isLoaded = true;
+        } else{
+          this.isLoaded = true;
+          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
         }
-      }
-      if(!this.isNextCrs){
-        this.nextDateCrs = K_NO_DATE;
-      }
-    }, (err) => {
-      this.errors = err;
     });
   }
 

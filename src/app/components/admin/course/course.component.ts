@@ -11,6 +11,8 @@ import { CourseInterface } from 'src/app/models/course-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_NUM_ZERO = 0;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-course',
@@ -32,6 +34,7 @@ export class CourseComponent implements OnInit {
   // Courses - Image
   selectedImg: File;
   uploadSuccess: boolean;
+  progress: number = 0;
   // Errors
   errors = "";
   // Numeros páginas
@@ -82,18 +85,18 @@ export class CourseComponent implements OnInit {
 
   getCoursesByPage(page: Number) {
     this.dataApi.getCoursesByPage(page).subscribe((data) =>{
+      if (K_COD_OK == data.cod){
         this.courses = data['allCourses'];
         this.numCourses = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        // Temporal - comprobar carga de datos y reintentos
-        setTimeout (() => {
-             this.isLoaded = true;
-          }, 1000);
-      }, (err) => {
-        this.isLoaded = false;
-        this.errors = err;
-      });
+        this.isLoaded = true;
+      } else{
+        this.numCourses = K_NUM_ZERO;
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
+    });
   }
 
   onNewCourse() {
@@ -171,23 +174,28 @@ export class CourseComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         this.dataApi.deleteCourseById(course.id).subscribe((data) => {
-          this.getCoursesByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          this.uploadSuccess = false;
-          this.changeImage = false;
-          Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado el curso seleccionado.',
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido eliminar el curso.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            this.getCoursesByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.uploadSuccess = false;
+            this.changeImage = false;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Eliminado!',
+              'Se ha eliminado el curso seleccionado.',
+              'success'
+            )
+          } else{
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
@@ -202,6 +210,7 @@ export class CourseComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
@@ -209,14 +218,28 @@ export class CourseComponent implements OnInit {
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-            this.getCoursesByPage(this.page);
-            this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+            if (K_COD_OK == data.cod){
+              this.getCoursesByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-          this.getCoursesByPage(this.page);
-          this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+          if (K_COD_OK == data.cod){
+            this.getCoursesByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     } else{
@@ -226,14 +249,28 @@ export class CourseComponent implements OnInit {
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-            this.getCoursesByPage(this.page);
-            this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+            if (K_COD_OK == data.cod){
+              this.getCoursesByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-          this.getCoursesByPage(this.page);
-          this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+          if (K_COD_OK == data.cod){
+            this.getCoursesByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     }
@@ -247,15 +284,23 @@ export class CourseComponent implements OnInit {
         this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
         return;
       } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación de progreso
+          }, 500);
+        }
         this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0; // Eliminación de la barra de progreso
+        }, 2500);
       }
     } else{
       return;
     }
   }
 
-  onCancel(form: NgForm){
-    form.reset();
+  onCancel(){
+    // form.reset();
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
@@ -272,16 +317,18 @@ export class CourseComponent implements OnInit {
   }
 
   onActiveCourse(course: CourseInterface){
-
+    let auxActive = 0;
     if(1 == course.active){
       this.alertActiveStr = "¿Seguro que deseas desactivar este curso?";
       this.actionActiveStr = "¡Desactivado!";
       this.actionTextActiveStr = "Se ha desactivado el curso.";
+      auxActive = 1;
     }
     else{
       this.alertActiveStr = "¿Seguro que deseas activar este curso?";
       this.actionActiveStr = "¡Activado!";
       this.actionTextActiveStr = "Se ha activado el curso.";
+      auxActive = 0;
     }
 
     Swal.fire({
@@ -294,25 +341,31 @@ export class CourseComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        course.active = (course.active == 0) ? 1 : 0;
+        this.isLoaded = false;
+        // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
+        course.active = (course.active == 0) ? 1 : 0; // Así no tener que hace esto
         this.dataApi.updateCourseById(course).subscribe((data) => {
-          this.getCoursesByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          Swal.fire(
-            this.actionActiveStr,
-            this.actionTextActiveStr,
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido realizar la acción.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            this.getCoursesByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.isLoaded = true;
+            Swal.fire(
+              this.actionActiveStr,
+              this.actionTextActiveStr,
+              'success'
+            )
+          } else{
+            course.active = auxActive;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
   }
-
 }

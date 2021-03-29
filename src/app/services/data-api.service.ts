@@ -204,27 +204,67 @@ export class DataApiService {
 // COURSE API
   getAllCourses(){
     const url_api = this.url + '/api/courses';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getCoursesByPage(page: Number) {
     const url_api = this.url + '/api/coursesByPage/' + page;
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   createCourse(course: CourseInterface){
     const url_api = this.url + '/admin/api/courses/new';
-    return this.http.post(url_api, JSON.stringify(course), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(course), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateCourseById(course: CourseInterface){
     const url_api = this.url + '/admin/api/courses/update/' + course.id;
-    return this.http.put(url_api, JSON.stringify(course), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(course), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   deleteCourseById(courseId: number){
     const url_api = this.url + '/admin/api/courses/delete/' + courseId;
-    return this.http.delete(url_api, this.httpOptions);
+    return this.http.delete(url_api, this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // CONTACT API
