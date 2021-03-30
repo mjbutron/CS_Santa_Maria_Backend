@@ -367,27 +367,67 @@ export class DataApiService {
 // ABOUTUS API
   getAllAboutUs(){
     const url_api = this.url + '/api/allAboutUs';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getAboutUsByPage(page: Number){
     const url_api = this.url + '/api/aboutUsByPage/' + page;
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   createAboutUs(aboutus: AboutUsInterface){
     const url_api = this.url + '/admin/api/aboutus/new';
-    return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateAboutUsById(aboutus: AboutUsInterface){
     const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
-    return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   deleteAboutUsId(aboutusId: number){
     const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
-    return this.http.delete(url_api, this.httpOptions);
+    return this.http.delete(url_api, this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // USER PROFILE API

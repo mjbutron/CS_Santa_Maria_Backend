@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div *ngIf="isLoaded">
+<div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
@@ -34,17 +34,17 @@
                 </thead>
                 <tbody *ngIf="aboutUs?.length">
                   <tr *ngFor="let aboutus of aboutUs">
-                    <td>{{aboutus.name}}</td>
-                    <td>{{aboutus.surname1}}</td>
-                    <td>{{aboutus.surname2}}</td>
-                    <td>{{aboutus.position}}</td>
-                    <td>
+                    <td class="align-middle">{{aboutus.name}}</td>
+                    <td class="align-middle">{{aboutus.surname1}}</td>
+                    <td class="align-middle">{{aboutus.surname2}}</td>
+                    <td class="align-middle">{{aboutus.position}}</td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onEditAboutUs(aboutus)" title="Ver/Editar">
                         <i class="far fa-edit"></i>
                       </a>
                     </td>
-                    <td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onDeleteAboutUs(aboutus)" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
@@ -54,7 +54,9 @@
                 </tbody>
                 <tbody *ngIf="!aboutUs?.length">
                   <tr>
-                    <td colspan="6" class="table-info" align="center">No existen registros</td>
+                    <td class="align-middle text-muted" colspan="6" align="center">
+                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -144,9 +146,13 @@
               </div>
             </div>
             <div *ngIf="changeImage" class="row p-2">
-              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+              <div class="col-md-6">
+                <div class="progress form-group" *ngIf="progress > 0">
+                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+                </div>
               </div>
             </div>
             <hr>
@@ -165,7 +171,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="academic_degree">Estudios superior</label>
-                  <input name="academic_degree" id="academic_degree" type="text" [ngModel]="aboutUsObj.academic_degree" class="form-control">
+                  <input name="academic_degree" id="academic_degree" type="text" [(ngModel)]="aboutUsObj.academic_degree" class="form-control">
                 </div>
               </div>
             </div>
@@ -203,7 +209,7 @@
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(aboutusForm)">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>

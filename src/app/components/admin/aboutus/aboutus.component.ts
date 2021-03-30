@@ -11,6 +11,8 @@ import { AboutUsInterface } from 'src/app/models/aboutus-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_NUM_ZERO = 0;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-aboutus',
@@ -30,6 +32,7 @@ export class AboutusComponent implements OnInit {
   // AboutUs - Image
   selectedImg: File;
   uploadSuccess: boolean;
+  progress: number = 0;
   // Errors
   errors = "";
   // Numeros páginas
@@ -74,18 +77,18 @@ export class AboutusComponent implements OnInit {
 
   getAboutUsByPage(page: Number) {
     this.dataApi.getAboutUsByPage(page).subscribe((data) =>{
+      if (K_COD_OK == data.cod){
         this.aboutUs = data['allAboutUs'];
         this.numAboutUs = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        // Temporal - comprobar carga de datos y reintentos
-        setTimeout (() => {
-             this.isLoaded = true;
-          }, 1000);
-      }, (err) => {
-        this.isLoaded = false;
-        this.errors = err;
-      });
+        this.isLoaded = true;
+      } else {
+        this.numAboutUs = K_NUM_ZERO;
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
+    });
   }
 
   onNewAboutUs() {
@@ -149,23 +152,28 @@ export class AboutusComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         this.dataApi.deleteAboutUsId(aboutUs.id).subscribe((data) => {
-          this.getAboutUsByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          this.uploadSuccess = false;
-          this.changeImage = false;
-          Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado la entrada seleccionada.',
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido eliminar la entrada.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            this.getAboutUsByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.uploadSuccess = false;
+            this.changeImage = false;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Eliminado!',
+              'Se ha eliminado la entrada seleccionada.',
+              'success'
+            )
+          } else {
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
@@ -180,6 +188,7 @@ export class AboutusComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
@@ -187,14 +196,28 @@ export class AboutusComponent implements OnInit {
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-            this.getAboutUsByPage(this.page);
-            this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+            if (K_COD_OK == data.cod){
+              this.getAboutUsByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-          this.getAboutUsByPage(this.page);
-          this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+          if (K_COD_OK == data.cod){
+            this.getAboutUsByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     } else{
@@ -204,14 +227,28 @@ export class AboutusComponent implements OnInit {
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-            this.getAboutUsByPage(this.page);
-            this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+            if (K_COD_OK == data.cod){
+              this.getAboutUsByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
         });
       } else{
         this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-          this.getAboutUsByPage(this.page);
-          this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+          if (K_COD_OK == data.cod){
+            this.getAboutUsByPage(this.page);
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       }
     }
@@ -225,15 +262,23 @@ export class AboutusComponent implements OnInit {
         this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
         return;
       } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación de progreso
+          }, 500);
+        }
         this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0; // Eliminación de la barra de progreso
+        }, 2500);
       }
     } else{
       return;
     }
   }
 
-  onCancel(form: NgForm){
-    form.reset();
+  onCancel(){
+    // form.reset();
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
