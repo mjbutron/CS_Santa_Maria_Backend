@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div *ngIf="isLoaded">
+<div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
@@ -38,26 +38,26 @@
                     <td class="align-middle">
                       {{opinion.name}}
                     </td>
-                    <td><div [innerHTML]="opinion.commentary"></div></td>
-                    <td>
+                    <td class="align-middle"><div [innerHTML]="opinion.commentary"></div></td>
+                    <td class="align-middle">
                       <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
                         <i class="fas fa-star"></i>
                       </span>
                     </td>
-                    <td *ngIf="opinion.home==0">
+                    <td class="align-middle" *ngIf="opinion.home==0">
                       <i class="fas fa-minus"></i>
                     </td>
-                    <td *ngIf="opinion.home==1">
+                    <td class="align-middle" *ngIf="opinion.home==1">
                       <i class="fas fa-check"></i>
                     </td>
-                    <td>{{opinion.create_date | date}}</td>
-                    <td>
+                    <td class="align-middle">{{opinion.create_date | date}}</td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onEditOpinion(opinion)" title="Ver/Editar">
                         <i class="far fa-edit"></i>
                       </a>
                     </td>
-                    <td>
+                    <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0"
                           (click)="onDeleteOpinion(opinion)" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
@@ -67,7 +67,9 @@
                 </tbody>
                 <tbody *ngIf="!opinions?.length">
                   <tr>
-                    <td colspan="7" class="table-info" align="center">No existen registros</td>
+                    <td class="align-middle text-muted" colspan="7" align="center">
+                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -157,9 +159,13 @@
               </div>
             </div>
             <div *ngIf="changeImage" class="row p-2">
-              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              </div>
+              <div class="col-md-6">
+                <div class="progress form-group" *ngIf="progress > 0">
+                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+                </div>
               </div>
             </div>
             <div class="row p-2">
@@ -171,7 +177,7 @@
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(opinionForm)">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>
