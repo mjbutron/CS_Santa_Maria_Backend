@@ -2,9 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ContactInterface } from 'src/app/models/contact-interface';
+
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-contact',
@@ -17,8 +20,6 @@ export class ContactComponent implements OnInit {
   infoObj: ContactInterface;
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
-  // Errors
-  errors = "";
   // Coordinates
   lat = 0.0;
   lon = 0.0;
@@ -39,46 +40,53 @@ export class ContactComponent implements OnInit {
 
   getHomeInfo(){
     this.dataApi.getInfoHome().subscribe((data) =>{
-      this.infoObj.id = data[0]['id'];
-      this.infoObj.home_first_ph = data[0]['home_first_ph'];
-      this.infoObj.home_second_ph = data[0]['home_second_ph'];
-      this.infoObj.home_fcbk = data[0]['home_fcbk'];
-      this.infoObj.home_ytube = data[0]['home_ytube'];
-      this.infoObj.home_insta = data[0]['home_insta'];
-      // Temporal - comprobar carga de datos y reintentos
-      setTimeout (() => {
-           this.isLoaded = true;
-        }, 1000);
-    }, (err) => {
-      this.isLoaded = false;
-      this.errors = err;
+      if (K_COD_OK == data.cod && 0 < data['homeInfo'].length){
+        this.infoObj.id = data['homeInfo'][0]['id'];
+        this.infoObj.home_first_ph = data['homeInfo'][0]['home_first_ph'];
+        this.infoObj.home_second_ph = data['homeInfo'][0]['home_second_ph'];
+        this.infoObj.home_fcbk = data['homeInfo'][0]['home_fcbk'];
+        this.infoObj.home_ytube = data['homeInfo'][0]['home_ytube'];
+        this.infoObj.home_insta = data['homeInfo'][0]['home_insta'];
+        this.isLoaded = true;
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
     });
   }
 
   getFooterInfo(){
     this.dataApi.getInfoFooter().subscribe((data) =>{
-      this.infoObj.footer_address = data[0]['footer_address'];
-      this.infoObj.footer_email = data[0]['footer_email'];
-      this.infoObj.footer_ph = data[0]['footer_ph'];
-      this.infoObj.footer_schdl = data[0]['footer_schdl'];
-    }, (err) => {
-      this.errors = err;
+      if (K_COD_OK == data.cod && 0 < data['footerInfo'].length){
+        this.infoObj.footer_address = data['footerInfo'][0]['footer_address'];
+        this.infoObj.footer_email = data['footerInfo'][0]['footer_email'];
+        this.infoObj.footer_ph = data['footerInfo'][0]['footer_ph'];
+        this.infoObj.footer_schdl = data['footerInfo'][0]['footer_schdl'];
+        this.isLoaded = true;
+      } else {
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
     });
   }
 
   getContactInfo(){
     this.dataApi.getInfoContact().subscribe((data) =>{
-      this.infoObj.cnt_address = data[0]['cnt_address'];
-      this.infoObj.cnt_ph_appo = data[0]['cnt_ph_appo'];
-      this.infoObj.cnt_emails = data[0]['cnt_emails'];
-      this.infoObj.cnt_ph_mwives = data[0]['cnt_ph_mwives'];
-      this.infoObj.cnt_ph_physio = data[0]['cnt_ph_physio'];
-      this.infoObj.cnt_lat = data[0]['cnt_lat'];
-      this.infoObj.cnt_lon = data[0]['cnt_lon'];
-      this.lat = +this.infoObj.cnt_lat;
-      this.lon = +this.infoObj.cnt_lon;
-    }, (err) => {
-      this.errors = err;
+      if (K_COD_OK == data.cod && 0 < data['contactInfo'].length){
+        this.infoObj.cnt_address = data['contactInfo'][0]['cnt_address'];
+        this.infoObj.cnt_ph_appo = data['contactInfo'][0]['cnt_ph_appo'];
+        this.infoObj.cnt_emails = data['contactInfo'][0]['cnt_emails'];
+        this.infoObj.cnt_ph_mwives = data['contactInfo'][0]['cnt_ph_mwives'];
+        this.infoObj.cnt_ph_physio = data['contactInfo'][0]['cnt_ph_physio'];
+        this.infoObj.cnt_lat = data['contactInfo'][0]['cnt_lat'];
+        this.infoObj.cnt_lon = data['contactInfo'][0]['cnt_lon'];
+        this.lat = +this.infoObj.cnt_lat;
+        this.lon = +this.infoObj.cnt_lon;
+        this.isLoaded = true;
+      } else {
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
     });
   }
 
@@ -86,10 +94,15 @@ export class ContactComponent implements OnInit {
     if(form.invalid){
       return;
     }
+    this.isLoaded = false;
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
-      this.toastr.success('Se ha actualizado la información', 'Actualizado');
-    }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+      if (K_COD_OK == data.cod){
+        this.isLoaded = true;
+        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
@@ -101,10 +114,15 @@ export class ContactComponent implements OnInit {
     if(form.invalid){
       return;
     }
+    this.isLoaded = false;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
-      this.toastr.success('Se ha actualizado la información', 'Actualizado');
-    }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+      if (K_COD_OK == data.cod){
+        this.isLoaded = true;
+        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
@@ -116,10 +134,15 @@ export class ContactComponent implements OnInit {
     if(form.invalid){
       return;
     }
+    this.isLoaded = false;
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
-      this.toastr.success('Se ha actualizado la información', 'Actualizado');
-    }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+      if (K_COD_OK == data.cod){
+        this.isLoaded = true;
+        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      } else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 

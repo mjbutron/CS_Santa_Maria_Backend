@@ -270,32 +270,80 @@ export class DataApiService {
 // CONTACT API
   getInfoHome(){
     const url_api = this.url + '/api/home/info';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getInfoFooter(){
     const url_api = this.url + '/api/footer/info';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getInfoContact(){
     const url_api = this.url + '/api/contact/info';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateInfoHomeById(infoHome: ContactInterface){
     const url_api = this.url + '/admin/api/home/info/update/' + infoHome.id;
-    return this.http.put(url_api, JSON.stringify(infoHome), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(infoHome), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateInfoFooterById(infoFooter: ContactInterface){
     const url_api = this.url + '/admin/api/footer/info/update/' + infoFooter.id;
-    return this.http.put(url_api, JSON.stringify(infoFooter), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(infoFooter), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateInfoContactById(infoContact: ContactInterface){
     const url_api = this.url + '/admin/api/contact/info/update/' + infoContact.id;
-    return this.http.put(url_api, JSON.stringify(infoContact), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(infoContact), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // OPINIONS API
