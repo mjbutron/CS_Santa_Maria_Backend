@@ -25,6 +25,17 @@ export class ContactComponent implements OnInit {
   lon = 0.0;
   // Load
   isLoaded: boolean;
+  // Popover
+  infoPopTitle = '';
+  infoPopTitleTime = '';
+  infoPopTitleTel = '';
+  infoPopTitleEmail = '';
+  homePopData = '';
+  footerPopData = '';
+  contactPopData = '';
+  timePopData = '';
+  telPopData = '';
+  emailPopData = '';
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) {
     this.infoObj = new ContactInterface();
@@ -33,9 +44,28 @@ export class ContactComponent implements OnInit {
 
   ngOnInit() {
     this.isLoaded = false;
+    this.populatePopData();
     this.getHomeInfo();
     this.getFooterInfo();
     this.getContactInfo();
+  }
+
+  populatePopData(){
+    this.infoPopTitle = "Información de sección";
+    this.infoPopTitleTime = "Ejemplo de horario"
+    this.infoPopTitleTel = "Información de teléfonos";
+    this.infoPopTitleEmail = "Información de Emails";
+
+    this.homePopData = "En esta sección podrá indicar los números de teléfono y "
+    + "redes sociales que quiere que aparezcan en la barra superior de la página web."
+    this.footerPopData = "En esta sección podrá indicar la información "
+    + "que quiere que aparezca en el pie de página de la página web.";
+    this.contactPopData = "En esta sección podrá indicar la información "
+    + "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
+    + "la localización directamente haciendo click en el mapa.";
+    this.timePopData = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
+    this.telPopData = "Podrá indicar varios teléfonos separandolos con ( ; ).";
+    this.emailPopData = "Podrá indicar varios emails separandolos con ( ; ).";
   }
 
   getHomeInfo(){

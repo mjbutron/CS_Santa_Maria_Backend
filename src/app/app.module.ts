@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ToastrModule } from 'ngx-toastr';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AgmCoreModule } from '@agm/core';
@@ -69,6 +70,7 @@ registerLocaleData(localeEs);
     CommonModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
+    PopoverModule.forRoot(),
     ToastrModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: ''

@@ -7,7 +7,17 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5><b>Información de página de inicio</b></h5>
+            <h5>
+              <b>Información de página de inicio</b>
+              <button class="btn float-right"
+                popover={{homePopData}}
+                popoverTitle={{infoPopTitle}}
+                triggers="focus" placement="left">
+                <span  style="font-size: 2em; color: #0095A6;">
+                  <i class="fas fa-info-circle float-right" title="Información"></i>
+                </span>
+              </button>
+            </h5>
           </div>
         </div>
         <div class="card-body">
@@ -77,7 +87,17 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5><b>Información de pie de página</b></h5>
+            <h5>
+              <b>Información de pie de página</b>
+              <button class="btn float-right"
+                popover={{footerPopData}}
+                popoverTitle={{infoPopTitle}}
+                triggers="focus" placement="left">
+                <span  style="font-size: 2em; color: #0095A6;">
+                  <i class="fas fa-info-circle float-right" title="Información"></i>
+                </span>
+              </button>
+            </h5>
           </div>
         </div>
         <div class="card-body">
@@ -85,7 +105,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="localaddress">Dirección del local</label>
+                  <label for="localaddress">Dirección del centro</label>
                   <input name="localaddress" id="localaddress" type="text" [(ngModel)]="infoObj.footer_address" class="form-control">
                 </div>
               </div>
@@ -106,6 +126,14 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="ftr_time">Horario</label>
+                  <button type="button" class="btn" style="padding: 0rem 0rem 0rem 0.5rem;"
+                    popover={{timePopData}}
+                    popoverTitle={{infoPopTitleTime}}
+                    triggers="focus" placement="left">
+                    <span  style="font-size: 1em; color: #0095A6;">
+                      <span><i class="fas fa-info-circle text-muted"></i></span>
+                    </span>
+                  </button>
                   <input name="ftr_time" id="ftr_time" type="text" [(ngModel)]="infoObj.footer_schdl" class="form-control">
                 </div>
               </div>
@@ -130,7 +158,17 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5><b>Información de página de contacto</b></h5>
+            <h5>
+              <b>Información de página de contacto</b>
+              <button class="btn float-right"
+                popover={{contactPopData}}
+                popoverTitle={{infoPopTitle}}
+                triggers="focus" placement="left">
+                <span  style="font-size: 2em; color: #0095A6;">
+                  <i class="fas fa-info-circle float-right" title="Información"></i>
+                </span>
+              </button>
+            </h5>
           </div>
         </div>
         <div class="card-body">
@@ -153,6 +191,14 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_email">Emails</label>
+                  <button type="button" class="btn" style="padding: 0rem 0rem 0rem 0.5rem;"
+                    popover={{emailPopData}}
+                    popoverTitle={{infoPopTitleEmail}}
+                    triggers="focus" placement="left">
+                    <span  style="font-size: 1em; color: #0095A6;">
+                      <span><i class="fas fa-info-circle text-muted"></i></span>
+                    </span>
+                  </button>
                   <input name="cnt_email" id="cnt_email" type="text" [(ngModel)]="infoObj.cnt_emails" class="form-control">
                 </div>
               </div>
@@ -161,12 +207,28 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_ph_mwives">Teléfonos matronas</label>
+                  <button type="button" class="btn" style="padding: 0rem 0rem 0rem 0.5rem;"
+                    popover={{telPopData}}
+                    popoverTitle={{infoPopTitleTel}}
+                    triggers="focus" placement="left">
+                    <span  style="font-size: 1em; color: #0095A6;">
+                      <span><i class="fas fa-info-circle text-muted"></i></span>
+                    </span>
+                  </button>
                   <input name="cnt_ph_mwives" id="cnt_ph_mwives" type="number" [(ngModel)]="infoObj.cnt_ph_mwives" class="form-control">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_ph_physio">Teléfonos fisioterapia</label>
+                  <button type="button" class="btn" style="padding: 0rem 0rem 0rem 0.5rem;"
+                    popover={{telPopData}}
+                    popoverTitle={{infoPopTitleTel}}
+                    triggers="focus" placement="left">
+                    <span  style="font-size: 1em; color: #0095A6;">
+                      <span><i class="fas fa-info-circle text-muted"></i></span>
+                    </span>
+                  </button>
                   <input name="cnt_ph_physio" id="cnt_ph_physio" type="number" [(ngModel)]="infoObj.cnt_ph_physio" class="form-control">
                 </div>
               </div>
