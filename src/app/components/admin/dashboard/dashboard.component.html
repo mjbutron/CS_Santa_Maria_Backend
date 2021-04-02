@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div *ngIf="isLoaded">
+<div>
   <h4 class="mb-4 text-muted">Dashboard </h4>
   <div class="row">
     <div class="col-md-6 col-lg-3 mb-4">
@@ -189,9 +189,15 @@
             <!-- </div>
             <div class="form-group"> -->
               <label for="imageSlider" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
-              <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span>
-              <div class="col-sm-10">
-                <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+              <div class="row p-2">
+                <div class="col-md-6">
+                  <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)" [disabled]="disabledForm">
+                </div>
+                <div class="col-md-6">
+                  <div class="progress form-group" *ngIf="progress > 0">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress"></div>
+                  </div>
+                </div>
               </div>
             <!-- </div> -->
             <!-- <div class="form-group"> -->

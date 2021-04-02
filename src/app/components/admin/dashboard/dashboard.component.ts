@@ -37,6 +37,8 @@ export class DashboardComponent implements OnInit {
   // Slider - Image
   selectedImg: File;
   uploadSuccess: boolean;
+  progress: number = 0;
+  changeImage = false;
   // Slider
   sliderObj: SliderInterface;
   sliderImg: string;
@@ -76,6 +78,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.uploadSuccess = false;
+    this.changeImage = false;
     this.isLoaded = false;
     this.getAllServices();
     this.getAllWorkshops();
@@ -140,11 +143,14 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllSlider(){
-    this.dataApi.getAllSlider()
-    .subscribe((allSliders: SliderInterface[]) => {
-      this.sliders = allSliders;
-    }, (err) => {
-      this.errors = err;
+    this.dataApi.getAllSlider().subscribe((data) => {
+      if (K_COD_OK == data.cod){
+        this.sliders = data['allSliders'];
+        this.isLoaded = true;
+      } else {
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
@@ -204,24 +210,40 @@ export class DashboardComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<SliderInterface[]>) {
+    this.isLoaded = false;
     moveItemInArray(this.sliders, event.previousIndex, event.currentIndex);
-    var index = 1;
+    let index = 1;
+    let canContinue = 0;
+    let error = false;
     for(let slider of this.sliders){
       this.dataApi.updateOrderSlider(slider, index).subscribe((data) => {
-        console.log(data);
+        if (K_COD_OK != data.cod){
+          error = true;
+        }
+        canContinue++;
+
+        if(!error && 3 == canContinue){
+          this.isLoaded = true;
+          this.toastr.success('Se ha modificado el orden de la cabecera', 'Actualizado');
+        }
+        if(error && 3 == canContinue){
+          this.isLoaded = true;
+          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        }
       });
       index++;
     }
-    this.toastr.success('Se ha modificado el orden de la cabecera', 'Actualizado');
   }
 
   onSlider(slider: SliderInterface){
+    this.changeImage = false;
     this.sliderObj.id = slider.id;
     this.sliderObj.title = slider.title;
     this.sliderObj.description = slider.description;
     this.sliderObj.order_slider = slider.order_slider;
     this.sliderObj.color_text = slider.color_text;
     this.sliderObj.user_id = slider.user_id;
+    this.sliderObj.image = (slider.image) ? slider.image : "default_image.jpg";
     this.sliderImg = slider.image;
     this.disabledForm = false;
   }
@@ -240,19 +262,44 @@ export class DashboardComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(form.invalid){
       return;
     }
-    this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
-      this.sliderImg = img['message'];
-      this.sliderObj.image = this.sliderImg;
-      this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
-        this.getAllSlider();
-        this.disabledForm = true;
-        this.onCancel();
-        this.toastr.success('Se ha editado la cabecera', 'Actualizado');
-      });
-    });
+      if(this.changeImage && this.selectedImg != null){
+        this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
+          this.sliderImg = img['message'];
+          this.sliderObj.image = this.sliderImg;
+          this.uploadSuccess = false;
+          this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
+            if (K_COD_OK == data.cod){
+              this.getAllSlider();
+              this.disabledForm = true;
+              this.onCancel();
+              this.isLoaded = true;
+              this.toastr.success('Se ha editado la cabecera', 'Actualizado');
+            } else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
+          });
+        });
+      }
+      else {
+        this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
+          if (K_COD_OK == data.cod){
+            this.getAllSlider();
+            this.disabledForm = true;
+            this.onCancel();
+            this.isLoaded = true;
+            this.toastr.success('Se ha editado la cabecera', 'Actualizado');
+          } else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
+        });
+      }
+
   }
 
   onFileChanged($event){
@@ -260,10 +307,20 @@ export class DashboardComponent implements OnInit {
       this.selectedImg = $event.target.files[0];
       if(this.selectedImg.size > K_MAX_SIZE){
         this.imageFile.nativeElement.value = K_BLANK;
+        this.changeImage = false;
         this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
         return;
       } else{
+        for(let i=0; i<=100; i++){
+          setTimeout(() => {
+              this.progress = i; // Simulación de progreso
+          }, 500);
+        }
+        this.changeImage = true;
         this.uploadSuccess = true;
+        setTimeout(() => {
+            this.progress = 0; // Eliminación de la barra de progreso
+        }, 2500);
       }
     } else{
       return;

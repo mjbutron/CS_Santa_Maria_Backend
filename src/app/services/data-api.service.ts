@@ -55,18 +55,42 @@ export class DataApiService {
 // SLIDER API
   getAllSlider(){
     const url_api = this.url + '/api/allSlider';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateSliderById(slider: SliderInterface){
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
-    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateOrderSlider(slider: SliderInterface, orderSlider: number){
     slider.order_slider = orderSlider;
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
-    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // SERVICES API
