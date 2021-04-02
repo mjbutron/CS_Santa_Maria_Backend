@@ -13,6 +13,8 @@ import { RolInterface } from 'src/app/models/rol-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_NUM_ZERO = 0;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-usermgt',
@@ -81,23 +83,27 @@ export class UsermgtComponent implements OnInit {
 
   getUsersByPage(page: Number) {
     this.dataApi.getUsersByPage(page).subscribe((data) =>{
+      if (K_COD_OK == data.cod){
         this.users = data['allUsers'];
         this.numUsers = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
-        // Temporal - comprobar carga de datos y reintentos
-        setTimeout (() => {
-             this.isLoaded = true;
-          }, 1000);
-      }, (err) => {
-        this.isLoaded = false;
-        this.errors = err;
-      });
+        this.isLoaded = true;
+      } else {
+        this.numUsers = K_NUM_ZERO;
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
+    });
   }
 
   getAllRoles() {
-    this.dataApi.getAllRoles().subscribe((allRoles: RolInterface[]) =>{
-        this.roles = allRoles;
+    this.dataApi.getAllRoles().subscribe((data) =>{
+      if (K_COD_OK == data.cod){
+        this.roles = data['allRoles'];
+      } else {
+        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+      }
     });
   }
 
@@ -110,7 +116,9 @@ export class UsermgtComponent implements OnInit {
     this.userObj.name = K_BLANK;
     this.userObj.surname = K_BLANK;
     this.userObj.email = K_BLANK;
+    this.userObj.telephone = null;
     this.userObj.address = K_BLANK;
+    this.userObj.zipcode = null;
     this.userObj.city = K_BLANK;
     this.userObj.province = K_BLANK;
 
@@ -157,37 +165,44 @@ export class UsermgtComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         this.dataApi.deleteUserById(user.id).subscribe((data) => {
-          this.getUsersByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          Swal.fire(
-            '¡Eliminado!',
-            'Se ha eliminado el usuario seleccionado.',
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido eliminar el usuario.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            this.getUsersByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Eliminado!',
+              'Se ha eliminado el usuario seleccionado.',
+              'success'
+            )
+          } else {
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
   }
 
   onLockUser(user: UserInterface){
-
+    let auxActive = 0;
     if(1 == user.active){
       this.alertLockStr = "¿Seguro que deseas desactivar este usuario?";
       this.actionLockStr = "¡Desactivado!";
       this.actionTextLockStr = "Se ha desactivado el usuario.";
+      auxActive = 1;
     }
     else{
       this.alertLockStr = "¿Seguro que deseas activar este usuario?";
       this.actionLockStr = "¡Activado!";
       this.actionTextLockStr = "Se ha activado el usuario.";
+      auxActive = 0;
     }
 
     Swal.fire({
@@ -200,45 +215,66 @@ export class UsermgtComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoaded = false;
         user.active = (user.active == 0) ? 1 : 0;
         this.dataApi.updateUserById(user).subscribe((data) => {
-          this.getUsersByPage(this.page);
-          this.isEditForm = false;
-          this.activeForm = false;
-          Swal.fire(
-            this.actionLockStr,
-            this.actionTextLockStr,
-            'success'
-          )
-        }, (err) => {
-          Swal.fire(
-            '¡Error!',
-            'No se ha podido realizar la acción.',
-            'error'
-          )
+          if (K_COD_OK == data.cod){
+            user.active = auxActive;
+            this.getUsersByPage(this.page);
+            this.isEditForm = false;
+            this.activeForm = false;
+            this.isLoaded = true;
+            Swal.fire(
+              this.actionLockStr,
+              this.actionTextLockStr,
+              'success'
+            )
+          } else {
+            user.active = auxActive;
+            this.isLoaded = true;
+            Swal.fire(
+              '¡Error!',
+              'Error interno. No se ha podido realizar la acción.',
+              'error'
+            )
+          }
         });
       }
     });
   }
 
   onSubmit(form: NgForm){
+    this.isLoaded = false;
     if(this.isEditForm){
       this.userObj.rol_id = this.userRol.id;
       this.dataApi.updateUserById(this.userObj).subscribe((data) => {
-        this.getUsersByPage(this.page);
-        this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
+        if (K_COD_OK == data.cod){
+          this.getUsersByPage(this.page);
+          this.onCancel();
+          this.isLoaded = true;
+          this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
+        } else{
+          this.isLoaded = true;
+          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        }
       });
     } else{
       this.userObj.rol_id = this.userRol.id;
       this.dataApi.createUser(this.userObj).subscribe((data) => {
-        this.getUsersByPage(this.page);
-        this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
+        if (K_COD_OK == data.cod){
+          this.getUsersByPage(this.page);
+          this.onCancel();
+          this.isLoaded = true;
+          this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
+        } else{
+          this.isLoaded = true;
+          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        }
       });
     }
   }
 
-  onCancel(form: NgForm){
-    form.reset();
+  onCancel(){
     this.isEditForm = false;
     this.activeForm = false;
   }

@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div *ngIf="isLoaded">
+<div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
@@ -44,10 +44,10 @@
                     <td class="align-middle">{{user.email}}</td>
                     <td class="align-middle">{{user.telephone}}</td>
                     <td class="align-middle">{{user.rol_name}}</td>
-                    <td *ngIf="user.active==0">
+                    <td class="align-middle" *ngIf="user.active==0">
                       <i class="fas fa-minus"></i>
                     </td>
-                    <td *ngIf="user.active==1">
+                    <td class="align-middle" *ngIf="user.active==1">
                       <i class="fas fa-check"></i>
                     </td>
                     <td class="align-middle">
@@ -76,7 +76,9 @@
                 </tbody>
                 <tbody *ngIf="!users?.length">
                   <tr>
-                    <td colspan="10" class="table-info" align="center">No existen registros</td>
+                    <td class="align-middle text-muted" colspan="10" align="center">
+                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -192,7 +194,7 @@
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel(userForm)">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>

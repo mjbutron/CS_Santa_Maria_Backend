@@ -535,32 +535,80 @@ export class DataApiService {
 // ROLES API
   getAllRoles(){
     const url_api = this.url + '/api/allRoles';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // USERS API
   getAllUsers(){
     const url_api = this.url + '/api/allUsers';
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   getUsersByPage(page: Number){
     const url_api = this.url + '/api/usersByPage/' + page;
-    return this.http.get(url_api);
+    return this.http.get(url_api)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   createUser(user: UserInterface){
     const url_api = this.url + '/admin/api/users/new';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateUserById(user: UserInterface){
     const url_api = this.url + '/admin/api/users/update/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   deleteUserById(userId: number){
     const url_api = this.url + '/admin/api/users/delete/' + userId;
-    return this.http.delete(url_api, this.httpOptions);
+    return this.http.delete(url_api, this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 }
