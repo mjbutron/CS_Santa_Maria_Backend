@@ -8,6 +8,9 @@ import { Globals } from 'src/app/common/globals';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInterface } from 'src/app/models/user-interface';
 
+const K_COD_OK = 200;
+const K_COD_SERVICE_UNAVBL = 503;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -43,28 +46,39 @@ export class LoginComponent implements OnInit {
     });
     Swal.showLoading();
 
-    this.auth.login(this.user).subscribe(res => {
-      Swal.close();
-      localStorage.setItem('username', res['user'].name);
-      localStorage.setItem('rolname', res['user'].rol_name);
-      localStorage.setItem('email', this.user.email);
-      if(this.rememberUser){
-        localStorage.setItem('rememberEmail', this.user.email);
-      }else{
-        localStorage.removeItem('rememberEmail');
+    this.auth.login(this.user).subscribe(data => {
+      if (!data.error && K_COD_OK == data.cod){
+        Swal.close();
+        localStorage.setItem('username', data['user'].name);
+        localStorage.setItem('rolname', data['user'].rol_name);
+        localStorage.setItem('email', this.user.email);
+        if(this.rememberUser){
+          localStorage.setItem('rememberEmail', this.user.email);
+        }else{
+          localStorage.removeItem('rememberEmail');
+        }
+        localStorage.setItem('email', this.user.email);
+        this.globals.isAuth = true;
+        this.globals.isChangePass = (data['user'].change_pass == 0) ? false : true;
+        this.router.navigateByUrl('/admin/dashboard');
       }
-      localStorage.setItem('email', this.user.email);
-      this.globals.isAuth = true;
-      this.globals.isChangePass = (res['user'].change_pass == 0) ? false : true;
-      this.router.navigateByUrl('/admin/dashboard');
-    }, (err) => {
-      this.globals.isAuth = false;
-      this.globals.isChangePass = false;
-      Swal.fire({
-        icon: 'error',
-        title: err.error.message
-      });
+      else {
+        this.globals.isAuth = false;
+        this.globals.isChangePass = false;
+        if(K_COD_SERVICE_UNAVBL == data.cod){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en inicio de sesión',
+            text: data.message
+          });
+        }
+        else{
+          Swal.fire({
+            icon: 'error',
+            title: data.message
+          });
+        }
+      }
     });
   }
-
 }
