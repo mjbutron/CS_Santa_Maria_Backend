@@ -27,7 +27,7 @@ body {
 }
  .wrapper.default-theme nav.navbar .nav-link i {
 	 border-color: #ffffff;
-	 background: #04c1c3;
+	 /* background: #04c1c3; */
 }
  .wrapper.default-theme nav.navbar .nav-link:hover {
 	 color: #9ba2b9;

@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Globals } from 'src/app/common/globals';
+
+const K_COD_OK = 200;
+const K_COD_SERVICE_UNAVBL = 503;
 
 @Component({
   selector: 'app-navbar',
@@ -16,16 +20,18 @@ export class NavbarComponent implements OnInit {
   isCollapsed = true;
   // Utils
   globals: Globals;
+  isLoading = false;
   // User
   userObj = {
     email: ""
   };
 
-  constructor(private auth: AuthService, private dataApi: DataApiService, private coreService: CoreService, globals: Globals) {
+  constructor(private auth: AuthService, private dataApi: DataApiService, private coreService: CoreService, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
   }
 
   ngOnInit() {
+    this.isLoading = false;
   }
 
   toggleSidebarPin() {
@@ -36,12 +42,16 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout(){
+    this.isLoading = true;
     this.dataApi.logout(localStorage.getItem('email')).subscribe((data) => {
-      if(this.auth.logout()){
-        window.location.href = 'http://localhost:4200';
+      if (K_COD_OK == data.cod){
+        if(this.auth.logout()){
+          window.location.href = 'http://localhost:4200';
+        }
+      } else{
+        this.isLoading = false;
+        this.toastr.error('No es posible conectar con la base de datos.', 'Error');
       }
-    }, (err) => {
-        console.log(err);
     });
   }
 

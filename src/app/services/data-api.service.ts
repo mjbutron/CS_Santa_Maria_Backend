@@ -529,7 +529,15 @@ export class DataApiService {
   logout(email: string){
     this.userEmail.email = email;
     const url_api = this.url + '/admin/logout';
-    return this.http.put(url_api, JSON.stringify(this.userEmail), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(this.userEmail), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // ROLES API

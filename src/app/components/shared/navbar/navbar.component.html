@@ -58,8 +58,11 @@
         </a>
       </li>
       <li class="nav-item" *ngIf="globals.isAuth">
-        <a class="btn nav-link" [routerLink]="" (click)="onLogout()">
-          <i class="fas fa-sign-out-alt"></i>
+        <a class="btn nav-link" [routerLink]="" (click)="onLogout()" *ngIf="!isLoading">
+          <i class="fas fa-sign-out-alt" *ngIf="!isLoading"></i>
+        </a>
+        <a class="btn nav-link disabled" [routerLink]="" (click)="onLogout()" *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
           <span class="link-text">Cerrar sesión</span>
         </a>
       </li>
