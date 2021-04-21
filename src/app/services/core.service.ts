@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 import { Globals } from 'src/app/common/globals';
 
@@ -35,12 +36,11 @@ export class CoreService {
     })
   };
 
-  constructor(private http: HttpClient, globals: Globals) {
+  constructor(private http: HttpClient, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
 
     // Get if password has been changed (used in reload)
     this.getIsChangePass(localStorage.getItem('email'));
-
 
     // Posible método para comprobar notificaciones cada cierto tiempo.
     // setInterval (() => {
@@ -54,6 +54,8 @@ export class CoreService {
       const url_api = this.url + '/admin/api/isChangePass';
       this.http.post(url_api, JSON.stringify(this.userEmail), this.httpOptions).subscribe((data) => {
         this.globals.isChangePass = (data['change_pass'] == 0) ? false : true;
+      }, (err) => {
+        this.toastr.error(err.error.message, 'Error');
       });
     }
   }
