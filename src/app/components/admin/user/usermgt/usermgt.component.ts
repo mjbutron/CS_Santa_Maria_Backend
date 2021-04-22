@@ -24,7 +24,7 @@ const K_COD_OK = 200;
 export class UsermgtComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // User
   userObj: UserInterface;
   users: UserInterface[] = [];

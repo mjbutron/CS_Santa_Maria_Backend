@@ -28,7 +28,7 @@ const K_COD_OK = 200;
 export class DashboardComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // Scroll
   element = (<HTMLDivElement>document.getElementById("rtrSup"));
   // Form

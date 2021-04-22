@@ -22,7 +22,7 @@ const K_COD_OK = 200;
 export class CourseComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // Courses
   courseObj: CourseInterface;
   courses: CourseInterface[] = [];

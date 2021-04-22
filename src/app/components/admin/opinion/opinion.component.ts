@@ -38,7 +38,7 @@ export class OpinionComponent implements OnInit {
     };
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // Opinions
   OpinionObj: OpinionInterface;
   opinions: OpinionInterface[] = [];

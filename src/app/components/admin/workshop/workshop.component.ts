@@ -22,7 +22,7 @@ const K_COD_OK = 200;
 export class WorkshopComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // Workshops
   workShopObj: WorkshopInterface;
   workShops: WorkshopInterface[] = [];

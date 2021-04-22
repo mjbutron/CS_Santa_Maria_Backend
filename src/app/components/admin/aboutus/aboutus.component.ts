@@ -22,7 +22,7 @@ const K_COD_OK = 200;
 export class AboutusComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // AboutUs
   aboutUsObj: AboutUsInterface;
   aboutUs: AboutUsInterface[] = [];

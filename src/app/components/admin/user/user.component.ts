@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
 
@@ -20,7 +21,7 @@ const K_MAX_SIZE = 3000000;
 export class UserComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // User Obj
   userObj: UserInterface;
   // Utils
