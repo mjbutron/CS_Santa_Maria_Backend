@@ -108,6 +108,8 @@ agm-map {
 	 height: 124px;
 	 border: 1px solid #fff;
 	 position: relative;
+   object-fit: cover;
+   object-position: center;
 }
  .card-user .card-body {
 	 min-height: 240px;

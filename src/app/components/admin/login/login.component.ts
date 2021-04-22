@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
         Swal.close();
         localStorage.setItem('username', data['user'].name);
         localStorage.setItem('rolname', data['user'].rol_name);
+        localStorage.setItem('userImage', data['user'].image);
         localStorage.setItem('email', this.user.email);
         if(this.rememberUser){
           localStorage.setItem('rememberEmail', this.user.email);

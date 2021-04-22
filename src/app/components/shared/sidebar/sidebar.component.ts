@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
     this.globals = globals;
     this.globals.user = localStorage.getItem('username');
     this.globals.rol = localStorage.getItem('rolname');
+    this.globals.userImage = localStorage.getItem('userImage');
   }
 
   ngOnInit() {

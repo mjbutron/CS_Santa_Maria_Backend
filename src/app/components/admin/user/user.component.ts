@@ -61,10 +61,8 @@ export class UserComponent implements OnInit {
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
     this.userObj = new UserInterface();
     this.globals = globals;
-    this.globals.user = localStorage.getItem('username');
-    this.globals.rol = localStorage.getItem('rolname');
     this.element.scrollTop = 0;
-
+    this.setGlobalsData();
   }
 
   ngOnInit() {
@@ -73,6 +71,12 @@ export class UserComponent implements OnInit {
     this.disabledFormImage = true;
     this.uploadSuccess = false;
     this.getUserProfile();
+  }
+
+  setGlobalsData(){
+    this.globals.user = localStorage.getItem('username');
+    this.globals.rol = localStorage.getItem('rolname');
+    this.globals.userImage = localStorage.getItem('userImage');
   }
 
   getUserProfile() {
@@ -155,25 +159,25 @@ export class UserComponent implements OnInit {
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
       this.toastr.success('Se ha actualizado la información', 'Actualizado');
       localStorage.setItem('username', this.userObj.name);
+      this.setGlobalsData();
       this.activeForm = false;
       this.disabledForm = true;
     }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+      this.toastr.error('No se ha podido actualizar la información', 'Error');
     });
   }
 
   onSubmitImage(form: NgForm){
     if(this.activeFormImage && this.selectedImg != null){
-      console.log("Entra");
       this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
         this.userImg = img['message'];
-        console.log(this.userImg);
-
         this.userObj.image = this.userImg;
         this.uploadSuccess = false;
         this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
+          localStorage.setItem('userImage', this.userObj.image);
+          this.setGlobalsData();
           this.getUserProfile();
-          this.toastr.success('Se ha actualizado el avatar', 'Actualizado');
+          this.toastr.success('Se ha actualizado su imagen', 'Actualizado');
         });
       });
     }

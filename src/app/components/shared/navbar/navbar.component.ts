@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private auth: AuthService, private dataApi: DataApiService, private coreService: CoreService, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
+    this.globals.userImage = localStorage.getItem('userImage');
   }
 
   ngOnInit() {
