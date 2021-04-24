@@ -12,6 +12,7 @@ import { UserInterface } from 'src/app/models/user-interface';
 
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
+const K_COD_OK = 200;
 
 @Component({
   selector: 'app-user',
@@ -67,7 +68,6 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoaded = false;
     this.activeFormImage = false;
     this.disabledFormImage = true;
     this.uploadSuccess = false;
@@ -81,31 +81,22 @@ export class UserComponent implements OnInit {
   }
 
   getUserProfile() {
+    this.isLoaded = false;
     this.userObj.email = localStorage.getItem('email');
     this.dataApi.getUserProfile(this.userObj).subscribe((data) =>{
-      this.userObj.id = data['id'];
-      this.userObj.active = data['active'];
-      this.userObj.name = data['name'];
-      this.userObj.surname = data['surname'];
-      this.userObj.telephone = data['telephone'];
-      this.userObj.address = data['address'];
-      this.userObj.city = data['city'];
-      this.userObj.province = data['province'];
-      this.userObj.zipcode = data['zipcode'];
-      this.userObj.aboutme = data['aboutme'];
-      this.userObj.password = data['password'];
-      this.userObj.userFcbk = data['user_fcbk'];
-      this.userObj.userYtube = data['user_ytube'];
-      this.userObj.userInsta = data['user_insta'];
-      this.userObj.image = (data['image']) ? data['image'] : "default-avatar.png";
-      this.userObj.lastLogin = data['last_login'];
-      // Temporal - comprobar carga de datos y reintentos
-      setTimeout (() => {
-           this.isLoaded = true;
-        }, 1000);
-    }, (err) => {
-      this.isLoaded = false;
-      this.errors = err;
+      if (K_COD_OK == data.cod){
+        this.userObj = data.user;
+        this.userObj.userFcbk = data.user.user_fcbk;
+        this.userObj.userInsta = data.user.user_insta;
+        this.userObj.userYtube = data.user.user_ytube;
+        this.userObj.image = (data.user.image) ? data.user.image : "default-avatar.png";
+        this.userObj.lastLogin = data.user.last_login;
+        this.isLoaded = true;
+      }
+      else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
@@ -154,53 +145,72 @@ export class UserComponent implements OnInit {
   }
 
   onSubmitUser(form: NgForm){
+    this.isLoaded = false;
     if(form.invalid){
+      this.isLoaded = true;
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      this.toastr.success('Se ha actualizado la información', 'Actualizado');
-      localStorage.setItem('username', this.userObj.name);
-      this.setGlobalsData();
-      this.activeForm = false;
-      this.disabledForm = true;
-    }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Error');
+      if (K_COD_OK == data.cod){
+        localStorage.setItem('username', this.userObj.name);
+        this.setGlobalsData();
+        this.activeForm = false;
+        this.disabledForm = true;
+        this.isLoaded = true;
+        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      }
+      else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
   onSubmitImage(form: NgForm){
+    this.isLoaded = false;
     if(this.activeFormImage && this.selectedImg != null){
       this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
         this.userImg = img['message'];
         this.userObj.image = this.userImg;
         this.uploadSuccess = false;
         this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-          localStorage.setItem('userImage', this.userObj.image);
-          this.setGlobalsData();
-          this.getUserProfile();
-          this.toastr.success('Se ha actualizado su imagen', 'Actualizado');
+          if (K_COD_OK == data.cod){
+            localStorage.setItem('userImage', this.userObj.image);
+            this.setGlobalsData();
+            this.getUserProfile();
+            this.isLoaded = true;
+            this.toastr.success('Se ha actualizado su imagen', 'Actualizado');
+          }
+          else{
+            this.isLoaded = true;
+            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          }
         });
       });
     }
   }
 
   onSubmitSocial(form: NgForm){
-    console.log(form);
-
+    this.isLoaded = false;
     if(form.invalid){
+      this.isLoaded = true;
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      this.toastr.success('Se ha actualizado la información', 'Actualizado');
-      this.activeFormSocial = false;
-      this.disabledFormSocial = true;
-    }, (err) => {
-      this.toastr.error('No se ha podido actualizar la información', 'Ups!');
+      if (K_COD_OK == data.cod){
+        this.activeFormSocial = false;
+        this.disabledFormSocial = true;
+        this.isLoaded = true;
+        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+      }
+      else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 
   onSubmitPass(form: NgForm){
-
     if(form.invalid){
       return;
     } else if(this.currentPass == this.newPass){
@@ -216,26 +226,35 @@ export class UserComponent implements OnInit {
       });
       return;
     }
-
+    this.isLoaded = false;
     this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
+      if (K_COD_OK == data.cod){
         if(data['check']){
           this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
-            this.toastr.success('Se ha actualizado la contraseña', 'Actualizado');
-            this.globals.isChangePass = true;
-            this.onCancelEditPass(form);
-          }, (err) => {
-            this.errors = err;
-            this.toastr.error('No se ha podido actualizar la contraseña', 'Ups!');
+            if (K_COD_OK == data.cod){
+              this.globals.isChangePass = true;
+              this.onCancelEditPass(form);
+              this.isLoaded = true;
+              this.toastr.success('Se ha actualizado la contraseña', 'Actualizado');
+            }
+            else{
+              this.isLoaded = true;
+              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            }
           });
-        } else{
-          Swal.fire({
-            icon: 'error',
-            text: '¡La contraseña actual es incorrecta!'
-          });
-          return;
         }
-    }, (err) => {
-      this.errors = err;
+        else{
+         Swal.fire({
+           icon: 'error',
+           text: '¡La contraseña actual es incorrecta!'
+         });
+         return;
+       }
+      }
+      else{
+        this.isLoaded = true;
+        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+      }
     });
   }
 

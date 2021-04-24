@@ -505,24 +505,55 @@ export class DataApiService {
 // USER PROFILE API
   getUserProfile(user: UserInterface){
     const url_api = this.url + '/admin/api/userProfile';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions).pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updateUserProfile(user: UserInterface){
     const url_api = this.url + '/admin/api/userProfile/update/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   updatePassword(user: UserInterface, newPass: string){
     user.password = newPass;
     const url_api = this.url + '/admin/api/userProfile/updatePass/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
   checkPassword(user: UserInterface, currPass: string){
     user.password = currPass;
     const url_api = this.url + '/admin/api/checkPassword';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions);
+    return this.http.post(url_api, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        console.error(err);
+        return of( err );
+      }),
+      shareReplay()
+    )
   }
 
 // USER LOGOUT

@@ -1,7 +1,7 @@
 <div id="preloader" *ngIf="!isLoaded">
-  <div id="loader" *ngIf="!isLoaded"></div>
+  <div id="loader"></div>
 </div>
-<div class="row" *ngIf="isLoaded">
+<div class="row">
   <div class="col-md-8">
     <div class="card">
       <div class="card-header">
@@ -92,14 +92,14 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label for="usr_about">Acerca de mí</label>
                 <textarea name="usr_about" id="usr_about" rows="4" cols="80"  [(ngModel)]="userObj.aboutme" class="form-control" [disabled]="disabledForm"></textarea>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row p-2">
             <div class="col-md-6">
                 <button type="submit" name="submit"
@@ -129,9 +129,22 @@
             {{globals.rol}}
           </p>
         </div>
-        <p class="description text-center">
+        <div class="mb-3">
+          <hr>
+        </div>
+        <!-- <p class="description text-center">
           {{userObj.aboutme}}
-        </p>
+        </p> -->
+        <div class="card" style="padding: 8px;">
+          <span  style="font-size: 1em; color: #0095A6;">
+            <i class="fas fa-bell"></i> 8 Notificaciones sin leer
+          </span>
+        </div>
+        <div class="card" style="padding: 8px;">
+          <span  style="font-size: 1em; color: #0095A6;">
+            <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.lastLogin | date}}
+          </span>
+        </div>
       </div>
       <hr>
       <div class="button-container">
@@ -159,25 +172,25 @@
         </button>
       </div>
     </div>
-    <div class="card" style="padding: 8px;">
+    <!-- <div class="card" style="padding: 8px;">
       <span  style="font-size: 1em; color: #0095A6;">
         <i class="fas fa-bell"></i> 8 Notificaciones sin leer
       </span>
-    </div>
-    <div class="card" style="padding: 8px;">
+    </div> -->
+    <!-- <div class="card" style="padding: 8px;">
       <span  style="font-size: 1em; color: #0095A6;">
         <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.lastLogin | date}}
       </span>
-    </div>
-    <div class="card" style="padding: 8px;">
+    </div> -->
+    <!-- <div class="card" style="padding: 8px;">
       <span  style="font-size: 1em; color: #0095A6;">
         <i class="far fa-comments"></i> Últ. entrada del blog 18/03/2020
       </span>
-    </div>
+    </div> -->
   </div>
 </div>
 
-<div *ngIf="isLoaded">
+<div>
   <div #editSocial id="editSc" class="row">
     <div class="col-md-12">
       <div class="card">
@@ -257,7 +270,7 @@
   </div>
 </div>
 
-<div *ngIf="isLoaded">
+<div>
   <div #editImage id="editIm" class="row">
     <div class="col-md-12">
       <div class="card">
@@ -319,7 +332,7 @@
   </div>
 </div>
 
-<div *ngIf="isLoaded">
+<div>
   <div class="row">
     <div class="col-md-12">
       <div class="card">

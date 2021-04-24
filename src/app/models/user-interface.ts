@@ -9,7 +9,7 @@ export class UserInterface {
   city?: string;
   province?: string;
   zipcode?: number;
-  aboutme?: string;
+  aboutme?: string; // Not used
   password?: string;
   change_pass?: number;
   userFcbk?: string;
