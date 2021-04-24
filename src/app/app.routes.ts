@@ -13,7 +13,6 @@ import { UsermgtComponent } from './components/admin/user/usermgt/usermgt.compon
 import { AuthGuard } from './guards/auth.guard';
 
 const APP_ROUTES: Routes = [
-  { path: 'login', component: LoginComponent },
   { path: 'admin/dashboard', component: DashboardComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/contacto', component: ContactComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/talleres', component: WorkshopComponent, canActivate: [AuthGuard] }, // TODO only users auth
@@ -23,7 +22,8 @@ const APP_ROUTES: Routes = [
   { path: 'admin/servicios', component: ServiceComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/nosotras', component: AboutusComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/usuarios', component: UsermgtComponent, canActivate: [AuthGuard] }, // TODO only users auth
-  { path: '**', pathMatch: 'full', redirectTo: 'login' }
+  { path: 'login', component: LoginComponent },
+  { path: '**', pathMatch: 'full', redirectTo: 'admin/dashboard' }
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {scrollPositionRestoration: 'enabled'});
