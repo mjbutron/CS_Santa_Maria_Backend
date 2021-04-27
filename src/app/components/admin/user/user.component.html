@@ -142,31 +142,31 @@
         </div>
         <div class="card" style="padding: 8px;">
           <span  style="font-size: 1em; color: #0095A6;">
-            <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.lastLogin | date}}
+            <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.last_login | date}}
           </span>
         </div>
       </div>
       <hr>
       <div class="button-container">
-        <div *ngIf="!userObj.userFcbk && !userObj.userYtube && !userObj.userInsta" class="">
+        <div *ngIf="!userObj.user_fcbk && !userObj.user_ytube && !userObj.user_insta" class="">
           <a [routerLink]="" (click)="scrollToForm()" >
             <span  style="font-size: 1em; color: #0095A6;">
               <i class="fas fa-hashtag"></i> Añada una red social...
             </span>
           </a>
         </div>
-        <button *ngIf="userObj.userFcbk" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <a (click)="goToLink(userObj.userFcbk)" title="Facebook" target="_blank">
+        <button *ngIf="userObj.user_fcbk" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.user_fcbk)" title="Facebook" target="_blank">
             <i class="fab fa-facebook-f"></i>
           </a>
         </button>
-        <button *ngIf="userObj.userYtube" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <a (click)="goToLink(userObj.userYtube)" title="Youtube" target="_blank">
+        <button *ngIf="userObj.user_ytube" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.user_ytube)" title="Youtube" target="_blank">
             <i class="fab fa-youtube"></i>
           </a>
         </button>
-        <button *ngIf="userObj.userInsta" class="btn btn-neutral btn-icon btn-round btn-lg">
-          <a (click)="goToLink(userObj.userInsta)" title="Instagram" target="_blank">
+        <button *ngIf="userObj.user_insta" class="btn btn-neutral btn-icon btn-round btn-lg">
+          <a (click)="goToLink(userObj.user_insta)" title="Instagram" target="_blank">
             <i class="fab fa-instagram"></i>
           </a>
         </button>
@@ -179,7 +179,7 @@
     </div> -->
     <!-- <div class="card" style="padding: 8px;">
       <span  style="font-size: 1em; color: #0095A6;">
-        <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.lastLogin | date}}
+        <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.last_login | date}}
       </span>
     </div> -->
     <!-- <div class="card" style="padding: 8px;">
@@ -215,7 +215,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="user_fcbk">Facebook</label>
-                  <input name="user_fcbk" id="user_fcbk" type="url" pattern="https?://.+" [(ngModel)]="userObj.userFcbk" class="form-control"
+                  <input name="user_fcbk" id="user_fcbk" type="url" pattern="https?://.+" [(ngModel)]="userObj.user_fcbk" class="form-control"
                   [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_fcbk'].errors }" [disabled]="disabledFormSocial">
                   <div *ngIf="socialForm.submitted && socialForm.controls['user_fcbk'].errors" class="invalid-feedback">
                       <div *ngIf="socialForm.controls['user_fcbk'].errors">Formato no válido.</div>
@@ -225,7 +225,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="user_ytube">YouTube</label>
-                  <input name="user_ytube" id="user_ytube" type="url" pattern="https?://.+" [(ngModel)]="userObj.userYtube" class="form-control"
+                  <input name="user_ytube" id="user_ytube" type="url" pattern="https?://.+" [(ngModel)]="userObj.user_ytube" class="form-control"
                   [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_ytube'].errors }" [disabled]="disabledFormSocial">
                   <div *ngIf="socialForm.submitted && socialForm.controls['user_ytube'].errors" class="invalid-feedback">
                       <div *ngIf="socialForm.controls['user_ytube'].errors">Formato no válido.</div>
@@ -235,7 +235,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="user_insta">Instagram</label>
-                  <input name="user_insta" id="user_insta" type="url" pattern="https?://.+" [(ngModel)]="userObj.userInsta" class="form-control"
+                  <input name="user_insta" id="user_insta" type="url" pattern="https?://.+" [(ngModel)]="userObj.user_insta" class="form-control"
                   [ngClass]="{ 'is-invalid': socialForm.submitted && socialForm.controls['user_insta'].errors }" [disabled]="disabledFormSocial">
                   <div *ngIf="socialForm.submitted && socialForm.controls['user_insta'].errors" class="invalid-feedback">
                       <div *ngIf="socialForm.controls['user_insta'].errors">Formato no válido.</div>
@@ -297,7 +297,7 @@
                 <div class="card-body">
                   <div class="col mb-3">
                     <div class="card h-100">
-                      <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                      <!-- <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/> -->
                     </div>
                   </div>
                 </div>

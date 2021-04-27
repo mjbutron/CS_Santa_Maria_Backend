@@ -12,11 +12,11 @@ export class UserInterface {
   aboutme?: string; // Not used
   password?: string;
   change_pass?: number;
-  userFcbk?: string;
-  userYtube?: string;
-  userInsta?: string;
+  user_fcbk?: string;
+  user_ytube?: string;
+  user_insta?: string;
   image?: string;
-  lastLogin?: string;
+  last_login?: string;
   createDate?: string;
   updateDate?: string;
   rol_id?: number;

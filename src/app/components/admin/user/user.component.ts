@@ -86,11 +86,7 @@ export class UserComponent implements OnInit {
     this.dataApi.getUserProfile(this.userObj).subscribe((data) =>{
       if (K_COD_OK == data.cod){
         this.userObj = data.user;
-        this.userObj.userFcbk = data.user.user_fcbk;
-        this.userObj.userInsta = data.user.user_insta;
-        this.userObj.userYtube = data.user.user_ytube;
         this.userObj.image = (data.user.image) ? data.user.image : "default-avatar.png";
-        this.userObj.lastLogin = data.user.last_login;
         this.isLoaded = true;
       }
       else{
