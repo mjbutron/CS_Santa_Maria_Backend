@@ -86,9 +86,9 @@ export class CourseComponent implements OnInit {
   getCoursesByPage(page: Number) {
     this.dataApi.getCoursesByPage(page).subscribe((data) =>{
       if (K_COD_OK == data.cod){
-        this.courses = data['allCourses'];
-        this.numCourses = data['total'];
-        this.totalPages = data['totalPages'];
+        this.courses = data.allCourses;
+        this.numCourses = data.total;
+        this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{

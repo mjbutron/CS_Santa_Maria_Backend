@@ -24,24 +24,23 @@ export class AuthService {
   }
 
   // Delay retry
-    delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
-      let retries = maxRetry;
+  delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
+    let retries = maxRetry;
 
-      return (src:Observable<any>) =>
-      src.pipe(
-        retryWhen((errors: Observable<any>) => errors.pipe(
-          delay(delayMs),
-          mergeMap(error => retries-- > 0 ? of(error) : throwError(of(error)))
-        ))
-      );
-    }
+    return (src:Observable<any>) =>
+    src.pipe(
+      retryWhen((errors: Observable<any>) => errors.pipe(
+        delay(delayMs),
+        mergeMap(error => retries-- > 0 ? of(error) : throwError(of(error)))
+      ))
+    );
+  }
 
   login( user: UserInterface){
     const authData = {
       ...user,
       returnSecureToken: true
     };
-
 
     return this.http.post(`${this.url}/login`,
       authData).pipe(
@@ -79,6 +78,7 @@ export class AuthService {
     localStorage.removeItem('accessTkn');
     localStorage.removeItem('username');
     localStorage.removeItem('rolname');
+    localStorage.removeItem('userImage');
     localStorage.removeItem('email');
     this.userToken = '';
     return (this.userToken == '') ? true : false;

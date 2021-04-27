@@ -9,10 +9,15 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { ServiceInterface } from 'src/app/models/service-interface';
 
+// Constants values
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 const K_NUM_ZERO = 0;
 const K_COD_OK = 200;
+const K_ERROR_STR = 'Error';
+const K_UPDATE_STR = 'Actualizado';
+const K_CREATE_STR = 'Creado';
+const K_DEFAULT_IMAGE = 'default_image.jpg';
 
 @Component({
   selector: 'app-service',
@@ -22,7 +27,7 @@ const K_COD_OK = 200;
 export class ServiceComponent implements OnInit {
 
   // Path
-  path = "http://localhost/apiRest/uploads/";
+  path = environment.imageRootPath;
   // Services
   serviceObj: ServiceInterface;
   services: ServiceInterface[] = [];
@@ -33,8 +38,6 @@ export class ServiceComponent implements OnInit {
   selectedImg: File;
   uploadSuccess: boolean;
   progress: number = 0;
-  // Errors
-  errors = "";
   // Numeros páginas
   public numberPage: number[] = [];
   // Página actual
@@ -103,7 +106,7 @@ export class ServiceComponent implements OnInit {
     this.selectedImg = null;
 
     this.serviceObj.title = K_BLANK;
-    this.serviceObj.image = "default_image.jpg";
+    this.serviceObj.image = K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = K_BLANK;
     this.serviceObj.description = K_BLANK;
     this.serviceObj.user_id = 1;
@@ -122,7 +125,7 @@ export class ServiceComponent implements OnInit {
     // Setear valores al ui
     this.serviceObj.id = service.id;
     this.serviceObj.title = service.title;
-    this.serviceObj.image = (service.image) ? service.image : "default_image.jpg";
+    this.serviceObj.image = (service.image) ? service.image : K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = service.subtitle;
     this.serviceObj.description = service.description;
     this.serviceObj.user_id = service.user_id;
@@ -187,28 +190,28 @@ export class ServiceComponent implements OnInit {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
-          this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
-            if (K_COD_OK == res.cod){
+          this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
+            if (K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
+              this.toastr.success(data.message, 'Actualizado');
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, 'Error');
             }
           });
         });
       } else{
-        this.dataApi.updateServiceById(this.serviceObj).subscribe((res) => {
-          if (K_COD_OK == res.cod){
+        this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
+          if (K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado el servicio.', 'Actualizado');
+            this.toastr.success(data.message, K_UPDATE_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, K_ERROR_STR);
           }
         });
       }
