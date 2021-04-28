@@ -23,18 +23,18 @@ export class CoreService {
     email: ""
   };
 
-  httpOptions = {
-  headers: new HttpHeaders({
-    "Content-type": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImFkbWluQHNtbWF0cm9uYXMuY29tIn0.cD-C7PiCeQSm8LtpmAkizzG4K4UTSEh88pavRdk8Yso"
-    })
-  };
-
-  httpOptionsUpload = {
-  headers: new HttpHeaders({
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImFkbWluQHNtbWF0cm9uYXMuY29tIn0.cD-C7PiCeQSm8LtpmAkizzG4K4UTSEh88pavRdk8Yso"
-    })
-  };
+  // httpOptions = {
+  // headers: new HttpHeaders({
+  //   "Content-type": "application/json",
+  //   "Authorization": "Bearer "
+  //   })
+  // };
+  //
+  // httpOptionsUpload = {
+  // headers: new HttpHeaders({
+  //   "Authorization": "Bearer "
+  //   })
+  // };
 
   constructor(private http: HttpClient, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
@@ -48,11 +48,28 @@ export class CoreService {
     //   }, 5000);
   }
 
+  getHeadersOptions(){
+    return {
+    headers: new HttpHeaders({
+      "Content-type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem('accessTkn')
+      })
+    };
+  }
+
+  getUploadHeadersOptions(){
+    return {
+    headers: new HttpHeaders({
+      "Authorization": "Bearer " + localStorage.getItem('accessTkn')
+      })
+    };
+  }
+
   getIsChangePass(email: string){
     if(null != email){
       this.userEmail.email = email;
       const url_api = this.url + '/admin/api/isChangePass';
-      this.http.post(url_api, JSON.stringify(this.userEmail), this.httpOptions).subscribe((data) => {
+      this.http.post(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions()).subscribe((data) => {
         this.globals.isChangePass = (data['change_pass'] == 0) ? false : true;
       }, (err) => {
         this.toastr.error(err.error.message, 'Error');
@@ -80,7 +97,7 @@ export class CoreService {
     var uploadData = new FormData();
     uploadData.append('image', image);
     uploadData.append('path', this.pathServerImg);
-    return this.http.post(url_api, uploadData, this.httpOptionsUpload);
+    return this.http.post(url_api, uploadData, this.getUploadHeadersOptions());
   }
 
   testSchedule(){

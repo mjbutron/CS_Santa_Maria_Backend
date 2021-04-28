@@ -30,14 +30,23 @@ export class DataApiService {
     email: ""
   };
 
-  httpOptions = {
-  headers: new HttpHeaders({
-    "Content-type": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImFkbWluQHNtbWF0cm9uYXMuY29tIn0.cD-C7PiCeQSm8LtpmAkizzG4K4UTSEh88pavRdk8Yso"
-    })
-  };
+  // httpOptions = {
+  // headers: new HttpHeaders({
+  //   "Content-type": "application/json",
+  //   "Authorization": "Bearer "
+  //   })
+  // };
 
   constructor(private http: HttpClient) { }
+
+  getHeadersOptions(){
+    return {
+    headers: new HttpHeaders({
+      "Content-type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem('accessTkn')
+      })
+    };
+  }
 
 // Delay retry
   delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
@@ -68,7 +77,7 @@ export class DataApiService {
 
   updateSliderById(slider: SliderInterface){
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
-    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(slider), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -82,7 +91,7 @@ export class DataApiService {
   updateOrderSlider(slider: SliderInterface, orderSlider: number){
     slider.order_slider = orderSlider;
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
-    return this.http.put(url_api, JSON.stringify(slider), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(slider), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -122,7 +131,7 @@ export class DataApiService {
 
   createService(service: ServiceInterface){
     const url_api = this.url + '/admin/api/services/new';
-    return this.http.post(url_api, JSON.stringify(service), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(service), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -135,7 +144,7 @@ export class DataApiService {
 
   updateServiceById(service: ServiceInterface){
     const url_api = this.url + '/admin/api/services/update/' + service.id;
-    return this.http.put(url_api, JSON.stringify(service), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(service), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -148,7 +157,7 @@ export class DataApiService {
 
   deleteServiceById(serviceId: number){
     const url_api = this.url + '/admin/api/services/delete/' + serviceId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -188,7 +197,7 @@ export class DataApiService {
 
   createWorkshop(workshop: WorkshopInterface){
     const url_api = this.url + '/admin/api/workshops/new';
-    return this.http.post(url_api, JSON.stringify(workshop), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(workshop), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -201,7 +210,7 @@ export class DataApiService {
 
   updateWorkshopById(workshop: WorkshopInterface){
     const url_api = this.url + '/admin/api/workshops/update/' + workshop.id;
-    return this.http.put(url_api, JSON.stringify(workshop), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(workshop), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -214,7 +223,7 @@ export class DataApiService {
 
   deleteWorkshopById(workshopId: number){
     const url_api = this.url + '/admin/api/workshops/delete/' + workshopId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -254,7 +263,7 @@ export class DataApiService {
 
   createCourse(course: CourseInterface){
     const url_api = this.url + '/admin/api/courses/new';
-    return this.http.post(url_api, JSON.stringify(course), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(course), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -267,7 +276,7 @@ export class DataApiService {
 
   updateCourseById(course: CourseInterface){
     const url_api = this.url + '/admin/api/courses/update/' + course.id;
-    return this.http.put(url_api, JSON.stringify(course), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(course), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -280,7 +289,7 @@ export class DataApiService {
 
   deleteCourseById(courseId: number){
     const url_api = this.url + '/admin/api/courses/delete/' + courseId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -333,7 +342,7 @@ export class DataApiService {
 
   updateInfoHomeById(infoHome: ContactInterface){
     const url_api = this.url + '/admin/api/home/info/update/' + infoHome.id;
-    return this.http.put(url_api, JSON.stringify(infoHome), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(infoHome), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -346,7 +355,7 @@ export class DataApiService {
 
   updateInfoFooterById(infoFooter: ContactInterface){
     const url_api = this.url + '/admin/api/footer/info/update/' + infoFooter.id;
-    return this.http.put(url_api, JSON.stringify(infoFooter), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(infoFooter), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -359,7 +368,7 @@ export class DataApiService {
 
   updateInfoContactById(infoContact: ContactInterface){
     const url_api = this.url + '/admin/api/contact/info/update/' + infoContact.id;
-    return this.http.put(url_api, JSON.stringify(infoContact), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(infoContact), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -399,7 +408,7 @@ export class DataApiService {
 
   createOpinion(opinion: OpinionInterface){
     const url_api = this.url + '/admin/api/opinions/new';
-    return this.http.post(url_api, JSON.stringify(opinion), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(opinion), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -412,7 +421,7 @@ export class DataApiService {
 
   updateOpinionById(opinion: OpinionInterface){
     const url_api = this.url + '/admin/api/opinions/update/' + opinion.id;
-    return this.http.put(url_api, JSON.stringify(opinion), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(opinion), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -425,7 +434,7 @@ export class DataApiService {
 
   deleteOpinionById(opinionId: number){
     const url_api = this.url + '/admin/api/opinions/delete/' + opinionId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -465,7 +474,7 @@ export class DataApiService {
 
   createAboutUs(aboutus: AboutUsInterface){
     const url_api = this.url + '/admin/api/aboutus/new';
-    return this.http.post(url_api, JSON.stringify(aboutus), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(aboutus), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -478,7 +487,7 @@ export class DataApiService {
 
   updateAboutUsById(aboutus: AboutUsInterface){
     const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
-    return this.http.put(url_api, JSON.stringify(aboutus), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(aboutus), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -491,7 +500,7 @@ export class DataApiService {
 
   deleteAboutUsId(aboutusId: number){
     const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -505,7 +514,8 @@ export class DataApiService {
 // USER PROFILE API
   getUserProfile(user: UserInterface){
     const url_api = this.url + '/admin/api/userProfile';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions).pipe(
+    return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
+    .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
         console.error(err);
@@ -517,7 +527,7 @@ export class DataApiService {
 
   updateUserProfile(user: UserInterface){
     const url_api = this.url + '/admin/api/userProfile/update/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -531,7 +541,7 @@ export class DataApiService {
   updatePassword(user: UserInterface, newPass: string){
     user.password = newPass;
     const url_api = this.url + '/admin/api/userProfile/updatePass/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -545,7 +555,7 @@ export class DataApiService {
   checkPassword(user: UserInterface, currPass: string){
     user.password = currPass;
     const url_api = this.url + '/admin/api/checkPassword';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -560,7 +570,7 @@ export class DataApiService {
   logout(email: string){
     this.userEmail.email = email;
     const url_api = this.url + '/admin/logout';
-    return this.http.put(url_api, JSON.stringify(this.userEmail), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -614,7 +624,7 @@ export class DataApiService {
 
   createUser(user: UserInterface){
     const url_api = this.url + '/admin/api/users/new';
-    return this.http.post(url_api, JSON.stringify(user), this.httpOptions)
+    return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -627,7 +637,7 @@ export class DataApiService {
 
   updateUserById(user: UserInterface){
     const url_api = this.url + '/admin/api/users/update/' + user.id;
-    return this.http.put(url_api, JSON.stringify(user), this.httpOptions)
+    return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -640,7 +650,7 @@ export class DataApiService {
 
   deleteUserById(userId: number){
     const url_api = this.url + '/admin/api/users/delete/' + userId;
-    return this.http.delete(url_api, this.httpOptions)
+    return this.http.delete(url_api, this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
