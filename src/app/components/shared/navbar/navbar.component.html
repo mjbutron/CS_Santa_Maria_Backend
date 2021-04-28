@@ -15,7 +15,7 @@
     <a class="btn nav-link" (click)="toggleSidebar()"><i class="fa fa-bars"></i></a>
   </div>
   <!-- right menu toggler -->
-  <div class="nav-toggler-right mr-4 d-md-none">
+  <div class="nav-toggler-right mr-4 d-md-none" *ngIf="globals.isAuth">
     <button class="" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
       aria-controls="collapseBasic">
       <!-- <span class="navbar-toggler-icon"></span> -->

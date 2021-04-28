@@ -62,6 +62,7 @@ export class UserComponent implements OnInit {
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
     this.userObj = new UserInterface();
+    this.userObj.image = "default_image.jpg";
     this.globals = globals;
     this.element.scrollTop = 0;
     this.setGlobalsData();
