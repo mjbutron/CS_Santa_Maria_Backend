@@ -284,7 +284,7 @@
               </a>
               <span *ngIf="activeFormImage" style="font-size: 1.5em; color: #adb5bd;">
                 <i class="fas fa-edit float-right"
-                data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de las redes"></i>
+                data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la imagen"></i>
               </span>
             </h5>
           </div>
@@ -315,11 +315,15 @@
             </div>
           </div>
           <div class="row p-2">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <button type="submit" name="submit"
                 class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">Modificar</button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <button type="button" name="clear"
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onDeleteImage()" [hidden]="disabledFormImage">Eliminar actual</button>
+            </div>
+            <div class="col-md-4">
                 <button type="button" name="clear"
                 class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">Cancelar</button>
             </div>

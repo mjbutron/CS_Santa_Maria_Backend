@@ -13,6 +13,7 @@ const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 const K_NUM_ZERO = 0;
 const K_COD_OK = 200;
+const K_DEFAULT_IMAGE = 'default_image.jpg';
 
 @Component({
   selector: 'app-workshop',
@@ -196,6 +197,49 @@ export class WorkshopComponent implements OnInit {
 
   onCancelEditImage(){
     this.changeImage = false;
+  }
+
+  onDeleteImage() {
+    if(K_DEFAULT_IMAGE != this.workShopObj.image){
+      Swal.fire({
+        title: '¿Seguro que deseas eliminar la imagen?',
+        text: "Atención: Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#0095A6',
+        confirmButtonText: '¡Sí, eliminar!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          this.isLoaded = false;
+          this.workShopObj.image = "default_image.jpg";
+          this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
+            if (K_COD_OK == data.cod){
+              this.getWorkShopsByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Eliminada!',
+                'Se ha eliminado la imagen.',
+                'success'
+              )
+            }
+            else{
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Error!',
+                'Error interno. No se ha podido realizar la acción.',
+                'error'
+              )
+            }
+          });
+        }
+      });
+    }
+    else {
+      this.toastr.info("No existe imagen", 'Información');
+    }
   }
 
   onSubmit(form: NgForm){

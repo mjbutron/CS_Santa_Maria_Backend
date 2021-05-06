@@ -105,6 +105,7 @@ export class ServiceComponent implements OnInit {
     this.changeImage = false;
     this.selectedImg = null;
 
+    this.serviceObj.id = null;
     this.serviceObj.title = K_BLANK;
     this.serviceObj.image = K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = K_BLANK;
@@ -180,6 +181,49 @@ export class ServiceComponent implements OnInit {
 
   onCancelEditImage(){
     this.changeImage = false;
+  }
+
+  onDeleteImage() {
+    if(K_DEFAULT_IMAGE != this.serviceObj.image){
+      Swal.fire({
+        title: '¿Seguro que deseas eliminar la imagen?',
+        text: "Atención: Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#0095A6',
+        confirmButtonText: '¡Sí, eliminar!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          this.isLoaded = false;
+          this.serviceObj.image = K_DEFAULT_IMAGE;
+          this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
+            if (K_COD_OK == data.cod){
+              this.getServicesByPage(this.page);
+              this.onCancel();
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Eliminada!',
+                'Se ha eliminado la imagen.',
+                'success'
+              )
+            }
+            else{
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Error!',
+                'Error interno. No se ha podido realizar la acción.',
+                'error'
+              )
+            }
+          });
+        }
+      });
+    }
+    else {
+      this.toastr.info("No existe imagen", 'Información');
+    }
   }
 
   onSubmit(form: NgForm){

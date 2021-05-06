@@ -181,6 +181,11 @@
                   class="btn btn-outline-lightning rounded-0 mb-2"
                   (click)="onEditImage()">Editar imagen
                 </button>
+                <button *ngIf="changeImage" type="button" name="clear"
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onDeleteImage()">Eliminar actual
+                </button>
+              </div>
+              <div class="col-md-6">
                 <button *ngIf="changeImage" type="button" name="button"
                   class="btn btn-outline-lightning rounded-0 mb-2"
                   (click)="onCancelEditImage()">Cancelar

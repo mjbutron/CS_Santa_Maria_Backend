@@ -13,6 +13,7 @@ import { UserInterface } from 'src/app/models/user-interface';
 const K_BLANK = '';
 const K_MAX_SIZE = 3000000;
 const K_COD_OK = 200;
+const K_DEFAULT_IMAGE = 'default_image.jpg';
 
 @Component({
   selector: 'app-user',
@@ -102,6 +103,51 @@ export class UserComponent implements OnInit {
     this.activeForm = true;
   }
 
+  onDeleteImage() {
+    if(K_DEFAULT_IMAGE != this.userObj.image){
+      Swal.fire({
+        title: '¿Seguro que deseas eliminar la imagen?',
+        text: "Atención: Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#0095A6',
+        confirmButtonText: '¡Sí, eliminar!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          this.isLoaded = false;
+          this.userObj.image = K_DEFAULT_IMAGE;
+          this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
+            if (K_COD_OK == data.cod){
+              localStorage.setItem('userImage', this.userObj.image);
+              this.setGlobalsData();
+              this.getUserProfile();
+              this.onCancelEditImage();
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Eliminada!',
+                'Se ha eliminado la imagen.',
+                'success'
+              )
+            }
+            else{
+              this.isLoaded = true;
+              Swal.fire(
+                '¡Error!',
+                'Error interno. No se ha podido realizar la acción.',
+                'error'
+              )
+            }
+          });
+        }
+      });
+    }
+    else {
+      this.toastr.info("No existe imagen", 'Información');
+    }
+  }
+
   onCancelEdit() {
     this.getUserProfile();
     this.activeForm = false;
@@ -175,6 +221,7 @@ export class UserComponent implements OnInit {
             localStorage.setItem('userImage', this.userObj.image);
             this.setGlobalsData();
             this.getUserProfile();
+            this.onCancelEditImage();
             this.isLoaded = true;
             this.toastr.success('Se ha actualizado su imagen', 'Actualizado');
           }
