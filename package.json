@@ -42,6 +42,7 @@
     "node-forge": ">=0.10.0",
     "npm-registry-fetch": "^9.0.0",
     "popper.js": "^1.16.1",
+    "postcss": ">=8.2.10",
     "rxjs": "~6.4.0",
     "serialize-javascript": "^5.0.1",
     "socket.io": "^4.0.2",
