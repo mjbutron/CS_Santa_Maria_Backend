@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -9,15 +10,16 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { ServiceInterface } from 'src/app/models/service-interface';
 
-// Constants values
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
-const K_ERROR_STR = 'Error';
-const K_UPDATE_STR = 'Actualizado';
-const K_CREATE_STR = 'Creado';
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_SERV = '¿Seguro que deseas eliminar el servicio?';
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+const K_DEACTIVE_SERVICE = '¿Seguro que deseas desactivar este servicio?';
+const K_ACTIVE_SERVICE = '¿Seguro que deseas activar este servicio?';
+const K_DEACTIVE_STR = '¡Desactivado!';
+const K_ACTIVE_STR = '¡Activado!';
+const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el servicio.';
+const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el servicio.';
 
 @Component({
   selector: 'app-service',
@@ -47,9 +49,9 @@ export class ServiceComponent implements OnInit {
   // Total de elementos
   public numServices: number;
   // Elementos por página
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editService", { static: false }) editService: ElementRef;
   // Form
@@ -84,16 +86,16 @@ export class ServiceComponent implements OnInit {
 
   getServicesByPage(page: Number) {
     this.dataApi.getServicesByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.services = data['allServices'];
         this.numServices = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{
-        this.numServices = K_NUM_ZERO;
+        this.numServices = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -106,10 +108,10 @@ export class ServiceComponent implements OnInit {
     this.selectedImg = null;
 
     this.serviceObj.id = null;
-    this.serviceObj.title = K_BLANK;
-    this.serviceObj.image = K_DEFAULT_IMAGE;
-    this.serviceObj.subtitle = K_BLANK;
-    this.serviceObj.description = K_BLANK;
+    this.serviceObj.title = globalsConstants.K_BLANK;
+    this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
+    this.serviceObj.subtitle = globalsConstants.K_BLANK;
+    this.serviceObj.description = globalsConstants.K_BLANK;
     this.serviceObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
@@ -126,7 +128,7 @@ export class ServiceComponent implements OnInit {
     // Setear valores al ui
     this.serviceObj.id = service.id;
     this.serviceObj.title = service.title;
-    this.serviceObj.image = (service.image) ? service.image : K_DEFAULT_IMAGE;
+    this.serviceObj.image = (service.image) ? service.image : globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = service.subtitle;
     this.serviceObj.description = service.description;
     this.serviceObj.user_id = service.user_id;
@@ -138,19 +140,19 @@ export class ServiceComponent implements OnInit {
 
   onDeleteService(service: ServiceInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el servicio?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_SERV,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
-        this.dataApi.deleteServiceById(service.id).subscribe((res) => {
-          if (K_COD_OK == res.cod){
+        this.dataApi.deleteServiceById(service.id).subscribe((data) => {
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -158,15 +160,15 @@ export class ServiceComponent implements OnInit {
             this.changeImage = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminado!',
-              'Se ha eliminado el servicio seleccionado.',
+              globalsConstants.K_DELETE_EXC_STR,
+              data.message,
               'success'
             )
           } else{
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -184,36 +186,36 @@ export class ServiceComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.serviceObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.serviceObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.serviceObj.image = K_DEFAULT_IMAGE;
+          this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -222,7 +224,7 @@ export class ServiceComponent implements OnInit {
       });
     }
     else {
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
   }
 
@@ -235,27 +237,27 @@ export class ServiceComponent implements OnInit {
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
           this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success(data.message, 'Actualizado');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error(data.message, 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success(data.message, K_UPDATE_STR);
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error(data.message, K_ERROR_STR);
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -265,28 +267,28 @@ export class ServiceComponent implements OnInit {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
-          this.dataApi.createService(this.serviceObj).subscribe((res) => {
-            if (K_COD_OK == res.cod){
+          this.dataApi.createService(this.serviceObj).subscribe((data) => {
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+              this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
-        this.dataApi.createService(this.serviceObj).subscribe((res) => {
-          if (K_COD_OK == res.cod){
+        this.dataApi.createService(this.serviceObj).subscribe((data) => {
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha creado un nuevo servicio', 'Añadido');
+            this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -296,9 +298,9 @@ export class ServiceComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -331,33 +333,33 @@ export class ServiceComponent implements OnInit {
   onActiveService(service: ServiceInterface){
     let auxActive = 0;
     if(1 == service.active){
-      this.alertActiveStr = "¿Seguro que deseas desactivar este servicio?";
-      this.actionActiveStr = "¡Desactivado!";
-      this.actionTextActiveStr = "Se ha desactivado el servicio.";
+      this.alertActiveStr = K_DEACTIVE_SERVICE;
+      this.actionActiveStr = K_DEACTIVE_STR;
+      this.actionTextActiveStr = K_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
     else{
-      this.alertActiveStr = "¿Seguro que deseas activar este servicio?";
-      this.actionActiveStr = "¡Activado!";
-      this.actionTextActiveStr = "Se ha activado el servicio.";
+      this.alertActiveStr = K_ACTIVE_SERVICE;
+      this.actionActiveStr = K_ACTIVE_STR;
+      this.actionTextActiveStr = K_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
     Swal.fire({
       title: this.alertActiveStr,
-      icon: 'warning',
+      icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_OK_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
         service.active = (service.active == 0) ? 1 : 0;  // Así no tener que hace esto
-        this.dataApi.updateServiceById(service).subscribe((res) => {
-          if (K_COD_OK == res.cod){
+        this.dataApi.updateServiceById(service).subscribe((data) => {
+          if (globalsConstants.K_COD_OK == data.cod){
             service.active = auxActive;
             this.getServicesByPage(this.page);
             this.isEditForm = false;
@@ -372,8 +374,8 @@ export class ServiceComponent implements OnInit {
             service.active = auxActive;
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
