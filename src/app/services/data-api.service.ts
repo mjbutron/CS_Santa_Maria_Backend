@@ -15,8 +15,6 @@ import { ServiceInterface } from 'src/app/models/service-interface';
 import { AboutUsInterface } from 'src/app/models/aboutus-interface';
 import { UserInterface } from 'src/app/models/user-interface';
 
-const getErrorMessage = (maxRetry: number) =>
-'Tried to load resource over XHR for ' + maxRetry + ' times without success.';
 const DEFAULT_MAX_RETRIES = 5;
 
 @Injectable({
@@ -48,7 +46,7 @@ export class DataApiService {
     };
   }
 
-// Delay retry
+  // Delay retry
   delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
     let retries = maxRetry;
 
@@ -56,7 +54,7 @@ export class DataApiService {
     src.pipe(
       retryWhen((errors: Observable<any>) => errors.pipe(
         delay(delayMs),
-        mergeMap(error => retries-- > 0 ? of(error) : throwError(getErrorMessage(maxRetry)))
+        mergeMap(error => retries-- > 0 ? of(error) : throwError(of(error)))
       ))
     );
   }
@@ -68,8 +66,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -81,8 +78,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -95,8 +91,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -109,8 +104,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -122,8 +116,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -135,8 +128,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -148,8 +140,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -161,8 +152,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -175,8 +165,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -188,8 +177,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -201,8 +189,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -214,8 +201,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -227,8 +213,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -241,8 +226,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -254,8 +238,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -267,8 +250,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -280,8 +262,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -293,8 +274,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -307,8 +287,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -320,8 +299,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -333,8 +311,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -346,8 +323,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -359,8 +335,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -372,8 +347,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -386,8 +360,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -399,8 +372,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -412,8 +384,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -425,8 +396,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -438,8 +408,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -452,8 +421,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -465,8 +433,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -478,8 +445,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -491,8 +457,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -504,8 +469,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -518,8 +482,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -531,8 +494,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -545,8 +507,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -559,8 +520,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -574,8 +534,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -588,8 +547,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -602,8 +560,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -615,8 +572,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -628,8 +584,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -641,8 +596,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )
@@ -654,8 +608,7 @@ export class DataApiService {
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
-        console.error(err);
-        return of( err );
+        return of( err.value.error );
       }),
       shareReplay()
     )

@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
+import * as globalsConstants from 'src/app/common/globals';
+import { of, throwError } from 'rxjs';
+import { delay, mergeMap, catchError, retry, retryWhen, shareReplay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { Globals } from 'src/app/common/globals';
+
+const DEFAULT_MAX_RETRIES = 5;
+const K_URL_IS_CHANGE_PASS = '/admin/api/isChangePass';
 
 @Injectable({
   providedIn: 'root'
@@ -65,16 +71,42 @@ export class CoreService {
     };
   }
 
+  // Delay retry
+  delayRetry(delayMs: number, maxRetry = DEFAULT_MAX_RETRIES){
+    let retries = maxRetry;
+
+    return (src:Observable<any>) =>
+    src.pipe(
+      retryWhen((errors: Observable<any>) => errors.pipe(
+        delay(delayMs),
+        mergeMap(error => retries-- > 0 ? of(error) : throwError(of(error)))
+      ))
+    );
+  }
+
   getIsChangePass(email: string){
     if(null != email){
-      this.userEmail.email = email;
-      const url_api = this.url + '/admin/api/isChangePass';
-      this.http.post(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions()).subscribe((data) => {
-        this.globals.isChangePass = (data['change_pass'] == 0) ? false : true;
-      }, (err) => {
-        this.toastr.error(err.error.message, 'Error');
+      this.changePassService(email).subscribe(data => {
+        if (globalsConstants.K_COD_OK == data.cod){
+          this.globals.isChangePass = (data.isChangePass.change_pass == 0) ? false : true;
+        } else{
+          this.globals.isChangePass = true;
+        }
       });
     }
+  }
+
+  changePassService(email: string){
+    this.userEmail.email = email;
+    const url_api = this.url + K_URL_IS_CHANGE_PASS;
+    return this.http.post(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
   }
 
   toggleSidebar() {
@@ -102,7 +134,7 @@ export class CoreService {
 
   testSchedule(){
     console.log("*** Test Schedule ***");
-    console.log(this.globals.isChangePass);
+    this.toastr.info('1 Nueva notificación', 'Notificaciones');
   }
 
 }
