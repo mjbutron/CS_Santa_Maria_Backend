@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -9,11 +10,16 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { CourseInterface } from 'src/app/models/course-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_COURSE = '¿Seguro que deseas eliminar el curso?';
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+const K_DEACTIVE_COURSE = '¿Seguro que deseas desactivar este curso?';
+const K_ACTIVE_COURSE = '¿Seguro que deseas activar este curso?';
+const K_DEACTIVE_STR = '¡Desactivado!';
+const K_ACTIVE_STR = '¡Activado!';
+const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el curso.';
+const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el curso.';
 
 @Component({
   selector: 'app-course',
@@ -47,9 +53,9 @@ export class CourseComponent implements OnInit {
   // Total de elementos
   public numCourses: number;
   // Elementos por página
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editCourse", { static: false }) editCourse: ElementRef;
   // Form
@@ -86,16 +92,16 @@ export class CourseComponent implements OnInit {
 
   getCoursesByPage(page: Number) {
     this.dataApi.getCoursesByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.courses = data.allCourses;
         this.numCourses = data.total;
         this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{
-        this.numCourses = K_NUM_ZERO;
+        this.numCourses = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -109,18 +115,19 @@ export class CourseComponent implements OnInit {
     this.inOfferChk = false;
     this.inNewChk = true;
 
-    this.courseObj.title = K_BLANK;
-    this.courseObj.description = K_BLANK;
-    this.courseObj.image = "default_image.jpg";
+    this.courseObj.id = null;
+    this.courseObj.title = globalsConstants.K_BLANK;;
+    this.courseObj.description = globalsConstants.K_BLANK;;
+    this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.courseObj.new_course = 1;
     this.courseObj.offer = 0;
-    this.courseObj.address = K_BLANK;
-    this.courseObj.session_date = K_BLANK;
-    this.courseObj.session_start = K_BLANK;
-    this.courseObj.session_end = K_BLANK;
+    this.courseObj.address = globalsConstants.K_BLANK;;
+    this.courseObj.session_date = globalsConstants.K_BLANK;;
+    this.courseObj.session_start = globalsConstants.K_BLANK;;
+    this.courseObj.session_end = globalsConstants.K_BLANK;;
     this.courseObj.sessions = 0;
     this.courseObj.hours = 0;
-    this.courseObj.level = K_BLANK;
+    this.courseObj.level = globalsConstants.K_BLANK;;
     this.courseObj.places = 0;
     this.courseObj.free_places = 0;
     this.courseObj.price = 0;
@@ -141,7 +148,7 @@ export class CourseComponent implements OnInit {
     this.courseObj.id = course.id;
     this.courseObj.title = course.title;
     this.courseObj.description = course.description;
-    this.courseObj.image = (course.image) ? course.image : "default_image.jpg";
+    this.courseObj.image = (course.image) ? course.image : globalsConstants.K_DEFAULT_IMAGE;
     this.courseObj.new_course = course.new_course;
     this.inNewChk = (course.new_course == 1) ? true : false;
     this.courseObj.offer = course.offer;
@@ -165,19 +172,19 @@ export class CourseComponent implements OnInit {
 
   onDeleteCourse(course: CourseInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el curso?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_COURSE,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteCourseById(course.id).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -185,15 +192,15 @@ export class CourseComponent implements OnInit {
             this.changeImage = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminado!',
-              'Se ha eliminado el curso seleccionado.',
+              globalsConstants.K_DELETE_EXC_STR,
+              data.message,
               'success'
             )
           } else{
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -211,36 +218,36 @@ export class CourseComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.courseObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.courseObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.courseObj.image = K_DEFAULT_IMAGE;
+          this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -249,7 +256,7 @@ export class CourseComponent implements OnInit {
       });
     }
     else {
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
   }
 
@@ -262,27 +269,27 @@ export class CourseComponent implements OnInit {
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado el curso', 'Actualizado');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -293,27 +300,27 @@ export class CourseComponent implements OnInit {
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+              this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha creado un nuevo curso', 'Añadido');
+            this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -323,9 +330,9 @@ export class CourseComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -363,15 +370,15 @@ export class CourseComponent implements OnInit {
   onActiveCourse(course: CourseInterface){
     let auxActive = 0;
     if(1 == course.active){
-      this.alertActiveStr = "¿Seguro que deseas desactivar este curso?";
-      this.actionActiveStr = "¡Desactivado!";
-      this.actionTextActiveStr = "Se ha desactivado el curso.";
+      this.alertActiveStr = K_DEACTIVE_COURSE;
+      this.actionActiveStr = K_DEACTIVE_STR;
+      this.actionTextActiveStr = K_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
     else{
-      this.alertActiveStr = "¿Seguro que deseas activar este curso?";
-      this.actionActiveStr = "¡Activado!";
-      this.actionTextActiveStr = "Se ha activado el curso.";
+      this.alertActiveStr = K_ACTIVE_COURSE;
+      this.actionActiveStr = K_ACTIVE_STR;
+      this.actionTextActiveStr = K_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -379,17 +386,17 @@ export class CourseComponent implements OnInit {
       title: this.alertActiveStr,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_OK_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
-        course.active = (course.active == 0) ? 1 : 0; // Así no tener que hace esto
+        course.active = (course.active == 0) ? 1 : 0; // Así no tener que hacer esto
         this.dataApi.updateCourseById(course).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -403,8 +410,8 @@ export class CourseComponent implements OnInit {
             course.active = auxActive;
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
