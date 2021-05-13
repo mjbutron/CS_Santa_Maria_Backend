@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -9,11 +10,16 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { WorkshopInterface } from 'src/app/models/workshop-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_WORKSHOP = '¿Seguro que deseas eliminar el taller?';
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+const K_DEACTIVE_WORKSHOP = '¿Seguro que deseas desactivar este taller?';
+const K_ACTIVE_WORKSHOP = '¿Seguro que deseas activar este taller?';
+const K_DEACTIVE_STR = '¡Desactivado!';
+const K_ACTIVE_STR = '¡Activado!';
+const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el taller.';
+const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el taller.';
 
 @Component({
   selector: 'app-workshop',
@@ -46,9 +52,9 @@ export class WorkshopComponent implements OnInit {
   // Total de elementos
   public numWorkShops: number;
   // Elementos por página
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editWorkshop", { static: false }) editWorkshop: ElementRef;
   // Form
@@ -84,39 +90,41 @@ export class WorkshopComponent implements OnInit {
 
   getWorkShopsByPage(page: Number) {
     this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.workShops = data['allWorkshops'];
         this.numWorkShops = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{
-        this.numWorkShops = K_NUM_ZERO;
+        this.numWorkShops = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   onNewWorkshop() {
-    // Habilitar form en formato eedición
+    // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
     this.selectedImg = null;
+
+    this.workShopObj.id = null;
     this.workShopObj.home = 0;
     this.inHomeChk = false;
-    this.workShopObj.title = K_BLANK;
-    this.workShopObj.description_home = K_BLANK;
-    this.workShopObj.image = "default_image.jpg";
-    this.workShopObj.subtitle = K_BLANK;
+    this.workShopObj.title = globalsConstants.K_BLANK;;
+    this.workShopObj.description_home = globalsConstants.K_BLANK;;
+    this.workShopObj.image = globalsConstants.K_DEFAULT_IMAGE;
+    this.workShopObj.subtitle = globalsConstants.K_BLANK;;
     this.workShopObj.price = 0;
-    this.workShopObj.address = K_BLANK;
-    this.workShopObj.session_date = K_BLANK;
-    this.workShopObj.session_start = K_BLANK;
-    this.workShopObj.session_end = K_BLANK;
+    this.workShopObj.address = globalsConstants.K_BLANK;;
+    this.workShopObj.session_date = globalsConstants.K_BLANK;;
+    this.workShopObj.session_start = globalsConstants.K_BLANK;;
+    this.workShopObj.session_end = globalsConstants.K_BLANK;;
     this.workShopObj.sessions = 0;
-    this.workShopObj.description = K_BLANK;
+    this.workShopObj.description = globalsConstants.K_BLANK;;
     this.workShopObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
@@ -136,7 +144,7 @@ export class WorkshopComponent implements OnInit {
     this.inHomeChk = (workShop.home == 1) ? true : false;
     this.workShopObj.title = workShop.title;
     this.workShopObj.description_home = workShop.description_home;
-    this.workShopObj.image = (workShop.image) ? workShop.image : "default_image.jpg";
+    this.workShopObj.image = (workShop.image) ? workShop.image : globalsConstants.K_DEFAULT_IMAGE;;
     this.workShopObj.subtitle = workShop.subtitle;
     this.workShopObj.price = workShop.price;
     this.workShopObj.address = workShop.address;
@@ -154,19 +162,19 @@ export class WorkshopComponent implements OnInit {
 
   onDeleteWorkshop(workShop: WorkshopInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el taller?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_WORKSHOP,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteWorkshopById(workShop.id).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getWorkShopsByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -174,15 +182,15 @@ export class WorkshopComponent implements OnInit {
             this.changeImage = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminado!',
-              'Se ha eliminado el taller seleccionado.',
+              globalsConstants.K_DELETE_EXC_STR,
+              data.message,
               'success'
             )
           } else{
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -200,36 +208,36 @@ export class WorkshopComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.workShopObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.workShopObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.workShopObj.image = "default_image.jpg";
+          this.workShopObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getWorkShopsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -238,7 +246,7 @@ export class WorkshopComponent implements OnInit {
       });
     }
     else {
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
   }
 
@@ -251,27 +259,27 @@ export class WorkshopComponent implements OnInit {
           this.workShopObj.image = this.workshopImg;
           this.uploadSuccess = false;
           this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getWorkShopsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.updateWorkshopById(this.workShopObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getWorkShopsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado el taller', 'Actualizado');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -282,27 +290,27 @@ export class WorkshopComponent implements OnInit {
           this.workShopObj.image = this.workshopImg;
           this.uploadSuccess = false;
           this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getWorkShopsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+              this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.createWorkshop(this.workShopObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getWorkShopsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha creado un nuevo taller', 'Añadido');
+            this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -312,9 +320,9 @@ export class WorkshopComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -351,15 +359,15 @@ export class WorkshopComponent implements OnInit {
   onActiveWorkshop(workshop: WorkshopInterface){
     let auxActive = 0;
     if(1 == workshop.active){
-      this.alertActiveStr = "¿Seguro que deseas desactivar este taller?";
-      this.actionActiveStr = "¡Desactivado!";
-      this.actionTextActiveStr = "Se ha desactivado el taller.";
+      this.alertActiveStr = K_DEACTIVE_WORKSHOP;
+      this.actionActiveStr = K_DEACTIVE_STR;
+      this.actionTextActiveStr = K_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
     else{
-      this.alertActiveStr = "¿Seguro que deseas activar este taller?";
-      this.actionActiveStr = "¡Activado!";
-      this.actionTextActiveStr = "Se ha activado el taller.";
+      this.alertActiveStr = K_ACTIVE_WORKSHOP;
+      this.actionActiveStr = K_ACTIVE_STR;
+      this.actionTextActiveStr = K_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -367,17 +375,17 @@ export class WorkshopComponent implements OnInit {
       title: this.alertActiveStr,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_OK_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
         workshop.active = (workshop.active == 0) ? 1 : 0; // Así no tener que hace esto
         this.dataApi.updateWorkshopById(workshop).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             workshop.active = auxActive;
             this.getWorkShopsByPage(this.page);
             this.isEditForm = false;
@@ -392,8 +400,8 @@ export class WorkshopComponent implements OnInit {
             workshop.active = auxActive;
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
