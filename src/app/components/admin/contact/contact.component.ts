@@ -2,12 +2,27 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { ContactInterface } from 'src/app/models/contact-interface';
 
-const K_COD_OK = 200;
+// Constants
+const K_INFO_POP_TITLE = "Información de sección";
+const K_INFO_POP_TITLE_TIME = "Ejemplo de horario"
+const K_INFO_POP_TITLE_PHONE = "Información de teléfonos";
+const K_INFO_POP_TITLE_EMAIL = "Información de Emails";
+const K_HOME_POP_DATA = "En esta sección podrá indicar los números de teléfono y "
++ "redes sociales que quiere que aparezcan en la barra superior de la página web."
+const K_FOOTER_POP_DATA = "En esta sección podrá indicar la información "
++ "que quiere que aparezca en el pie de página de la página web.";
+const K_CONTACT_POP_DATA = "En esta sección podrá indicar la información "
++ "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
++ "la localización directamente haciendo click en el mapa.";
+const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
+const K_PHONE_POP_DATA = "Podrá indicar varios teléfonos separandolos con ( ; ).";
+const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
 
 @Component({
   selector: 'app-contact',
@@ -19,7 +34,7 @@ export class ContactComponent implements OnInit {
   // Info Obj
   infoObj: ContactInterface;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Coordinates
   lat = 0.0;
   lon = 0.0;
@@ -28,13 +43,13 @@ export class ContactComponent implements OnInit {
   // Popover
   infoPopTitle = '';
   infoPopTitleTime = '';
-  infoPopTitleTel = '';
+  infoPopTitlePhone = '';
   infoPopTitleEmail = '';
   homePopData = '';
   footerPopData = '';
   contactPopData = '';
   timePopData = '';
-  telPopData = '';
+  phonePopData = '';
   emailPopData = '';
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService) {
@@ -51,26 +66,22 @@ export class ContactComponent implements OnInit {
   }
 
   populatePopData(){
-    this.infoPopTitle = "Información de sección";
-    this.infoPopTitleTime = "Ejemplo de horario"
-    this.infoPopTitleTel = "Información de teléfonos";
-    this.infoPopTitleEmail = "Información de Emails";
+    this.infoPopTitle = K_INFO_POP_TITLE;
+    this.infoPopTitleTime = K_INFO_POP_TITLE_TIME;
+    this.infoPopTitlePhone = K_INFO_POP_TITLE_PHONE;
+    this.infoPopTitleEmail = K_INFO_POP_TITLE_EMAIL;
 
-    this.homePopData = "En esta sección podrá indicar los números de teléfono y "
-    + "redes sociales que quiere que aparezcan en la barra superior de la página web."
-    this.footerPopData = "En esta sección podrá indicar la información "
-    + "que quiere que aparezca en el pie de página de la página web.";
-    this.contactPopData = "En esta sección podrá indicar la información "
-    + "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
-    + "la localización directamente haciendo click en el mapa.";
-    this.timePopData = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
-    this.telPopData = "Podrá indicar varios teléfonos separandolos con ( ; ).";
-    this.emailPopData = "Podrá indicar varios emails separandolos con ( ; ).";
+    this.homePopData = K_HOME_POP_DATA;
+    this.footerPopData = K_FOOTER_POP_DATA;
+    this.contactPopData = K_CONTACT_POP_DATA;
+    this.timePopData = K_TIME_POP_DATA
+    this.phonePopData = K_PHONE_POP_DATA;
+    this.emailPopData = K_EMAIL_POP_DATA;
   }
 
   getHomeInfo(){
     this.dataApi.getInfoHome().subscribe((data) =>{
-      if (K_COD_OK == data.cod && 0 < data['homeInfo'].length){
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data['homeInfo'].length){
         this.infoObj.id = data['homeInfo'][0]['id'];
         this.infoObj.home_first_ph = data['homeInfo'][0]['home_first_ph'];
         this.infoObj.home_second_ph = data['homeInfo'][0]['home_second_ph'];
@@ -80,14 +91,14 @@ export class ContactComponent implements OnInit {
         this.isLoaded = true;
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getFooterInfo(){
     this.dataApi.getInfoFooter().subscribe((data) =>{
-      if (K_COD_OK == data.cod && 0 < data['footerInfo'].length){
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data['footerInfo'].length){
         this.infoObj.footer_address = data['footerInfo'][0]['footer_address'];
         this.infoObj.footer_email = data['footerInfo'][0]['footer_email'];
         this.infoObj.footer_ph = data['footerInfo'][0]['footer_ph'];
@@ -95,14 +106,14 @@ export class ContactComponent implements OnInit {
         this.isLoaded = true;
       } else {
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getContactInfo(){
     this.dataApi.getInfoContact().subscribe((data) =>{
-      if (K_COD_OK == data.cod && 0 < data['contactInfo'].length){
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data['contactInfo'].length){
         this.infoObj.cnt_address = data['contactInfo'][0]['cnt_address'];
         this.infoObj.cnt_ph_appo = data['contactInfo'][0]['cnt_ph_appo'];
         this.infoObj.cnt_emails = data['contactInfo'][0]['cnt_emails'];
@@ -115,7 +126,7 @@ export class ContactComponent implements OnInit {
         this.isLoaded = true;
       } else {
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -126,12 +137,12 @@ export class ContactComponent implements OnInit {
     }
     this.isLoaded = false;
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
-        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+        this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -146,12 +157,12 @@ export class ContactComponent implements OnInit {
     }
     this.isLoaded = false;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
-        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+        this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -166,12 +177,12 @@ export class ContactComponent implements OnInit {
     }
     this.isLoaded = false;
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
-        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+        this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
