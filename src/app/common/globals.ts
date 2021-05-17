@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 // Image
 export const K_DEFAULT_IMAGE = 'default_image.jpg';
 export const K_DEFAULT_AVATAR = 'default-avatar.png';
-export const K_NO_IMAGE_INFO = 'No existe imagen';
+export const K_NO_IMAGE_INFO = 'No se ha cargado ninguna imagen';
 export const K_DELETE_IMAGE_STR = '¡Eliminada!';
 export const K_DELETE_IMG_SUCCESS = 'Se ha eliminado la imagen.';
 // Upload image
@@ -23,9 +23,13 @@ export const K_ERROR_STR = 'Error';
 export const K_ERROR_EXC_STR = '¡Error!';
 export const K_INFO_STR = 'Información';
 export const K_UPDATE_STR = 'Actualizado';
+export const K_UPDATE_F_STR = 'Actualizada';
 export const K_CREATE_STR = 'Creado';
+export const K_CREATE_F_STR = 'Creada';
 export const K_ADD_STR = 'Añadido';
+export const K_ADD_F_STR = 'Añadida';
 export const K_DELETE_EXC_STR = '¡Eliminado!';
+export const K_DELETE_F_EXC_STR = '¡Eliminada!';
 export const K_TOP_ELEMENT_STR = 'rtrSup';
 export const K_CONFIRM_BUTTON_STR = '¡Sí, eliminar!';
 export const K_OK_BUTTON_STR = 'Aceptar';

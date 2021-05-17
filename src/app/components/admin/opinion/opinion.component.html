@@ -97,7 +97,7 @@
               <div class="col-md-10">
                 <div class="form-group">
                   <label for="name">Nombre del usuario</label>
-                  <input name="name" id="name" type="text" [(ngModel)]="OpinionObj.name" class="form-control">
+                  <input name="name" id="name" type="text" [(ngModel)]="opinionObj.name" class="form-control">
                 </div>
               </div>
               <div class="col-md-2">
@@ -105,7 +105,7 @@
                   <label for="rating">Valoración (<span style="font-size: 0.7em; color: gold;">
                       <i class="fas fa-star"></i>
                     </span>)</label>
-                  <input name="rating" id="rating" type="number" min="0" max="5" [(ngModel)]="OpinionObj.rating" class="form-control">
+                  <input name="rating" id="rating" type="number" min="0" max="5" [(ngModel)]="opinionObj.rating" class="form-control">
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@
                 <div class="form-group">
                   <label for="commentary">Comentario</label>
                   <!-- <textarea name="commentary" id="commentary" rows="4" cols="80" class="form-control"></textarea> -->
-                  <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="OpinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor>
+                  <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor>
                 </div>
               </div>
               <div class="col-md-2">
@@ -139,7 +139,7 @@
                   <div class="card-body">
                     <div class="col mb-4">
                       <div class="card h-100">
-                        <img [src]="path+OpinionObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
+                        <img [src]="path+opinionObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
                       </div>
                     </div>
                   </div>

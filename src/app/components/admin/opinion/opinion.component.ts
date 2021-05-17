@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -11,11 +12,10 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { OpinionInterface } from 'src/app/models/opinion-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_OPINION = '¿Seguro que deseas eliminar esta opinión?';
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
 
 @Component({
   selector: 'app-opinion',
@@ -41,7 +41,7 @@ export class OpinionComponent implements OnInit {
   // Path
   path = environment.imageRootPath;
   // Opinions
-  OpinionObj: OpinionInterface;
+  opinionObj: OpinionInterface;
   opinions: OpinionInterface[] = [];
   opinionImg: string;
   inHomeChk: boolean;
@@ -62,9 +62,9 @@ export class OpinionComponent implements OnInit {
   // Total de elementos
   public numOpinions: number;
   // Elementos por página
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editOpinion", { static: false }) editOpinion: ElementRef;
   // Form
@@ -75,7 +75,7 @@ export class OpinionComponent implements OnInit {
   isLoaded: boolean;
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
-    this.OpinionObj = new OpinionInterface();
+    this.opinionObj = new OpinionInterface();
     this.inHomeChk = false;
     this.element.scrollTop = 0;
   }
@@ -96,16 +96,16 @@ export class OpinionComponent implements OnInit {
 
   getOpinionsByPage(page: Number) {
     this.dataApi.getOpinionsByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.opinions = data['allOpinions'];
         this.numOpinions = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{
-        this.numOpinions = K_NUM_ZERO;
+        this.numOpinions = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -117,13 +117,14 @@ export class OpinionComponent implements OnInit {
     this.changeImage = false;
     this.selectedImg = null;
 
-    this.OpinionObj.home = 0;
+    this.opinionObj.id = null;
+    this.opinionObj.home = 0;
     this.inHomeChk = false;
-    this.OpinionObj.name = K_BLANK;
-    this.OpinionObj.image = "default_image.jpg";
-    this.OpinionObj.commentary = K_BLANK;
-    this.OpinionObj.rating = 0;
-    this.OpinionObj.user_id = 1;
+    this.opinionObj.name = globalsConstants.K_BLANK;
+    this.opinionObj.image = globalsConstants.K_DEFAULT_IMAGE;
+    this.opinionObj.commentary = globalsConstants.K_BLANK;
+    this.opinionObj.rating = 0;
+    this.opinionObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -131,20 +132,20 @@ export class OpinionComponent implements OnInit {
   }
 
   onEditOpinion(opinion: OpinionInterface) {
-    // Habilitar form en formato eedición
+    // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
     // Setear valores al ui
-    this.OpinionObj.id = opinion.id;
-    this.OpinionObj.home = opinion.home;
+    this.opinionObj.id = opinion.id;
+    this.opinionObj.home = opinion.home;
     this.inHomeChk = (opinion.home == 1) ? true : false;
-    this.OpinionObj.name = opinion.name;
-    this.OpinionObj.commentary = opinion.commentary;
-    this.OpinionObj.image = (opinion.image) ? opinion.image : "default_image.jpg";
-    this.OpinionObj.rating = opinion.rating;
-    this.OpinionObj.user_id = opinion.user_id;
+    this.opinionObj.name = opinion.name;
+    this.opinionObj.commentary = opinion.commentary;
+    this.opinionObj.image = (opinion.image) ? opinion.image : globalsConstants.K_DEFAULT_IMAGE;
+    this.opinionObj.rating = opinion.rating;
+    this.opinionObj.user_id = opinion.user_id;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -153,19 +154,19 @@ export class OpinionComponent implements OnInit {
 
   onDeleteOpinion(opinion: OpinionInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar esta opinión?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_OPINION,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteOpinionById(opinion.id).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getOpinionsByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -173,15 +174,15 @@ export class OpinionComponent implements OnInit {
             this.changeImage = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminada!',
-              'Se ha eliminado la opinión seleccionada.',
+              globalsConstants.K_DELETE_F_EXC_STR,
+              data.message,
               'success'
             )
           } else {
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -199,36 +200,36 @@ export class OpinionComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.OpinionObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.opinionObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.OpinionObj.image = K_DEFAULT_IMAGE;
-          this.dataApi.updateOpinionById(this.OpinionObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+          this.opinionObj.image = globalsConstants.K_DEFAULT_IMAGE;
+          this.dataApi.updateOpinionById(this.opinionObj).subscribe((data) => {
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getOpinionsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -237,7 +238,7 @@ export class OpinionComponent implements OnInit {
       });
     }
     else {
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
   }
 
@@ -247,30 +248,30 @@ export class OpinionComponent implements OnInit {
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.opinionImg = img['message'];
-          this.OpinionObj.image = this.opinionImg;
+          this.opinionObj.image = this.opinionImg;
           this.uploadSuccess = false;
-          this.dataApi.updateOpinionById(this.OpinionObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+          this.dataApi.updateOpinionById(this.opinionObj).subscribe((data) => {
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getOpinionsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado la opinión', 'Actualizada');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
-        this.dataApi.updateOpinionById(this.OpinionObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+        this.dataApi.updateOpinionById(this.opinionObj).subscribe((data) => {
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getOpinionsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado la opinión', 'Actualizada');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -278,30 +279,30 @@ export class OpinionComponent implements OnInit {
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.opinionImg = img['message'];
-          this.OpinionObj.image = this.opinionImg;
+          this.opinionObj.image = this.opinionImg;
           this.uploadSuccess = false;
-          this.dataApi.createOpinion(this.OpinionObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+          this.dataApi.createOpinion(this.opinionObj).subscribe((data) => {
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getOpinionsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha creado una nueva opinión', 'Añadida');
+              this.toastr.success(data.message, globalsConstants.K_ADD_F_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
-        this.dataApi.createOpinion(this.OpinionObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+        this.dataApi.createOpinion(this.opinionObj).subscribe((data) => {
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getOpinionsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha creado una nueva opinión', 'Añadida');
+            this.toastr.success(data.message, globalsConstants.K_ADD_F_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -312,9 +313,9 @@ export class OpinionComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -345,7 +346,7 @@ export class OpinionComponent implements OnInit {
   }
 
   toggleVisibility(e){
-    this.OpinionObj.home = (this.inHomeChk) ? 1 : 0;
+    this.opinionObj.home = (this.inHomeChk) ? 1 : 0;
   }
 
   counter(index: number) {
