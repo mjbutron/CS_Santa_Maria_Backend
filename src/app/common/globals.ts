@@ -34,9 +34,13 @@ export const K_TOP_ELEMENT_STR = 'rtrSup';
 export const K_CONFIRM_BUTTON_STR = '¡Sí, eliminar!';
 export const K_OK_BUTTON_STR = 'Aceptar';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
+export const K_NO_DATE = '--/--/----';
+export const K_FORMAT_DATE = 'yyyy-MM-dd';
+export const K_LOCALE_EN = 'en';
 // Colors
 export const K_CONFIRM_BUTTON_COLOR = '#d33';
 export const K_CANCEL_BUTTON_COLOR = '#0095A6';
+export const K_SLIDER_TEXT_COLOR = '#ffffff';
 
 @Injectable()
 export class Globals {

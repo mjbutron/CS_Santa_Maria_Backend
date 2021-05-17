@@ -3,6 +3,7 @@ import { formatDate } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
@@ -14,11 +15,7 @@ import { WorkshopInterface } from 'src/app/models/workshop-interface';
 import { CourseInterface } from 'src/app/models/course-interface';
 import { OpinionInterface } from 'src/app/models/opinion-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NO_DATE = '--/--/----';
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
+const K_UPDATE_ORDER = 'Se ha modificado el orden de la cabecera';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +27,7 @@ export class DashboardComponent implements OnInit {
   // Path
   path = environment.imageRootPath;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Form
   disabledForm = true;
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
@@ -64,12 +61,10 @@ export class DashboardComponent implements OnInit {
   numOpn: number;
   isLastOpn = false;
   nextDateOpn: string;
-  // Errors
-  errors = "";
   // Load
   isLoaded: boolean;
   // Today date
-  todayDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+  todayDate = formatDate(new Date(), globalsConstants.K_FORMAT_DATE,globalsConstants.K_LOCALE_EN);
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.sliderObj = new SliderInterface();
@@ -89,7 +84,7 @@ export class DashboardComponent implements OnInit {
 
   getAllServices(){
     this.dataApi.getAllServices().subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         if(0 < data['allServices'].length){
           this.services = data['allServices'];
           this.numSrv = data['allServices'].length;
@@ -98,20 +93,20 @@ export class DashboardComponent implements OnInit {
         }
         else{
           this.isLastSrv = false;
-          this.numSrv = K_NUM_ZERO;
-          this.lastDateSrv = K_NO_DATE;
+          this.numSrv = globalsConstants.K_ZERO_RESULTS;
+          this.lastDateSrv = globalsConstants.K_NO_DATE;
         }
         this.isLoaded = true;
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getAllWorkshops(){
     this.dataApi.getAllWorkshops().subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         if(0 < data['allWorkshops'].length){
           for(let wspHome of data['allWorkshops']){
             if(wspHome.home == 1){
@@ -126,37 +121,37 @@ export class DashboardComponent implements OnInit {
             }
           }
           if(!this.isNextWsp){
-            this.nextDateWsp = K_NO_DATE;
+            this.nextDateWsp = globalsConstants.K_NO_DATE;
           }
         }
         else{
           this.isNextWsp = false;
-          this.numWsp = K_NUM_ZERO;
-          this.nextDateWsp = K_NO_DATE;
+          this.numWsp = globalsConstants.K_ZERO_RESULTS;
+          this.nextDateWsp = globalsConstants.K_NO_DATE;;
         }
         this.isLoaded = true;
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getAllSlider(){
     this.dataApi.getAllSlider().subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.sliders = data['allSliders'];
         this.isLoaded = true;
       } else {
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getAllCourses(){
     this.dataApi.getAllCourses().subscribe((data) => {
-        if (K_COD_OK == data.cod){
+        if (globalsConstants.K_COD_OK == data.cod){
           if(0 < data['allCourses'].length){
             this.course = data['allCourses'];
             this.numCrs = data['allCourses'].length;
@@ -167,25 +162,25 @@ export class DashboardComponent implements OnInit {
               }
             }
             if(!this.isNextCrs){
-              this.nextDateCrs = K_NO_DATE;
+              this.nextDateCrs = globalsConstants.K_NO_DATE;
             }
           }
           else{
             this.isNextCrs = false;
-            this.numCrs = K_NUM_ZERO;
-            this.nextDateCrs = K_NO_DATE;
+            this.numCrs = globalsConstants.K_ZERO_RESULTS;
+            this.nextDateCrs = globalsConstants.K_NO_DATE;
           }
           this.isLoaded = true;
         } else{
           this.isLoaded = true;
-          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
         }
     });
   }
 
   getAllOpinions() {
     this.dataApi.getAllOpinions().subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         if(0 < data['allOpinions'].length){
           for(let opnHome of data['allOpinions']){
             if(opnHome.home == 1){
@@ -198,13 +193,13 @@ export class DashboardComponent implements OnInit {
         }
         else{
           this.isLastOpn = false;
-          this.numOpn = K_NUM_ZERO;
-          this.nextDateOpn = K_NO_DATE;
+          this.numOpn = globalsConstants.K_ZERO_RESULTS;;
+          this.nextDateOpn = globalsConstants.K_NO_DATE;;
         }
         this.isLoaded = true;
       } else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -217,18 +212,18 @@ export class DashboardComponent implements OnInit {
     let error = false;
     for(let slider of this.sliders){
       this.dataApi.updateOrderSlider(slider, index).subscribe((data) => {
-        if (K_COD_OK != data.cod){
+        if (globalsConstants.K_COD_OK != data.cod){
           error = true;
         }
         canContinue++;
 
         if(!error && 3 == canContinue){
           this.isLoaded = true;
-          this.toastr.success('Se ha modificado el orden de la cabecera', 'Actualizado');
+          this.toastr.success(K_UPDATE_ORDER, globalsConstants.K_UPDATE_STR);
         }
         if(error && 3 == canContinue){
           this.isLoaded = true;
-          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
         }
       });
       index++;
@@ -243,20 +238,20 @@ export class DashboardComponent implements OnInit {
     this.sliderObj.order_slider = slider.order_slider;
     this.sliderObj.color_text = slider.color_text;
     this.sliderObj.user_id = slider.user_id;
-    this.sliderObj.image = (slider.image) ? slider.image : "default_image.jpg";
+    this.sliderObj.image = (slider.image) ? slider.image : globalsConstants.K_DEFAULT_IMAGE;
     this.sliderImg = slider.image;
     this.disabledForm = false;
   }
 
   onCancel(){
     this.sliderObj.id = 0;
-    this.sliderObj.title = K_BLANK;
-    this.sliderObj.description = K_BLANK;
-    this.imageFile.nativeElement.value = K_BLANK;
+    this.sliderObj.title = globalsConstants.K_BLANK;
+    this.sliderObj.description = globalsConstants.K_BLANK;
+    this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
     this.sliderObj.order_slider = 0;
-    this.sliderObj.color_text = '#ffffff';
+    this.sliderObj.color_text = globalsConstants.K_SLIDER_TEXT_COLOR;
     this.sliderObj.user_id = 0;
-    this.sliderObj.image = K_BLANK;
+    this.sliderObj.image = globalsConstants.K_BLANK;
     this.uploadSuccess = false;
     this.disabledForm = true;
   }
@@ -272,30 +267,30 @@ export class DashboardComponent implements OnInit {
           this.sliderObj.image = this.sliderImg;
           this.uploadSuccess = false;
           this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getAllSlider();
               this.disabledForm = true;
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha editado la cabecera', 'Actualizado');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       }
       else {
         this.dataApi.updateSliderById(this.sliderObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getAllSlider();
             this.disabledForm = true;
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha editado la cabecera', 'Actualizado');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -305,10 +300,10 @@ export class DashboardComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
         this.changeImage = false;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
