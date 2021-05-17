@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -9,11 +10,10 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { AboutUsInterface } from 'src/app/models/aboutus-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_ABOUTUS = '¿Seguro que deseas eliminar la entrada?';
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
 
 @Component({
   selector: 'app-aboutus',
@@ -45,9 +45,9 @@ export class AboutusComponent implements OnInit {
   // Total de elementos
   public numAboutUs: number;
   // Elementos por página
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editAboutUs", { static: false }) editAboutUs: ElementRef;
   // Form
@@ -78,16 +78,16 @@ export class AboutusComponent implements OnInit {
 
   getAboutUsByPage(page: Number) {
     this.dataApi.getAboutUsByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.aboutUs = data['allAboutUs'];
         this.numAboutUs = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else {
-        this.numAboutUs = K_NUM_ZERO;
+        this.numAboutUs = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -99,16 +99,17 @@ export class AboutusComponent implements OnInit {
     this.changeImage = false;
     this.selectedImg = null;
 
-    this.aboutUsObj.name = K_BLANK;
-    this.aboutUsObj.surname1 = K_BLANK;
-    this.aboutUsObj.surname2 = K_BLANK;
-    this.aboutUsObj.image = "default_image.jpg";
-    this.aboutUsObj.position = K_BLANK;
-    this.aboutUsObj.description = K_BLANK;
-    this.aboutUsObj.academic_degree = K_BLANK;
-    this.aboutUsObj.user_fcbk = K_BLANK;
-    this.aboutUsObj.user_ytube = K_BLANK;
-    this.aboutUsObj.user_insta = K_BLANK;
+    this.aboutUsObj.id = null;
+    this.aboutUsObj.name = globalsConstants.K_BLANK;
+    this.aboutUsObj.surname1 = globalsConstants.K_BLANK;
+    this.aboutUsObj.surname2 = globalsConstants.K_BLANK;
+    this.aboutUsObj.image = globalsConstants.K_DEFAULT_IMAGE;
+    this.aboutUsObj.position = globalsConstants.K_BLANK;
+    this.aboutUsObj.description = globalsConstants.K_BLANK;
+    this.aboutUsObj.academic_degree = globalsConstants.K_BLANK;
+    this.aboutUsObj.user_fcbk = globalsConstants.K_BLANK;
+    this.aboutUsObj.user_ytube = globalsConstants.K_BLANK;
+    this.aboutUsObj.user_insta = globalsConstants.K_BLANK;
     this.aboutUsObj.user_id = 1;
     setTimeout (() => {
          // Mover el scroll al form
@@ -127,7 +128,7 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.name = aboutUs.name;
     this.aboutUsObj.surname1 = aboutUs.surname1;
     this.aboutUsObj.surname2 = aboutUs.surname2;
-    this.aboutUsObj.image = (aboutUs.image) ? aboutUs.image : "default_image.jpg";
+    this.aboutUsObj.image = (aboutUs.image) ? aboutUs.image : globalsConstants.K_DEFAULT_IMAGE;
     this.aboutUsObj.position = aboutUs.position;
     this.aboutUsObj.description = aboutUs.description;
     this.aboutUsObj.academic_degree = aboutUs.academic_degree;
@@ -143,19 +144,19 @@ export class AboutusComponent implements OnInit {
 
   onDeleteAboutUs(aboutUs: AboutUsInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar la entrada?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_ABOUTUS,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteAboutUsId(aboutUs.id).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getAboutUsByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -163,15 +164,15 @@ export class AboutusComponent implements OnInit {
             this.changeImage = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminado!',
-              'Se ha eliminado la entrada seleccionada.',
+              globalsConstants.K_DELETE_F_EXC_STR,
+              data.message,
               'success'
             )
           } else {
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -189,36 +190,36 @@ export class AboutusComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.aboutUsObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.aboutUsObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.aboutUsObj.image = "default_image.jpg";
+          this.aboutUsObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -227,7 +228,7 @@ export class AboutusComponent implements OnInit {
       });
     }
     else{
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
 
   }
@@ -241,27 +242,27 @@ export class AboutusComponent implements OnInit {
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+              this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getAboutUsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado la entrada', 'Actualizada');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -272,27 +273,27 @@ export class AboutusComponent implements OnInit {
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
-              this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+              this.toastr.success(data.message, globalsConstants.K_CREATE_F_STR);
             } else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
       } else{
         this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getAboutUsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
-            this.toastr.success('Se ha creado una nueva entrada', 'Añadida');
+            this.toastr.success(data.message, globalsConstants.K_CREATE_F_STR);
           } else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
@@ -302,9 +303,9 @@ export class AboutusComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -323,7 +324,6 @@ export class AboutusComponent implements OnInit {
   }
 
   onCancel(){
-    // form.reset();
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
