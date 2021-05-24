@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
@@ -10,10 +11,13 @@ import { CoreService } from 'src/app/services/core.service';
 
 import { UserInterface } from 'src/app/models/user-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_COD_OK = 200;
-const K_DEFAULT_IMAGE = 'default_image.jpg';
+// Constants
+const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+const K_SAME_PASS_ALERT = '¡La nueva contraseña es igual a la anterior!';
+const K_PASS_NOT_MATCH_ALERT = '¡Las contraseñas no coinciden!';
+const K_PASS_CHANGE_SUCCESS = 'Se ha actualizado la contraseña';
+const K_WRONG_PASS = '¡La contraseña actual es incorrecta!';
 
 @Component({
   selector: 'app-user',
@@ -29,7 +33,7 @@ export class UserComponent implements OnInit {
   // Utils
   globals: Globals;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Social Form
   @ViewChild("editSocial", { static: false }) editSocial: ElementRef;
   // Scroll Image Form
@@ -63,7 +67,7 @@ export class UserComponent implements OnInit {
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
     this.userObj = new UserInterface();
-    this.userObj.image = "default_image.jpg";
+    this.userObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.globals = globals;
     this.element.scrollTop = 0;
     this.setGlobalsData();
@@ -86,14 +90,14 @@ export class UserComponent implements OnInit {
     this.isLoaded = false;
     this.userObj.email = localStorage.getItem('email');
     this.dataApi.getUserProfile(this.userObj).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.userObj = data.user;
-        this.userObj.image = (data.user.image) ? data.user.image : "default-avatar.png";
+        this.userObj.image = (data.user.image) ? data.user.image : globalsConstants.K_DEFAULT_AVATAR;
         this.isLoaded = true;
       }
       else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -104,38 +108,38 @@ export class UserComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if(K_DEFAULT_IMAGE != this.userObj.image){
+    if(globalsConstants.K_DEFAULT_IMAGE != this.userObj.image){
       Swal.fire({
-        title: '¿Seguro que deseas eliminar la imagen?',
-        text: "Atención: Esta acción no se puede deshacer.",
+        title: K_DELETE_IMAGE,
+        text: K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#0095A6',
-        confirmButtonText: '¡Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
+        confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+        cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+        confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+        cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
       }).then((result) => {
         if (result.value) {
           this.isLoaded = false;
-          this.userObj.image = K_DEFAULT_IMAGE;
+          this.userObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               localStorage.setItem('userImage', this.userObj.image);
               this.setGlobalsData();
               this.getUserProfile();
               this.onCancelEditImage();
               this.isLoaded = true;
               Swal.fire(
-                '¡Eliminada!',
-                'Se ha eliminado la imagen.',
+                globalsConstants.K_DELETE_IMAGE_STR,
+                globalsConstants.K_DELETE_IMG_SUCCESS,
                 'success'
               )
             }
             else{
               this.isLoaded = true;
               Swal.fire(
-                '¡Error!',
-                'Error interno. No se ha podido realizar la acción.',
+                globalsConstants.K_ERROR_EXC_STR,
+                data.message,
                 'error'
               )
             }
@@ -144,7 +148,7 @@ export class UserComponent implements OnInit {
       });
     }
     else {
-      this.toastr.info("No existe imagen", 'Información');
+      this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
   }
 
@@ -194,17 +198,17 @@ export class UserComponent implements OnInit {
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         localStorage.setItem('username', this.userObj.name);
         this.setGlobalsData();
         this.activeForm = false;
         this.disabledForm = true;
         this.isLoaded = true;
-        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+        this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       }
       else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -217,17 +221,17 @@ export class UserComponent implements OnInit {
         this.userObj.image = this.userImg;
         this.uploadSuccess = false;
         this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             localStorage.setItem('userImage', this.userObj.image);
             this.setGlobalsData();
             this.getUserProfile();
             this.onCancelEditImage();
             this.isLoaded = true;
-            this.toastr.success('Se ha actualizado su imagen', 'Actualizado');
+            this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           }
           else{
             this.isLoaded = true;
-            this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+            this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       });
@@ -241,15 +245,15 @@ export class UserComponent implements OnInit {
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.activeFormSocial = false;
         this.disabledFormSocial = true;
         this.isLoaded = true;
-        this.toastr.success('Se ha actualizado la información', 'Actualizado');
+        this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       }
       else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -260,44 +264,44 @@ export class UserComponent implements OnInit {
     } else if(this.currentPass == this.newPass){
       Swal.fire({
         icon: 'error',
-        text: '¡La nueva contraseña es igual a la anterior!'
+        text: K_SAME_PASS_ALERT
       });
       return;
     } else if(this.newPass != this.repetNewPass){
       Swal.fire({
         icon: 'error',
-        text: '¡Las contraseñas no coinciden!'
+        text: K_PASS_NOT_MATCH_ALERT
       });
       return;
     }
     this.isLoaded = false;
     this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         if(data['check']){
           this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
-            if (K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod){
               this.globals.isChangePass = true;
               this.onCancelEditPass(form);
               this.isLoaded = true;
-              this.toastr.success('Se ha actualizado la contraseña', 'Actualizado');
+              this.toastr.success(K_PASS_CHANGE_SUCCESS, globalsConstants.K_UPDATE_F_STR);
             }
             else{
               this.isLoaded = true;
-              this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+              this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         }
         else{
          Swal.fire({
            icon: 'error',
-           text: '¡La contraseña actual es incorrecta!'
+           text: K_WRONG_PASS
          });
          return;
        }
       }
       else{
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -318,9 +322,9 @@ export class UserComponent implements OnInit {
   onFileChanged($event){
     if($event != null){
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > K_MAX_SIZE){
-        this.imageFile.nativeElement.value = K_BLANK;
-        this.toastr.error('El tamaño no puede ser superior a 3MB.', 'Error');
+      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+        this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
+        this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
       } else{
         for(let i=0; i<=100; i++){
@@ -330,7 +334,7 @@ export class UserComponent implements OnInit {
         }
         this.uploadSuccess = true;
         setTimeout(() => {
-            this.progress = 0;
+            this.progress = 0; // Eliminación de la barra de progreso
         }, 2500);
       }
     } else{
