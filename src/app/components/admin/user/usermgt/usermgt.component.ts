@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { Globals } from 'src/app/common/globals';
@@ -11,10 +12,15 @@ import { CoreService } from 'src/app/services/core.service';
 import { UserInterface } from 'src/app/models/user-interface';
 import { RolInterface } from 'src/app/models/rol-interface';
 
-const K_BLANK = '';
-const K_MAX_SIZE = 3000000;
-const K_NUM_ZERO = 0;
-const K_COD_OK = 200;
+// Constants
+const K_DELETE_USER = '¿Seguro que deseas eliminar al usuario?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+const K_DEACTIVE_USER = '¿Seguro que deseas desactivar este usuario?';
+const K_ACTIVE_USER = '¿Seguro que deseas activar este usuario?';
+const K_DEACTIVE_STR = '¡Desactivado!';
+const K_ACTIVE_STR = '¡Activado!';
+const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el usuario.';
+const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el usuario.';
 
 @Component({
   selector: 'app-usermgt',
@@ -47,9 +53,9 @@ export class UsermgtComponent implements OnInit {
   // Total de elementos
   public numUsers: number = 0;
   // Elements by pages
-  private numResults: number = 10;
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
-  element = (<HTMLDivElement>document.getElementById("rtrSup"));
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editUser", { static: false }) editUser: ElementRef;
   // Form
@@ -83,26 +89,26 @@ export class UsermgtComponent implements OnInit {
 
   getUsersByPage(page: Number) {
     this.dataApi.getUsersByPage(page).subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.users = data['allUsers'];
         this.numUsers = data['total'];
         this.totalPages = data['totalPages'];
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else {
-        this.numUsers = K_NUM_ZERO;
+        this.numUsers = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
   getAllRoles() {
     this.dataApi.getAllRoles().subscribe((data) =>{
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         this.roles = data['allRoles'];
       } else {
-        this.toastr.error('Error interno. No se ha podido cargar los datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
@@ -113,14 +119,15 @@ export class UsermgtComponent implements OnInit {
     this.isEditForm = false;
 
     // Setear valores por defecto
-    this.userObj.name = K_BLANK;
-    this.userObj.surname = K_BLANK;
-    this.userObj.email = K_BLANK;
+    this.userObj.id = null;
+    this.userObj.name = globalsConstants.K_BLANK;;
+    this.userObj.surname = globalsConstants.K_BLANK;;
+    this.userObj.email = globalsConstants.K_BLANK;;
     this.userObj.telephone = null;
-    this.userObj.address = K_BLANK;
+    this.userObj.address = globalsConstants.K_BLANK;;
     this.userObj.zipcode = null;
-    this.userObj.city = K_BLANK;
-    this.userObj.province = K_BLANK;
+    this.userObj.city = globalsConstants.K_BLANK;;
+    this.userObj.province = globalsConstants.K_BLANK;;
 
     setTimeout (() => {
          // Mover el scroll al form
@@ -155,33 +162,33 @@ export class UsermgtComponent implements OnInit {
 
   onDeleteUser(user: UserInterface){
     Swal.fire({
-      title: '¿Seguro que deseas eliminar el usuario?',
-      text: "Atención: Esta acción no se puede deshacer.",
+      title: K_DELETE_USER,
+      text: K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: '¡Sí, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteUserById(user.id).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             this.getUsersByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
             this.isLoaded = true;
             Swal.fire(
-              '¡Eliminado!',
-              'Se ha eliminado el usuario seleccionado.',
+              globalsConstants.K_DELETE_EXC_STR,
+              data.message,
               'success'
             )
           } else {
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -193,15 +200,15 @@ export class UsermgtComponent implements OnInit {
   onLockUser(user: UserInterface){
     let auxActive = 0;
     if(1 == user.active){
-      this.alertLockStr = "¿Seguro que deseas desactivar este usuario?";
-      this.actionLockStr = "¡Desactivado!";
-      this.actionTextLockStr = "Se ha desactivado el usuario.";
+      this.alertLockStr = K_DEACTIVE_USER;
+      this.actionLockStr = K_DEACTIVE_STR;
+      this.actionTextLockStr = K_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
     else{
-      this.alertLockStr = "¿Seguro que deseas activar este usuario?";
-      this.actionLockStr = "¡Activado!";
-      this.actionTextLockStr = "Se ha activado el usuario.";
+      this.alertLockStr = K_ACTIVE_USER;
+      this.actionLockStr = K_ACTIVE_STR;
+      this.actionTextLockStr = K_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -209,16 +216,16 @@ export class UsermgtComponent implements OnInit {
       title: this.alertLockStr,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#0095A6',
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+      confirmButtonText: globalsConstants.K_OK_BUTTON_STR,
+      cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
         user.active = (user.active == 0) ? 1 : 0;
         this.dataApi.updateUserById(user).subscribe((data) => {
-          if (K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod){
             user.active = auxActive;
             this.getUsersByPage(this.page);
             this.isEditForm = false;
@@ -233,8 +240,8 @@ export class UsermgtComponent implements OnInit {
             user.active = auxActive;
             this.isLoaded = true;
             Swal.fire(
-              '¡Error!',
-              'Error interno. No se ha podido realizar la acción.',
+              globalsConstants.K_ERROR_EXC_STR,
+              data.message,
               'error'
             )
           }
@@ -248,27 +255,27 @@ export class UsermgtComponent implements OnInit {
     if(this.isEditForm){
       this.userObj.rol_id = this.userRol.id;
       this.dataApi.updateUserById(this.userObj).subscribe((data) => {
-        if (K_COD_OK == data.cod){
+        if (globalsConstants.K_COD_OK == data.cod){
           this.getUsersByPage(this.page);
           this.onCancel();
           this.isLoaded = true;
-          this.toastr.success('Se ha actualizado el usuario', 'Actualizado');
+          this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
         } else{
           this.isLoaded = true;
-          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
         }
       });
     } else{
       this.userObj.rol_id = this.userRol.id;
       this.dataApi.createUser(this.userObj).subscribe((data) => {
-        if (K_COD_OK == data.cod){
+        if (globalsConstants.K_COD_OK == data.cod){
           this.getUsersByPage(this.page);
           this.onCancel();
           this.isLoaded = true;
-          this.toastr.success('Se ha creado un nuevo usuario', 'Añadido');
+          this.toastr.success(data.message, globalsConstants.K_ADD_STR);
         } else{
           this.isLoaded = true;
-          this.toastr.error('Error interno. No se ha podido realizar la acción.', 'Error');
+          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
         }
       });
     }
