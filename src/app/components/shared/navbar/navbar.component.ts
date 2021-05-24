@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import * as globalsConstants from 'src/app/common/globals';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Globals } from 'src/app/common/globals';
-
-const K_COD_OK = 200;
-const K_COD_SERVICE_UNAVBL = 503;
 
 @Component({
   selector: 'app-navbar',
@@ -45,13 +43,13 @@ export class NavbarComponent implements OnInit {
   onLogout(){
     this.isLoading = true;
     this.dataApi.logout(localStorage.getItem('email')).subscribe((data) => {
-      if (K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod){
         if(this.auth.logout()){
-          window.location.href = 'http://localhost:4200';
+          window.location.href = this.globals.pathFrontEnd;
         }
       } else{
         this.isLoading = false;
-        this.toastr.error('No es posible conectar con la base de datos.', 'Error');
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }

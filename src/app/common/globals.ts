@@ -46,6 +46,7 @@ export const K_SLIDER_TEXT_COLOR = '#ffffff';
 export class Globals {
   // URLs
   imgRootPath: string = environment.imageRootPath;
+  pathFrontEnd: string = environment.urlFrontEnd;
   // User image profile (Default)
   userImage: string = 'default-avatar.png';
   // User name and rol (Default)

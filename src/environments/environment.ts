@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  urlFrontEnd: "http://localhost:4200",
   pathImage: "../../assets/img",
   urlApiRest: "http://localhost/apiRest/public",
   imageRootPath: "http://localhost/apiRest/uploads/",

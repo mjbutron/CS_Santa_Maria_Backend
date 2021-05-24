@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import * as globalsConstants from 'src/app/common/globals';
 
 import { Globals } from 'src/app/common/globals';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInterface } from 'src/app/models/user-interface';
 
-const K_COD_OK = 200;
-const K_COD_SERVICE_UNAVBL = 503;
+// Constants
+const K_WAIT_ALERT = 'Por favor, espere...';
+const K_LOGIN_ERROR = 'Error en inicio de sesión';
 
 @Component({
   selector: 'app-login',
@@ -42,12 +44,12 @@ export class LoginComponent implements OnInit {
     Swal.fire({
       allowOutsideClick: false,
       icon: 'info',
-      text: 'Por favor, espere...'
+      text: K_WAIT_ALERT
     });
     Swal.showLoading();
 
     this.auth.login(this.user).subscribe(data => {
-      if (!data.error && K_COD_OK == data.cod){
+      if (!data.error && globalsConstants.K_COD_OK == data.cod){
         Swal.close();
         localStorage.setItem('username', data['user'].name);
         localStorage.setItem('rolname', data['user'].rol_name);
@@ -66,10 +68,10 @@ export class LoginComponent implements OnInit {
       else {
         this.globals.isAuth = false;
         this.globals.isChangePass = false;
-        if(K_COD_SERVICE_UNAVBL == data.cod){
+        if(globalsConstants.K_COD_UNVLBL_SERVICE == data.cod){
           Swal.fire({
             icon: 'error',
-            title: 'Error en inicio de sesión',
+            title: K_LOGIN_ERROR,
             text: data.message
           });
         }
