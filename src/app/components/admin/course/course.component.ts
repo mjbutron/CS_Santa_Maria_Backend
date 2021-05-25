@@ -106,6 +106,10 @@ export class CourseComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getCoursesByPage(this.page);
+  }
+
   onNewCourse() {
     // Habilitar form en formato eedición
     this.activeForm = true;

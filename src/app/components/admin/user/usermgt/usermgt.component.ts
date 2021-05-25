@@ -103,6 +103,10 @@ export class UsermgtComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getUsersByPage(this.page);
+  }
+
   getAllRoles() {
     this.dataApi.getAllRoles().subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){

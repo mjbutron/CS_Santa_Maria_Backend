@@ -92,6 +92,10 @@ export class AboutusComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getAboutUsByPage(this.page);
+  }
+
   onNewAboutUs() {
     // Habilitar form en formato eedición
     this.activeForm = true;

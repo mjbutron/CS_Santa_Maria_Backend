@@ -100,6 +100,10 @@ export class ServiceComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getServicesByPage(this.page);
+  }
+
   onNewService() {
     // Habilitar form en formato eedición
     this.activeForm = true;

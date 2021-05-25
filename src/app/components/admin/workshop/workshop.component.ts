@@ -104,6 +104,10 @@ export class WorkshopComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getWorkShopsByPage(this.page);
+  }
+
   onNewWorkshop() {
     // Habilitar form en formato edición
     this.activeForm = true;

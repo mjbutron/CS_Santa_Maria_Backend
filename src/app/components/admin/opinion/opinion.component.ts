@@ -110,6 +110,10 @@ export class OpinionComponent implements OnInit {
     });
   }
 
+  onReload(){
+    this.getOpinionsByPage(this.page);
+  }
+
   onNewOpinion() {
     // Habilitar form en formato eedición
     this.activeForm = true;

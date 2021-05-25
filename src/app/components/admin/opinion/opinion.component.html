@@ -8,14 +8,19 @@
         <div class="card-title mb-1 p-3">
           <h5><b>Opiniones ({{numOpinions}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewOpinion()" >
-              <span  style="font-size: 1.7em; color: #0095A6;">
-                <i class="fas fa-plus-square float-right" title="Añadir"></i>
+              <span  style="font-size: 1.2em; color: #0095A6;">
+                <i class="fas fa-plus-square ml-3 float-right" title="Añadir"></i>
               </span>
             </a>
-            <span *ngIf="activeForm" style="font-size: 1.7em; color: #adb5bd;">
-              <i class="fas fa-plus-square float-right"
+            <span *ngIf="activeForm" style="font-size: 1.2em; color: #adb5bd;">
+              <i class="fas fa-plus-square ml-3 float-right"
               data-toggle="tooltip" data-placement="left" title="Debes cancelar la edición de la opinión"></i>
             </span>
+            <a *ngIf="!activeForm" [routerLink]="" (click)="onReload()" >
+              <span  style="font-size: 1.2em; color: #0095A6;">
+                <i class="fas fa-redo ml-3 float-right" title="Recargar"></i>
+              </span>
+            </a>
           </h5>
         </div>
         <div class="card-body">
