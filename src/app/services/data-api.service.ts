@@ -353,7 +353,7 @@ export class DataApiService {
     )
   }
 
-// OPINIONS API
+// OPINION API
   getAllOpinions(){
     const url_api = this.url + '/api/allOpinion';
     return this.http.get(url_api)

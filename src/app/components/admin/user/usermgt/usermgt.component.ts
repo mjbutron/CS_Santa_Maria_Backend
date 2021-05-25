@@ -90,9 +90,9 @@ export class UsermgtComponent implements OnInit {
   getUsersByPage(page: Number) {
     this.dataApi.getUsersByPage(page).subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
-        this.users = data['allUsers'];
-        this.numUsers = data['total'];
-        this.totalPages = data['totalPages'];
+        this.users = data.allUsers;
+        this.numUsers = data.total;
+        this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else {
@@ -106,7 +106,7 @@ export class UsermgtComponent implements OnInit {
   getAllRoles() {
     this.dataApi.getAllRoles().subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
-        this.roles = data['allRoles'];
+        this.roles = data.allRoles;
       } else {
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }

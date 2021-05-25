@@ -79,9 +79,9 @@ export class AboutusComponent implements OnInit {
   getAboutUsByPage(page: Number) {
     this.dataApi.getAboutUsByPage(page).subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
-        this.aboutUs = data['allAboutUs'];
-        this.numAboutUs = data['total'];
-        this.totalPages = data['totalPages'];
+        this.aboutUs = data.allAboutUs;
+        this.numAboutUs = data.total;
+        this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else {

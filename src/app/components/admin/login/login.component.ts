@@ -51,9 +51,9 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.user).subscribe(data => {
       if (!data.error && globalsConstants.K_COD_OK == data.cod){
         Swal.close();
-        localStorage.setItem('username', data['user'].name);
-        localStorage.setItem('rolname', data['user'].rol_name);
-        localStorage.setItem('userImage', data['user'].image);
+        localStorage.setItem('username', data.user.name);
+        localStorage.setItem('rolname', data.user.rol_name);
+        localStorage.setItem('userImage', data.user.image);
         localStorage.setItem('email', this.user.email);
         if(this.rememberUser){
           localStorage.setItem('rememberEmail', this.user.email);
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         }
         localStorage.setItem('email', this.user.email);
         this.globals.isAuth = true;
-        this.globals.isChangePass = (data['user'].change_pass == 0) ? false : true;
+        this.globals.isChangePass = (data.user.change_pass == 0) ? false : true;
         this.router.navigateByUrl('/admin/dashboard');
       }
       else {

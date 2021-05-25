@@ -81,13 +81,15 @@ export class ContactComponent implements OnInit {
 
   getHomeInfo(){
     this.dataApi.getInfoHome().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data['homeInfo'].length){
-        this.infoObj.id = data['homeInfo'][0]['id'];
-        this.infoObj.home_first_ph = data['homeInfo'][0]['home_first_ph'];
-        this.infoObj.home_second_ph = data['homeInfo'][0]['home_second_ph'];
-        this.infoObj.home_fcbk = data['homeInfo'][0]['home_fcbk'];
-        this.infoObj.home_ytube = data['homeInfo'][0]['home_ytube'];
-        this.infoObj.home_insta = data['homeInfo'][0]['home_insta'];
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.homeInfo.length){
+        for(let i = 0; i < data.homeInfo.length; i++){
+          this.infoObj.id = data.homeInfo[i].id;
+          this.infoObj.home_first_ph = data.homeInfo[i].home_first_ph;
+          this.infoObj.home_second_ph = data.homeInfo[i].home_second_ph;
+          this.infoObj.home_fcbk = data.homeInfo[i].home_fcbk;
+          this.infoObj.home_ytube = data.homeInfo[i].home_ytube;
+          this.infoObj.home_insta = data.homeInfo[i].home_insta;
+        }
         this.isLoaded = true;
       } else{
         this.isLoaded = true;
@@ -98,11 +100,13 @@ export class ContactComponent implements OnInit {
 
   getFooterInfo(){
     this.dataApi.getInfoFooter().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data['footerInfo'].length){
-        this.infoObj.footer_address = data['footerInfo'][0]['footer_address'];
-        this.infoObj.footer_email = data['footerInfo'][0]['footer_email'];
-        this.infoObj.footer_ph = data['footerInfo'][0]['footer_ph'];
-        this.infoObj.footer_schdl = data['footerInfo'][0]['footer_schdl'];
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.footerInfo.length){
+        for(let i = 0; i < data.footerInfo.length; i++){
+          this.infoObj.footer_address = data.footerInfo[i].footer_address;
+          this.infoObj.footer_email = data.footerInfo[i].footer_email;
+          this.infoObj.footer_ph = data.footerInfo[i].footer_ph;
+          this.infoObj.footer_schdl = data.footerInfo[i].footer_schdl;
+        }
         this.isLoaded = true;
       } else {
         this.isLoaded = true;
@@ -113,14 +117,16 @@ export class ContactComponent implements OnInit {
 
   getContactInfo(){
     this.dataApi.getInfoContact().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data['contactInfo'].length){
-        this.infoObj.cnt_address = data['contactInfo'][0]['cnt_address'];
-        this.infoObj.cnt_ph_appo = data['contactInfo'][0]['cnt_ph_appo'];
-        this.infoObj.cnt_emails = data['contactInfo'][0]['cnt_emails'];
-        this.infoObj.cnt_ph_mwives = data['contactInfo'][0]['cnt_ph_mwives'];
-        this.infoObj.cnt_ph_physio = data['contactInfo'][0]['cnt_ph_physio'];
-        this.infoObj.cnt_lat = data['contactInfo'][0]['cnt_lat'];
-        this.infoObj.cnt_lon = data['contactInfo'][0]['cnt_lon'];
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.contactInfo.length){
+        for(let i = 0; i < data.contactInfo.length; i++){
+          this.infoObj.cnt_address = data.contactInfo[i].cnt_address;
+          this.infoObj.cnt_ph_appo = data.contactInfo[i].cnt_ph_appo;
+          this.infoObj.cnt_emails = data.contactInfo[i].cnt_emails;
+          this.infoObj.cnt_ph_mwives = data.contactInfo[i].cnt_ph_mwives;
+          this.infoObj.cnt_ph_physio = data.contactInfo[i].cnt_ph_physio;
+          this.infoObj.cnt_lat = data.contactInfo[i].cnt_lat;
+          this.infoObj.cnt_lon = data.contactInfo[i].cnt_lon;
+        }
         this.lat = +this.infoObj.cnt_lat;
         this.lon = +this.infoObj.cnt_lon;
         this.isLoaded = true;

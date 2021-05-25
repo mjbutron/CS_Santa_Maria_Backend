@@ -87,9 +87,9 @@ export class ServiceComponent implements OnInit {
   getServicesByPage(page: Number) {
     this.dataApi.getServicesByPage(page).subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
-        this.services = data['allServices'];
-        this.numServices = data['total'];
-        this.totalPages = data['totalPages'];
+        this.services = data.allServices;
+        this.numServices = data.total;
+        this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{

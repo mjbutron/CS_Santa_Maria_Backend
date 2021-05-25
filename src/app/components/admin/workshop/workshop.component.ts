@@ -91,9 +91,9 @@ export class WorkshopComponent implements OnInit {
   getWorkShopsByPage(page: Number) {
     this.dataApi.getWorkShopsByPage(page).subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
-        this.workShops = data['allWorkshops'];
-        this.numWorkShops = data['total'];
-        this.totalPages = data['totalPages'];
+        this.workShops = data.allWorkshops;
+        this.numWorkShops = data.total;
+        this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
         this.isLoaded = true;
       } else{

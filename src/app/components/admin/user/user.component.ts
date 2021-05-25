@@ -259,25 +259,28 @@ export class UserComponent implements OnInit {
   }
 
   onSubmitPass(form: NgForm){
+    this.isLoaded = false;
     if(form.invalid){
+      this.isLoaded = true;
       return;
     } else if(this.currentPass == this.newPass){
+      this.isLoaded = true;
       Swal.fire({
         icon: 'error',
         text: K_SAME_PASS_ALERT
       });
       return;
     } else if(this.newPass != this.repetNewPass){
+      this.isLoaded = true;
       Swal.fire({
         icon: 'error',
         text: K_PASS_NOT_MATCH_ALERT
       });
       return;
     }
-    this.isLoaded = false;
     this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
-        if(data['check']){
+        if(data.check){
           this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
             if (globalsConstants.K_COD_OK == data.cod){
               this.globals.isChangePass = true;
@@ -292,6 +295,7 @@ export class UserComponent implements OnInit {
           });
         }
         else{
+         this.isLoaded = true;
          Swal.fire({
            icon: 'error',
            text: K_WRONG_PASS

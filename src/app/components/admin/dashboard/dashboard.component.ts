@@ -85,9 +85,9 @@ export class DashboardComponent implements OnInit {
   getAllServices(){
     this.dataApi.getAllServices().subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
-        if(0 < data['allServices'].length){
-          this.services = data['allServices'];
-          this.numSrv = data['allServices'].length;
+        if(0 < data.allServices.length){
+          this.services = data.allServices;
+          this.numSrv = data.allServices.length;
           this.lastDateSrv = this.services[0].create_date;
           this.isLastSrv = true;
         }
@@ -107,14 +107,14 @@ export class DashboardComponent implements OnInit {
   getAllWorkshops(){
     this.dataApi.getAllWorkshops().subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
-        if(0 < data['allWorkshops'].length){
-          for(let wspHome of data['allWorkshops']){
+        if(0 < data.allWorkshops.length){
+          for(let wspHome of data.allWorkshops){
             if(wspHome.home == 1){
               this.wspInHome.push(wspHome);
             }
           }
-          this.numWsp = data['allWorkshops'].length;
-          for(let wspDate of data['allWorkshops']){
+          this.numWsp = data.allWorkshops.length;
+          for(let wspDate of data.allWorkshops){
             if(!this.isNextWsp && this.todayDate < wspDate.session_date){
               this.isNextWsp = true;
               this.nextDateWsp = wspDate.session_date;
@@ -140,7 +140,7 @@ export class DashboardComponent implements OnInit {
   getAllSlider(){
     this.dataApi.getAllSlider().subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
-        this.sliders = data['allSliders'];
+        this.sliders = data.allSliders;
         this.isLoaded = true;
       } else {
         this.isLoaded = true;
@@ -152,10 +152,10 @@ export class DashboardComponent implements OnInit {
   getAllCourses(){
     this.dataApi.getAllCourses().subscribe((data) => {
         if (globalsConstants.K_COD_OK == data.cod){
-          if(0 < data['allCourses'].length){
-            this.course = data['allCourses'];
-            this.numCrs = data['allCourses'].length;
-            for(let crsDate of data['allCourses']){
+          if(0 < data.allCourses.length){
+            this.course = data.allCourses;
+            this.numCrs = data.allCourses.length;
+            for(let crsDate of data.allCourses){
               if(!this.isNextCrs && this.todayDate < crsDate.session_date){
                 this.isNextCrs = true;
                 this.nextDateCrs = crsDate.session_date;
@@ -181,14 +181,14 @@ export class DashboardComponent implements OnInit {
   getAllOpinions() {
     this.dataApi.getAllOpinions().subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
-        if(0 < data['allOpinions'].length){
-          for(let opnHome of data['allOpinions']){
+        if(0 < data.allOpinions.length){
+          for(let opnHome of data.allOpinions){
             if(opnHome.home == 1){
               this.opnInHome.push(opnHome);
             }
           }
-          this.numOpn = data['allOpinions'].length;
-          this.nextDateOpn = data['allOpinions'][0].create_date;
+          this.numOpn = data.allOpinions.length;
+          this.nextDateOpn = data.allOpinions[0].create_date;
           this.isLastOpn = true;
         }
         else{
