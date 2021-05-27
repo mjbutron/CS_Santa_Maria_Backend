@@ -49,9 +49,10 @@ export class Globals {
   pathFrontEnd: string = environment.urlFrontEnd;
   // User image profile (Default)
   userImage: string = 'default-avatar.png';
-  // User name and rol (Default)
-  rol: string = 'User rol';
-  user: string = 'User name';
+  // User (Default)
+  userID: number = 0;
+  rol_name: string = '----';
+  user_name: string = '----';
   // Show if you are logged in
   isAuth: boolean = false;
   // Sets whether the password has changed

@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
 
 const DEFAULT_MAX_RETRIES = 5;
-const K_URL_IS_CHANGE_PASS = '/admin/api/isChangePass';
+const K_URL_USER_DATA = '/admin/api/userData';
 
 @Injectable({
   providedIn: 'root'
@@ -44,9 +44,9 @@ export class CoreService {
 
   constructor(private http: HttpClient, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
-
-    // Get if password has been changed (used in reload)
-    this.getIsChangePass(localStorage.getItem('email'));
+    // Get user data
+    this.getUserData(localStorage.getItem('email'));
+    this.testSchedule();
 
     // Posible método para comprobar notificaciones cada cierto tiempo.
     // setInterval (() => {
@@ -84,21 +84,23 @@ export class CoreService {
     );
   }
 
-  getIsChangePass(email: string){
+  getUserData(email: string){
     if(null != email){
-      this.changePassService(email).subscribe(data => {
+      this.userData(email).subscribe(data => {
         if (globalsConstants.K_COD_OK == data.cod){
-          this.globals.isChangePass = (data.isChangePass.change_pass == 0) ? false : true;
+          this.globals.userID = data.userData.id;
+          this.globals.isChangePass = (data.userData.change_pass == 0) ? false : true;
         } else{
+          this.globals.userID = 0;
           this.globals.isChangePass = true;
         }
       });
     }
   }
 
-  changePassService(email: string){
+  userData(email: string){
     this.userEmail.email = email;
-    const url_api = this.url + K_URL_IS_CHANGE_PASS;
+    const url_api = this.url + K_URL_USER_DATA;
     return this.http.post(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
@@ -134,7 +136,8 @@ export class CoreService {
 
   testSchedule(){
     console.log("*** Test Schedule ***");
-    this.toastr.info('1 Nueva notificación', 'Notificaciones');
+    // console.log("USER ID: " + this.globals.userID);
+    // this.toastr.info('1 Nueva notificación', 'Notificaciones');
   }
 
 }
