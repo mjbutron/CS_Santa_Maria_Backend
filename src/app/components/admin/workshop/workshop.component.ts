@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -27,7 +28,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el taller.';
   styleUrls: ['./workshop.component.css']
 })
 export class WorkshopComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // Workshops
@@ -68,7 +70,8 @@ export class WorkshopComponent implements OnInit {
   // Load
   isLoaded: boolean;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
     this.workShopObj = new WorkshopInterface();
     this.inHomeChk = false;
     this.element.scrollTop = 0;
@@ -129,7 +132,7 @@ export class WorkshopComponent implements OnInit {
     this.workShopObj.session_end = globalsConstants.K_BLANK;;
     this.workShopObj.sessions = 0;
     this.workShopObj.description = globalsConstants.K_BLANK;;
-    this.workShopObj.user_id = 1;
+    this.workShopObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -157,7 +160,7 @@ export class WorkshopComponent implements OnInit {
     this.workShopObj.session_end = workShop.session_end;
     this.workShopObj.sessions = workShop.sessions;
     this.workShopObj.description = workShop.description;
-    this.workShopObj.user_id = workShop.user_id;
+    this.workShopObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -386,6 +389,7 @@ export class WorkshopComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
+        workshop.user_id = this.globals.userID;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
         workshop.active = (workshop.active == 0) ? 1 : 0; // Así no tener que hace esto
         this.dataApi.updateWorkshopById(workshop).subscribe((data) => {

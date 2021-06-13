@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -27,7 +28,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el servicio.';
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // Services
@@ -65,7 +67,8 @@ export class ServiceComponent implements OnInit {
   // Load
   isLoaded: boolean;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
     this.serviceObj = new ServiceInterface();
     this.element.scrollTop = 0;
   }
@@ -116,7 +119,7 @@ export class ServiceComponent implements OnInit {
     this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = globalsConstants.K_BLANK;
     this.serviceObj.description = globalsConstants.K_BLANK;
-    this.serviceObj.user_id = 1;
+    this.serviceObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -135,7 +138,7 @@ export class ServiceComponent implements OnInit {
     this.serviceObj.image = (service.image) ? service.image : globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = service.subtitle;
     this.serviceObj.description = service.description;
-    this.serviceObj.user_id = service.user_id;
+    this.serviceObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -360,6 +363,7 @@ export class ServiceComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
+        service.user_id = this.globals.userID;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
         service.active = (service.active == 0) ? 1 : 0;  // Así no tener que hace esto
         this.dataApi.updateServiceById(service).subscribe((data) => {

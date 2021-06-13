@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -27,7 +28,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el curso.';
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // Courses
@@ -69,7 +71,8 @@ export class CourseComponent implements OnInit {
   // Load
   isLoaded: boolean;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
     this.courseObj = new CourseInterface();
     this.inOfferChk = false;
     this.inNewChk = false;
@@ -135,7 +138,7 @@ export class CourseComponent implements OnInit {
     this.courseObj.places = 0;
     this.courseObj.free_places = 0;
     this.courseObj.price = 0;
-    this.courseObj.user_id = 1;
+    this.courseObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -167,7 +170,7 @@ export class CourseComponent implements OnInit {
     this.courseObj.places = course.places;
     this.courseObj.free_places = course.free_places;
     this.courseObj.price = course.price;
-    this.courseObj.user_id = course.user_id;
+    this.courseObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -397,6 +400,7 @@ export class CourseComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
+        course.user_id = this.globals.userID;
         // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
         course.active = (course.active == 0) ? 1 : 0; // Así no tener que hacer esto
         this.dataApi.updateCourseById(course).subscribe((data) => {

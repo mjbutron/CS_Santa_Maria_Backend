@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MouseEvent } from '@agm/core';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 
@@ -30,7 +31,8 @@ const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Info Obj
   infoObj: ContactInterface;
   // Scroll
@@ -52,7 +54,8 @@ export class ContactComponent implements OnInit {
   phonePopData = '';
   emailPopData = '';
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals) {
+    this.globals = globals;
     this.infoObj = new ContactInterface();
     this.element.scrollTop = 0;
   }
@@ -142,6 +145,7 @@ export class ContactComponent implements OnInit {
       return;
     }
     this.isLoaded = false;
+    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
@@ -162,6 +166,7 @@ export class ContactComponent implements OnInit {
       return;
     }
     this.isLoaded = false;
+    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
@@ -182,6 +187,7 @@ export class ContactComponent implements OnInit {
       return;
     }
     this.isLoaded = false;
+    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;

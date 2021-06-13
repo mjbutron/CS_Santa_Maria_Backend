@@ -16,4 +16,5 @@ export class ContactInterface {
   cnt_ph_physio?: number;
   cnt_lat?: string;
   cnt_lon?: string;
+  user_id?: number;
 }

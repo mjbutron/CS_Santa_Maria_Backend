@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -37,7 +38,8 @@ export class OpinionComponent implements OnInit {
             ]
         }
     };
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // Opinions
@@ -74,7 +76,8 @@ export class OpinionComponent implements OnInit {
   // Load
   isLoaded: boolean;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
     this.opinionObj = new OpinionInterface();
     this.inHomeChk = false;
     this.element.scrollTop = 0;
@@ -128,7 +131,7 @@ export class OpinionComponent implements OnInit {
     this.opinionObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.opinionObj.commentary = globalsConstants.K_BLANK;
     this.opinionObj.rating = 0;
-    this.opinionObj.user_id = 1;
+    this.opinionObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -149,7 +152,7 @@ export class OpinionComponent implements OnInit {
     this.opinionObj.commentary = opinion.commentary;
     this.opinionObj.image = (opinion.image) ? opinion.image : globalsConstants.K_DEFAULT_IMAGE;
     this.opinionObj.rating = opinion.rating;
-    this.opinionObj.user_id = opinion.user_id;
+    this.opinionObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();

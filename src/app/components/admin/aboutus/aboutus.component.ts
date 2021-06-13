@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -21,7 +22,8 @@ const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
   styleUrls: ['./aboutus.component.css']
 })
 export class AboutusComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // AboutUs
@@ -57,7 +59,8 @@ export class AboutusComponent implements OnInit {
   // Load
   isLoaded: boolean;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
+    this.globals = globals;
     this.aboutUsObj = new AboutUsInterface();
     this.element.scrollTop = 0;
   }
@@ -114,7 +117,7 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_fcbk = globalsConstants.K_BLANK;
     this.aboutUsObj.user_ytube = globalsConstants.K_BLANK;
     this.aboutUsObj.user_insta = globalsConstants.K_BLANK;
-    this.aboutUsObj.user_id = 1;
+    this.aboutUsObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();
@@ -139,7 +142,7 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_fcbk = aboutUs.user_fcbk;
     this.aboutUsObj.user_ytube = aboutUs.user_ytube;
     this.aboutUsObj.user_insta = aboutUs.user_insta;
-    this.aboutUsObj.user_id = aboutUs.user_id;
+    this.aboutUsObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
          this.scrollToForm();

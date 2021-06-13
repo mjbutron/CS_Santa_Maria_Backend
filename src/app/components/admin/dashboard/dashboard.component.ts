@@ -3,6 +3,7 @@ import { formatDate } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +24,8 @@ const K_UPDATE_ORDER = 'Se ha modificado el orden de la cabecera';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
+  // Globals
+  globals: Globals;
   // Path
   path = environment.imageRootPath;
   // Scroll
@@ -66,7 +68,11 @@ export class DashboardComponent implements OnInit {
   // Today date
   todayDate = formatDate(new Date(), globalsConstants.K_FORMAT_DATE,globalsConstants.K_LOCALE_EN);
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService,
+              public toastr: ToastrService,
+              private coreService: CoreService,
+              globals: Globals) {
+    this.globals = globals;
     this.sliderObj = new SliderInterface();
     this.element.scrollTop = 0;
   }
@@ -237,7 +243,7 @@ export class DashboardComponent implements OnInit {
     this.sliderObj.description = slider.description;
     this.sliderObj.order_slider = slider.order_slider;
     this.sliderObj.color_text = slider.color_text;
-    this.sliderObj.user_id = slider.user_id;
+    this.sliderObj.user_id = this.globals.userID;
     this.sliderObj.image = (slider.image) ? slider.image : globalsConstants.K_DEFAULT_IMAGE;
     this.sliderImg = slider.image;
     this.disabledForm = false;
