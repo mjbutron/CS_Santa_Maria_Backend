@@ -123,18 +123,18 @@ export class CourseComponent implements OnInit {
     this.inNewChk = true;
 
     this.courseObj.id = null;
-    this.courseObj.title = globalsConstants.K_BLANK;;
-    this.courseObj.description = globalsConstants.K_BLANK;;
+    this.courseObj.title = globalsConstants.K_BLANK;
+    this.courseObj.description = globalsConstants.K_BLANK;
     this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.courseObj.new_course = 1;
     this.courseObj.offer = 0;
-    this.courseObj.address = globalsConstants.K_BLANK;;
-    this.courseObj.session_date = globalsConstants.K_BLANK;;
-    this.courseObj.session_start = globalsConstants.K_BLANK;;
-    this.courseObj.session_end = globalsConstants.K_BLANK;;
+    this.courseObj.address = globalsConstants.K_BLANK;
+    this.courseObj.session_date = globalsConstants.K_BLANK;
+    this.courseObj.session_start = globalsConstants.K_BLANK;
+    this.courseObj.session_end = globalsConstants.K_BLANK;
     this.courseObj.sessions = 0;
     this.courseObj.hours = 0;
-    this.courseObj.level = globalsConstants.K_BLANK;;
+    this.courseObj.impart = globalsConstants.K_BLANK;
     this.courseObj.places = 0;
     this.courseObj.free_places = 0;
     this.courseObj.price = 0;
@@ -166,7 +166,7 @@ export class CourseComponent implements OnInit {
     this.courseObj.session_end = course.session_end;
     this.courseObj.sessions = course.sessions;
     this.courseObj.hours = course.hours;
-    this.courseObj.level = course.level;
+    this.courseObj.impart = course.impart;
     this.courseObj.places = course.places;
     this.courseObj.free_places = course.free_places;
     this.courseObj.price = course.price;
@@ -301,6 +301,7 @@ export class CourseComponent implements OnInit {
         });
       }
     } else{
+      this.courseObj.free_places = this.courseObj.places;
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.courseImg = img['message'];

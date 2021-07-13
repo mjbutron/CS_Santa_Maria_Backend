@@ -245,7 +245,7 @@
             <hr>
             <div class="row">
               <div class="col-md-12">
-                <label><strong>Plazas y Nivel</strong></label>
+                <label><strong>Plazas y Formador</strong></label>
               </div>
             </div>
             <div class="row p-2">
@@ -258,13 +258,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="free_places">Plazas libres</label>
-                  <input name="free_places" id="free_places" type="number" [(ngModel)]="courseObj.free_places" class="form-control">
+                  <input name="free_places" id="free_places" type="number" [(ngModel)]="courseObj.free_places" class="form-control" [disabled]="!isEditForm">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="level">Nivel</label>
-                  <input name="level" id="level" type="text" [(ngModel)]="courseObj.level" class="form-control">
+                  <label for="impart">Impartido por</label>
+                  <input name="impart" id="impart" type="text" [(ngModel)]="courseObj.impart" class="form-control">
                 </div>
               </div>
             </div>

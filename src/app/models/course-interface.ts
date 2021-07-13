@@ -12,7 +12,7 @@ export class CourseInterface {
   session_end?: string;
   sessions?: number;
   hours?: number;
-  level?: string;
+  impart?: string;
   places?: number;
   free_places?: number;
   price?: number;
