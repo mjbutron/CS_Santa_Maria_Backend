@@ -43,6 +43,7 @@ export class WorkshopComponent implements OnInit {
   selectedImg: File;
   uploadSuccess: boolean;
   progress: number = 0;
+  inNewChk: boolean;
   // Errors
   errors = "";
   // Numeros páginas
@@ -117,21 +118,26 @@ export class WorkshopComponent implements OnInit {
     this.isEditForm = false;
     this.changeImage = false;
     this.selectedImg = null;
+    this.inNewChk = true;
 
     this.workShopObj.id = null;
     this.workShopObj.home = 0;
     this.inHomeChk = false;
-    this.workShopObj.title = globalsConstants.K_BLANK;;
-    this.workShopObj.description_home = globalsConstants.K_BLANK;;
+    this.workShopObj.title = globalsConstants.K_BLANK;
+    this.workShopObj.description_home = globalsConstants.K_BLANK;
+    this.workShopObj.description = globalsConstants.K_BLANK;
     this.workShopObj.image = globalsConstants.K_DEFAULT_IMAGE;
-    this.workShopObj.subtitle = globalsConstants.K_BLANK;;
+    this.workShopObj.subtitle = globalsConstants.K_BLANK;
     this.workShopObj.price = 0;
-    this.workShopObj.address = globalsConstants.K_BLANK;;
-    this.workShopObj.session_date = globalsConstants.K_BLANK;;
-    this.workShopObj.session_start = globalsConstants.K_BLANK;;
-    this.workShopObj.session_end = globalsConstants.K_BLANK;;
-    this.workShopObj.sessions = 0;
-    this.workShopObj.description = globalsConstants.K_BLANK;;
+    this.workShopObj.address = globalsConstants.K_BLANK;
+    this.workShopObj.session_date = globalsConstants.K_BLANK;
+    this.workShopObj.session_start = globalsConstants.K_BLANK;
+    this.workShopObj.session_end = globalsConstants.K_BLANK;
+    this.workShopObj.hours = 0;
+    this.workShopObj.places = 0;
+    this.workShopObj.free_places = 0;
+    this.workShopObj.new_workshop = 1;
+    this.workShopObj.impart = globalsConstants.K_BLANK;
     this.workShopObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
@@ -151,6 +157,7 @@ export class WorkshopComponent implements OnInit {
     this.inHomeChk = (workShop.home == 1) ? true : false;
     this.workShopObj.title = workShop.title;
     this.workShopObj.description_home = workShop.description_home;
+    this.workShopObj.description = workShop.description;
     this.workShopObj.image = (workShop.image) ? workShop.image : globalsConstants.K_DEFAULT_IMAGE;;
     this.workShopObj.subtitle = workShop.subtitle;
     this.workShopObj.price = workShop.price;
@@ -158,8 +165,12 @@ export class WorkshopComponent implements OnInit {
     this.workShopObj.session_date = workShop.session_date;
     this.workShopObj.session_start = workShop.session_start;
     this.workShopObj.session_end = workShop.session_end;
-    this.workShopObj.sessions = workShop.sessions;
-    this.workShopObj.description = workShop.description;
+    this.workShopObj.hours = workShop.hours;
+    this.workShopObj.places = workShop.places;
+    this.workShopObj.free_places = workShop.free_places;
+    this.workShopObj.new_workshop = workShop.new_workshop;
+    this.inNewChk = (workShop.new_workshop == 1) ? true : false;
+    this.workShopObj.impart = workShop.impart;
     this.workShopObj.user_id = this.globals.userID;
     setTimeout (() => {
          // Mover el scroll al form
@@ -291,6 +302,7 @@ export class WorkshopComponent implements OnInit {
         });
       }
     } else{
+      this.workShopObj.free_places = this.workShopObj.places;
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.workshopImg = img['message'];

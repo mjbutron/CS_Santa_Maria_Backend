@@ -33,7 +33,7 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Precio</th>
-                    <th>Inicio</th>
+                    <th>Pag. Principal</th>
                     <th>Activo</th>
                     <th></th>
                     <th></th>
@@ -115,7 +115,7 @@
               </div>
             </div>
             <div class="row p-2">
-              <div class="col-md-10">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label for="title">Nombre/Título</label>
                   <input name="title" id="title" type="text" [(ngModel)]="workShopObj.title" class="form-control">
@@ -125,6 +125,14 @@
                 <div class="form-group">
                   <label for="price">Precio (€)</label>
                   <input name="price" id="price" type="number" [(ngModel)]="workShopObj.price" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="new">Novedad</label>
+                  <input name="new" id="new" type="checkbox" [(ngModel)]="inNewChk"
+                    data-md-icheck (change)="toggleVisibility($event)"
+                    class="form-control">
                 </div>
               </div>
             </div>
@@ -214,7 +222,7 @@
               </div>
             </div>
             <div class="row p-2">
-              <div class="col-md-9">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="address">Direccion (Donde se imparte)</label>
                   <input name="address" id="address" type="text" [(ngModel)]="workShopObj.address" class="form-control">
@@ -224,6 +232,12 @@
                 <div class="form-group">
                   <label for="date">Fecha</label>
                   <input name="date" id="date" type="date" [ngModel]="workShopObj.session_date | date:'yyyy-MM-dd'" (ngModelChange)="workShopObj.session_date = $event" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="hours">Horas</label>
+                  <input name="hours" id="hours" type="number" [ngModel]="workShopObj.hours" class="form-control">
                 </div>
               </div>
             </div>
@@ -240,10 +254,30 @@
                   <input name="end_time" id="end_time" type="time" [(ngModel)]="workShopObj.session_end" class="form-control">
                 </div>
               </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <label><strong>Plazas y Formador</strong></label>
+              </div>
+            </div>
+            <div class="row p-2">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="n_sessions">Número de sesiones</label>
-                  <input name="n_sessions" id="n_sessions" type="number" [(ngModel)]="workShopObj.sessions" class="form-control">
+                  <label for="places">Plazas</label>
+                  <input name="places" id="places" type="number" [(ngModel)]="workShopObj.places" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="free_places">Plazas libres</label>
+                  <input name="free_places" id="free_places" type="number" [(ngModel)]="workShopObj.free_places" class="form-control" [disabled]="!isEditForm">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="impart">Impartido por</label>
+                  <input name="impart" id="impart" type="text" [(ngModel)]="workShopObj.impart" class="form-control">
                 </div>
               </div>
             </div>
