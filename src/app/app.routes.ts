@@ -10,6 +10,7 @@ import { ServiceComponent } from './components/admin/service/service.component';
 import { AboutusComponent } from './components/admin/aboutus/aboutus.component';
 import { LoginComponent } from './components/admin/login/login.component';
 import { UsermgtComponent } from './components/admin/user/usermgt/usermgt.component';
+import { NotificationComponent } from './components/admin/notification/notification.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const APP_ROUTES: Routes = [
@@ -22,6 +23,7 @@ const APP_ROUTES: Routes = [
   { path: 'admin/servicios', component: ServiceComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/nosotras', component: AboutusComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'admin/usuarios', component: UsermgtComponent, canActivate: [AuthGuard] }, // TODO only users auth
+  { path: 'admin/notificaciones', component: NotificationComponent, canActivate: [AuthGuard] }, // TODO only users auth
   { path: 'login', component: LoginComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'admin/dashboard' }
 ];

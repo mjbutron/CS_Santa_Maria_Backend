@@ -25,7 +25,8 @@ export class CoreService {
   url = environment.urlApiRest;
   pathServerImg = environment.pathServerImage;
 
-  userEmail = {
+  userDataLog = {
+    user_id: 0,
     email: ""
   };
 
@@ -44,6 +45,7 @@ export class CoreService {
 
   constructor(private http: HttpClient, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
+    console.log("CORE");
     // Get user data
     this.getUserData(localStorage.getItem('email'));
     this.testSchedule();
@@ -99,9 +101,9 @@ export class CoreService {
   }
 
   userData(email: string){
-    this.userEmail.email = email;
+    this.userDataLog.email = email;
     const url_api = this.url + K_URL_USER_DATA;
-    return this.http.post(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions())
+    return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {
@@ -132,6 +134,22 @@ export class CoreService {
     uploadData.append('image', image);
     uploadData.append('path', this.pathServerImg);
     return this.http.post(url_api, uploadData, this.getUploadHeadersOptions());
+  }
+
+  getNotificationsByPage(page: Number){
+    this.userDataLog.email = localStorage.getItem('email');
+    this.userDataLog.user_id = 1;
+    console.log(this.userDataLog);
+
+    const url_api = this.url + '/admin/api/notificationsByPage/' + page;
+    return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
   }
 
   testSchedule(){

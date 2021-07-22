@@ -1,0 +1,44 @@
+#legend{
+   position: relative;
+   text-align:center;
+}
+#legend ul{
+   padding: 0px;
+}
+#legend li{
+   display:inline;
+   font: bold 8pt Verdana, Tahoma, Arial;
+   height: 10pt;
+   padding: 2px;
+}
+
+.notifNew{
+   margin: 2px;
+   background-color: #0095A6;
+   border-bottom: 3px solid #0095A6;
+   border-right: 3px solid #0095A6;
+   border-top: 3px solid #0095A6;
+   border-left: 3px solid #0095A6;
+}
+
+.notifNoRead{
+   margin: 2px;
+   background-color: #add5dd;
+   border-bottom: 3px solid #add5dd;
+   border-right: 3px solid #add5dd;
+   border-top: 3px solid #add5dd;
+   border-left: 3px solid #add5dd;
+}
+
+.notifRead{
+   margin: 2px;
+   background-color: #EDEDED;
+   border-bottom: 3px solid #EDEDED;
+   border-right: 3px solid #EDEDED;
+   border-top: 3px solid #EDEDED;
+   border-left: 3px solid #EDEDED;
+}
+
+.notifSpace{
+  margin-right: 20px;
+}

@@ -1,0 +1,71 @@
+<div id="preloader" *ngIf="!isLoaded">
+  <div id="loader"></div>
+</div>
+<div>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5><b>Notificaciones ({{numNotifications}} resultados)</b>
+            <a [routerLink]="" (click)="onDelete()" >
+              <span  style="font-size: 1.2em; color: #0095A6;">
+                <i class="fas fa-trash-alt ml-3 float-right" title="Eliminar todas"></i>
+              </span>
+            </a>
+            <a [routerLink]="" (click)="onRead()" >
+              <span  style="font-size: 1.2em; color: #0095A6;">
+                <i class="fas fa-tasks ml-3 float-right" title="Marcar todas como revisadas"></i>
+              </span>
+            </a>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div id=legend>
+                <ul>
+                <li class=notifNew></li>
+                <li class="notifSpace">Nuevas</li>
+                <li class=notifNoRead></li>
+                <li class="notifSpace">No leídas</li>
+                <li class=notifRead></li>
+                <li class="notifSpace">Leídas</li>
+                </ul>
+            </div>
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Notificación</th>
+                    <th>Fecha/Hora</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="notifications?.length">
+                  <tr *ngFor="let notification of notifications">
+                    <td  style="background-color:#0095A6; width:10px;" *ngIf="notification.notified==0 && notification.read_notification==0"></td>
+                    <td  style="background-color:#add5dd; width:10px;" *ngIf="notification.notified==1 && notification.read_notification==0"></td>
+                    <td  style="background-color:#EDEDED; width:10px;" *ngIf="notification.notified==1 && notification.read_notification==1"></td>
+                    <td class="align-middle">{{notification.description}}</td>
+                    <td class="align-middle">
+                      {{notification.datetime_notification | date:'dd MMM yyyy HH:mm'}}
+                    </td>
+                    <td class="align-middle"></td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!notifications?.length">
+                  <tr>
+                    <td class="align-middle text-muted" colspan="10" align="center">
+                      <span><i class="fas fa-info-circle"></i></span> No tiene notificaciones
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-pagination (pageEmitter)="goToPage($event)" [page]="page" [totalPages]="totalPages" [numElements]="numNotifications" [numberPage]="numberPage"></app-pagination>
+    </div>
+  </div>
+</div>

@@ -34,6 +34,7 @@ import { ServiceComponent } from './components/admin/service/service.component';
 import { AboutusComponent } from './components/admin/aboutus/aboutus.component';
 import { LoginComponent } from './components/admin/login/login.component';
 import { UsermgtComponent } from './components/admin/user/usermgt/usermgt.component';
+import { NotificationComponent } from './components/admin/notification/notification.component';
 
 // Date
 import localeEs from '@angular/common/locales/es';
@@ -61,7 +62,8 @@ registerLocaleData(localeEs);
     AboutusComponent,
     LoginComponent,
     UsermgtComponent,
-    TimeWithoutSecPipe
+    TimeWithoutSecPipe,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

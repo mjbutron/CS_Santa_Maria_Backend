@@ -1,0 +1,114 @@
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Globals } from 'src/app/common/globals';
+import * as globalsConstants from 'src/app/common/globals';
+
+import { CoreService } from 'src/app/services/core.service';
+
+import { NotificationInterface } from 'src/app/models/notification-interface';
+
+// Constants
+const K_DELETE_NOTIFICATIONS = '¿Seguro que deseas eliminar todas las notificaciones?';
+const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+
+@Component({
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrls: ['./notification.component.css']
+})
+export class NotificationComponent implements OnInit {
+
+  // Globals
+  globals: Globals;
+  // Notifications
+  notifyObj: NotificationInterface;
+  notifications: NotificationInterface[] = [];
+  // Numeros páginas
+  public numberPage: number[] = [];
+  // Página actual
+  public page: number = 1;
+  // Total de paginas
+  public totalPages: number;
+  // Total de elementos
+  public numNotifications: number;
+  // Elementos por página
+  private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
+  // Scroll
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
+  // Load
+  isLoaded: boolean;
+
+  constructor(private coreService: CoreService, globals: Globals, public toastr: ToastrService) {
+    this.globals = globals;
+    this.notifyObj = new NotificationInterface();
+    this.element.scrollTop = 0;
+  }
+
+  ngOnInit() {
+    this.isLoaded = false;
+    this.getNotificationsByPage(this.page);
+  }
+
+  goToPage(page: number){
+    this.page = page;
+    this.getNotificationsByPage(page);
+  }
+
+  getNotificationsByPage(page: Number) {
+    this.coreService.getNotificationsByPage(page).subscribe((data) =>{
+      if (globalsConstants.K_COD_OK == data.cod){
+        this.notifications = data.allNotifications;
+        console.log(this.notifications);
+
+        this.numNotifications = data.total;
+        this.totalPages = data.totalPages;
+        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
+        this.isLoaded = true;
+      } else{
+        this.numNotifications = globalsConstants.K_ZERO_RESULTS;
+        this.isLoaded = true;
+        this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
+      }
+    });
+  }
+
+  onReload(){
+    // this.getNotificationsByPage(this.page);
+  }
+
+  // onDeleteAll(){
+  //   Swal.fire({
+  //     title: K_DELETE_NOTIFICATIONS,
+  //     text: K_WARNING_ACTION,
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
+  //     cancelButtonColor: globalsConstants.K_CANCEL_BUTTON_COLOR,
+  //     confirmButtonText: globalsConstants.K_CONFIRM_BUTTON_STR,
+  //     cancelButtonText: globalsConstants.K_CANCEL_BUTTON_STR
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       this.isLoaded = false;
+  //       this.dataApi.deleteAllNotifications(this.globals.userID).subscribe((data) => {
+  //         if (globalsConstants.K_COD_OK == data.cod){
+  //           this.getNotificationsByPage(this.page);
+  //           this.isLoaded = true;
+  //           Swal.fire(
+  //             globalsConstants.K_DELETE_F_EXC_STR,
+  //             data.message,
+  //             'success'
+  //           )
+  //         } else{
+  //           this.isLoaded = true;
+  //           Swal.fire(
+  //             globalsConstants.K_ERROR_EXC_STR,
+  //             data.message,
+  //             'error'
+  //           )
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+
+}
