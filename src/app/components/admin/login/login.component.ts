@@ -62,6 +62,7 @@ export class LoginComponent implements OnInit {
         }
         localStorage.setItem('email', this.user.email);
         this.globals.isAuth = true;
+        this.globals.userID = data.user.id;
         this.globals.isChangePass = (data.user.change_pass == 0) ? false : true;
         this.router.navigateByUrl('/admin/dashboard');
       }

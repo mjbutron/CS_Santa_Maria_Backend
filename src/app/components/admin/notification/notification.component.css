@@ -1,44 +1,69 @@
 #legend{
-   position: relative;
-   text-align:center;
+  position: relative;
+  text-align:center;
 }
 #legend ul{
-   padding: 0px;
+  padding: 0px;
 }
 #legend li{
-   display:inline;
-   font: bold 8pt Verdana, Tahoma, Arial;
-   height: 10pt;
-   padding: 2px;
+  display:inline;
+  font: bold 8pt Verdana, Tahoma, Arial;
+  height: 10pt;
+  padding: 2px;
 }
 
 .notifNew{
-   margin: 2px;
-   background-color: #0095A6;
-   border-bottom: 3px solid #0095A6;
-   border-right: 3px solid #0095A6;
-   border-top: 3px solid #0095A6;
-   border-left: 3px solid #0095A6;
+  margin: 2px;
+  background-color: #0095A6;
+  border-bottom: 3px solid #0095A6;
+  border-right: 3px solid #0095A6;
+  border-top: 3px solid #0095A6;
+  border-left: 3px solid #0095A6;
 }
 
 .notifNoRead{
-   margin: 2px;
-   background-color: #add5dd;
-   border-bottom: 3px solid #add5dd;
-   border-right: 3px solid #add5dd;
-   border-top: 3px solid #add5dd;
-   border-left: 3px solid #add5dd;
+  margin: 2px;
+  background-color: #ADD5DD;
+  border-bottom: 3px solid #ADD5DD;
+  border-right: 3px solid #ADD5DD;
+  border-top: 3px solid #ADD5DD;
+  border-left: 3px solid #ADD5DD;
 }
 
 .notifRead{
-   margin: 2px;
-   background-color: #EDEDED;
-   border-bottom: 3px solid #EDEDED;
-   border-right: 3px solid #EDEDED;
-   border-top: 3px solid #EDEDED;
-   border-left: 3px solid #EDEDED;
+  margin: 2px;
+  background-color: #EDEDED;
+  border-bottom: 3px solid #EDEDED;
+  border-right: 3px solid #EDEDED;
+  border-top: 3px solid #EDEDED;
+  border-left: 3px solid #EDEDED;
 }
 
 .notifSpace{
   margin-right: 20px;
+}
+
+.tableNotifNew{
+  background-color:#0095A6;
+  width:10px;
+}
+
+.tableNotifNoRead{
+  background-color:#ADD5DD;
+  width:10px;
+}
+
+.tableNotifRead{
+  background-color:#EDEDED;
+  width:10px;
+}
+
+.tableNotifNoRead:hover{
+  background-color:#EDEDED;
+  width:10px;
+}
+
+.tableNotifRead:hover{
+  background-color:#ADD5DD;
+  width:10px;
 }

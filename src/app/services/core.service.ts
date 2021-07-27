@@ -45,9 +45,9 @@ export class CoreService {
 
   constructor(private http: HttpClient, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
-    console.log("CORE");
     // Get user data
     this.getUserData(localStorage.getItem('email'));
+    // this.getNotifications();
     this.testSchedule();
 
     // Posible método para comprobar notificaciones cada cierto tiempo.
@@ -138,11 +138,40 @@ export class CoreService {
 
   getNotificationsByPage(page: Number){
     this.userDataLog.email = localStorage.getItem('email');
-    this.userDataLog.user_id = 1;
-    console.log(this.userDataLog);
-
+     // TODO: Check when reload in notifications page (No exist ID)
+    this.userDataLog.user_id = this.globals.userID;
     const url_api = this.url + '/admin/api/notificationsByPage/' + page;
     return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
+
+  findNotifications(){
+    this.userDataLog.email = localStorage.getItem('email');
+     // TODO: Check when reload in notifications page (No exist ID)
+    this.userDataLog.user_id = this.globals.userID;
+    const url_api = this.url + '/admin/api/findNotifications';
+    return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
+
+  markAsNotified(){
+    this.userDataLog.email = localStorage.getItem('email');
+     // TODO: Check when reload in notifications page (No exist ID)
+    this.userDataLog.user_id = this.globals.userID;
+    const url_api = this.url + '/admin/api/allNotified';
+    return this.http.put(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
     .pipe(
       this.delayRetry(2000, 3),
       catchError( err => {

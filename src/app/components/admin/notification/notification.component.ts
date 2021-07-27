@@ -46,7 +46,16 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit() {
     this.isLoaded = false;
-    this.getNotificationsByPage(this.page);
+    // Get all notifications
+    setTimeout (() => {
+      this.getNotificationsByPage(this.page);
+    }, 1500);
+
+    // Mark as notified all notifications
+    setTimeout (() => {
+      this.markAsNotified();
+    }, 2000);
+
   }
 
   goToPage(page: number){
@@ -58,8 +67,6 @@ export class NotificationComponent implements OnInit {
     this.coreService.getNotificationsByPage(page).subscribe((data) =>{
       if (globalsConstants.K_COD_OK == data.cod){
         this.notifications = data.allNotifications;
-        console.log(this.notifications);
-
         this.numNotifications = data.total;
         this.totalPages = data.totalPages;
         this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
@@ -72,8 +79,18 @@ export class NotificationComponent implements OnInit {
     });
   }
 
+  markAsNotified() {
+    this.coreService.markAsNotified().subscribe((data) =>{
+      if (globalsConstants.K_COD_OK == data.cod){
+        // Notified
+      } else{
+        // Error
+      }
+    });
+  }
+
   onReload(){
-    // this.getNotificationsByPage(this.page);
+    this.getNotificationsByPage(this.page);
   }
 
   // onDeleteAll(){
