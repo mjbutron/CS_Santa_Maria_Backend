@@ -8,6 +8,7 @@ import { delay, mergeMap, catchError, retry, retryWhen, shareReplay } from 'rxjs
 import { ToastrService } from 'ngx-toastr';
 
 import { Globals } from 'src/app/common/globals';
+import { NotificationInterface } from 'src/app/models/notification-interface';
 
 const DEFAULT_MAX_RETRIES = 5;
 const K_URL_USER_DATA = '/admin/api/userData';
@@ -30,6 +31,12 @@ export class CoreService {
     email: ""
   };
 
+  notificationData = {
+    user_id: 0,
+    message: "",
+    to: globalsConstants.K_ALL_USERS
+  };
+
   // httpOptions = {
   // headers: new HttpHeaders({
   //   "Content-type": "application/json",
@@ -47,12 +54,9 @@ export class CoreService {
     this.globals = globals;
     // Get user data
     this.getUserData(localStorage.getItem('email'));
-    // this.getNotifications();
-    this.testSchedule();
-
     // Posible método para comprobar notificaciones cada cierto tiempo.
     // setInterval (() => {
-    //      this.testSchedule();
+    //      console.log("USER_ID: " + this.globals.userID);
     //   }, 5000);
   }
 
@@ -86,6 +90,7 @@ export class CoreService {
     );
   }
 
+// USER DATA
   getUserData(email: string){
     if(null != email){
       this.userData(email).subscribe(data => {
@@ -113,6 +118,7 @@ export class CoreService {
     )
   }
 
+// SIDEBAR SERVICE
   toggleSidebar() {
     this.isSidebarToggeled = ! this.isSidebarToggeled;
   }
@@ -128,6 +134,7 @@ export class CoreService {
     }
   }
 
+// UPLOAD FILES SERVICE
   uploadFiles(image: File){
     const url_api = this.url + '/admin/api/upload';
     var uploadData = new FormData();
@@ -136,9 +143,9 @@ export class CoreService {
     return this.http.post(url_api, uploadData, this.getUploadHeadersOptions());
   }
 
+// NOTIFICATION SERVICE
   getNotificationsByPage(page: Number){
     this.userDataLog.email = localStorage.getItem('email');
-     // TODO: Check when reload in notifications page (No exist ID)
     this.userDataLog.user_id = this.globals.userID;
     const url_api = this.url + '/admin/api/notificationsByPage/' + page;
     return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
@@ -153,7 +160,6 @@ export class CoreService {
 
   findNotifications(){
     this.userDataLog.email = localStorage.getItem('email');
-     // TODO: Check when reload in notifications page (No exist ID)
     this.userDataLog.user_id = this.globals.userID;
     const url_api = this.url + '/admin/api/findNotifications';
     return this.http.post(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
@@ -168,7 +174,6 @@ export class CoreService {
 
   markAsNotified(){
     this.userDataLog.email = localStorage.getItem('email');
-     // TODO: Check when reload in notifications page (No exist ID)
     this.userDataLog.user_id = this.globals.userID;
     const url_api = this.url + '/admin/api/allNotified';
     return this.http.put(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
@@ -181,10 +186,73 @@ export class CoreService {
     )
   }
 
-  testSchedule(){
-    console.log("*** Test Schedule ***");
-    // console.log("USER ID: " + this.globals.userID);
-    // this.toastr.info('1 Nueva notificación', 'Notificaciones');
+  notificationReadNoRead(notification: NotificationInterface){
+    const url_api = this.url + '/admin/api/notification/readNoRead/' + notification.id;
+    return this.http.put(url_api, JSON.stringify(notification), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
+
+  deleteAllNotifications() {
+    this.userDataLog.email = localStorage.getItem('email');
+    this.userDataLog.user_id = this.globals.userID;
+    const url_api = this.url + '/admin/api/allDelete';
+    return this.http.put(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
+
+  readAllNotifications() {
+    this.userDataLog.email = localStorage.getItem('email');
+    this.userDataLog.user_id = this.globals.userID;
+    const url_api = this.url + '/admin/api/allRead';
+    return this.http.put(url_api, JSON.stringify(this.userDataLog), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
+
+  createNotification(action: string, name: string, to: string){
+    // Create notification
+    let userName = localStorage.getItem('username');
+    let message = userName + action + name;
+    this.commandNotification(message, to).subscribe(data => {
+      if (globalsConstants.K_COD_OK == data.cod){
+        // Ok
+      } else{
+        // Error
+      }
+    });
+  }
+
+  commandNotification(notification: string, to: string){
+    this.notificationData.user_id = this.globals.userID;
+    this.notificationData.message = notification;
+    this.notificationData.to = to;
+    console.log(JSON.stringify(this.notificationData));
+    const url_api = this.url + '/admin/api/notification/new';
+    return this.http.post(url_api, JSON.stringify(this.notificationData), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
   }
 
 }

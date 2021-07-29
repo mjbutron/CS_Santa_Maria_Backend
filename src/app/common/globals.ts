@@ -32,11 +32,24 @@ export const K_DELETE_EXC_STR = '¡Eliminado!';
 export const K_DELETE_F_EXC_STR = '¡Eliminada!';
 export const K_TOP_ELEMENT_STR = 'rtrSup';
 export const K_CONFIRM_BUTTON_STR = '¡Sí, eliminar!';
+export const K_CONFIRM_READ_BUTTON_STR = '¡Sí, revisar!';
 export const K_OK_BUTTON_STR = 'Aceptar';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
 export const K_NO_DATE = '--/--/----';
 export const K_FORMAT_DATE = 'yyyy-MM-dd';
 export const K_LOCALE_EN = 'en';
+// Notifications
+export const K_DELETE_NOTIF_STR = '¡Eliminadas!';
+export const K_READ_NOTIF_STR = '¡Revisadas!';
+export const K_INS_ACTION = 'Insert';
+export const K_UPD_ACTION = 'Upate';
+export const K_DEL_ACTION = 'Delete';
+export const K_ALL_USERS = 'ALL';
+export const K_ADMIN_USERS = 'ADMIN';
+export const K_MOD_WORKSHOP = 'workshop';
+export const K_INS_WORKSHOP = ' ha añadido el taller ';
+export const K_UPD_WORKSHOP = ' ha modificado el taller ';
+export const K_DEL_WORKSHOP = ' ha eliminado el taller ';
 // Colors
 export const K_CONFIRM_BUTTON_COLOR = '#d33';
 export const K_CANCEL_BUTTON_COLOR = '#0095A6';

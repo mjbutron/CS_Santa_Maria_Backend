@@ -1,6 +1,5 @@
 export class NotificationInterface {
   id?: number;
-  code_action?: string;
   description?: string;
   datetime_notification?: string;
   read_notification?: number;

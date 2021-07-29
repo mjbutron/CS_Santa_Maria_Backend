@@ -325,6 +325,9 @@ export class WorkshopComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getWorkShopsByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_INS_WORKSHOP, this.workShopObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{

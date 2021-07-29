@@ -7,12 +7,12 @@
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
           <h5><b>Notificaciones ({{numNotifications}} resultados)</b>
-            <a [routerLink]="" (click)="onDelete()" >
+            <a [routerLink]="" (click)="onDeleteAll()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-trash-alt ml-3 float-right" title="Eliminar todas"></i>
               </span>
             </a>
-            <a [routerLink]="" (click)="onRead()" >
+            <a [routerLink]="" (click)="onReadAll()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-tasks ml-3 float-right" title="Marcar todas como revisadas"></i>
               </span>
@@ -48,9 +48,9 @@
                 </thead>
                 <tbody *ngIf="notifications?.length">
                   <tr *ngFor="let notification of notifications">
-                    <td [routerLink]="" (click)="onReload()" class="tableNotifNew" *ngIf="notification.notified==0 && notification.read_notification==0"></td>
-                    <td  class="tableNotifNoRead" title="Marcar como revisada" *ngIf="notification.notified==1 && notification.read_notification==0"></td>
-                    <td  class="tableNotifRead" title="Marcar para revisar" *ngIf="notification.notified==1 && notification.read_notification==1"></td>
+                    <td class="tableNotifNew" *ngIf="notification.notified==0 && notification.read_notification==0"></td>
+                    <td [routerLink]="" (click)="onReadNoRead(notification)" class="tableNotifNoRead" title="Marcar como revisada" *ngIf="notification.notified==1 && notification.read_notification==0"></td>
+                    <td [routerLink]="" (click)="onReadNoRead(notification)" class="tableNotifRead" title="Marcar para revisar" *ngIf="notification.notified==1 && notification.read_notification==1"></td>
                     <td class="align-middle">{{notification.description}}</td>
                     <td class="align-middle">
                       {{notification.datetime_notification | date:'dd MMM yyyy HH:mm'}}
