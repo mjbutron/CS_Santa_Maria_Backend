@@ -226,10 +226,10 @@ export class CoreService {
     )
   }
 
-  createNotification(action: string, name: string, to: string){
+  createNotification(mod: string, action: string, name: string, to: string){
     // Create notification
     let userName = localStorage.getItem('username');
-    let message = userName + action + name;
+    let message = userName + action + mod + name;
     this.commandNotification(message, to).subscribe(data => {
       if (globalsConstants.K_COD_OK == data.cod){
         // Ok

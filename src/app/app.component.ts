@@ -7,8 +7,6 @@ import { Globals } from 'src/app/common/globals';
 
 // Constants
 const K_TITLE_STR = 'cssm-dashboard';
-const K_PINNED_SDB = 'pinned-sidebar';
-const K_TOGGELED_SDB = 'toggeled-sidebar';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +23,8 @@ export class AppComponent {
 
   getClasses() {
     const classes = {
-      K_PINNED_SDB: this.coreService.getSidebarStat().isSidebarPinned,
-      K_TOGGELED_SDB: this.coreService.getSidebarStat().isSidebarToggeled
+      'pinned-sidebar': this.coreService.getSidebarStat().isSidebarPinned,
+      'toggeled-sidebar': this.coreService.getSidebarStat().isSidebarToggeled
     }
     return classes;
   }

@@ -204,6 +204,9 @@ export class WorkshopComponent implements OnInit {
               data.message,
               'success'
             )
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_WORKSHOP, globalsConstants.K_DELETE_MOD, workShop.title,
+              globalsConstants.K_ALL_USERS);
           } else{
             this.isLoaded = true;
             Swal.fire(
@@ -280,6 +283,9 @@ export class WorkshopComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getWorkShopsByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_WORKSHOP, globalsConstants.K_UPDATE_MOD, this.workShopObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
@@ -293,6 +299,9 @@ export class WorkshopComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getWorkShopsByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_WORKSHOP, globalsConstants.K_UPDATE_MOD, this.workShopObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
@@ -312,6 +321,9 @@ export class WorkshopComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getWorkShopsByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_WORKSHOP, globalsConstants.K_INSERT_NEW_MOD, this.workShopObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
@@ -326,7 +338,7 @@ export class WorkshopComponent implements OnInit {
             this.getWorkShopsByPage(this.page);
             this.onCancel();
             this.coreService.createNotification(
-              globalsConstants.K_INS_WORKSHOP, this.workShopObj.title,
+              globalsConstants.K_MOD_WORKSHOP, globalsConstants.K_INSERT_NEW_MOD, this.workShopObj.title,
               globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
@@ -419,6 +431,17 @@ export class WorkshopComponent implements OnInit {
               this.actionTextActiveStr,
               'success'
             )
+            if(!workshop.active){
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_WORKSHOP ,globalsConstants.K_ACTIVE_MOD, workshop.title,
+                globalsConstants.K_ALL_USERS);
+            }
+            else{
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_WORKSHOP ,globalsConstants.K_DEACTIVE_MOD, workshop.title,
+                globalsConstants.K_ALL_USERS);
+            }
+
           } else{
             workshop.active = auxActive;
             this.isLoaded = true;

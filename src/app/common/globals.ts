@@ -41,15 +41,16 @@ export const K_LOCALE_EN = 'en';
 // Notifications
 export const K_DELETE_NOTIF_STR = '¡Eliminadas!';
 export const K_READ_NOTIF_STR = '¡Revisadas!';
-export const K_INS_ACTION = 'Insert';
-export const K_UPD_ACTION = 'Upate';
-export const K_DEL_ACTION = 'Delete';
 export const K_ALL_USERS = 'ALL';
 export const K_ADMIN_USERS = 'ADMIN';
-export const K_MOD_WORKSHOP = 'workshop';
-export const K_INS_WORKSHOP = ' ha añadido el taller ';
-export const K_UPD_WORKSHOP = ' ha modificado el taller ';
-export const K_DEL_WORKSHOP = ' ha eliminado el taller ';
+export const K_MOD_WORKSHOP = 'el taller ';
+export const K_MOD_SERVICE = 'el servicio ';
+export const K_INSERT_NEW_MOD = ' ha añadido ';
+export const K_UPDATE_MOD = ' ha modificado ';
+export const K_DELETE_MOD = ' ha eliminado ';
+export const K_ACTIVE_MOD = ' ha activado ';
+export const K_DEACTIVE_MOD = ' ha desactivado ';
+
 // Colors
 export const K_CONFIRM_BUTTON_COLOR = '#d33';
 export const K_CANCEL_BUTTON_COLOR = '#0095A6';
