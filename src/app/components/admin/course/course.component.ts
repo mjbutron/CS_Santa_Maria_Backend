@@ -123,6 +123,7 @@ export class CourseComponent implements OnInit {
     this.inNewChk = true;
 
     this.courseObj.id = null;
+    this.courseObj.active = 0;
     this.courseObj.title = globalsConstants.K_BLANK;
     this.courseObj.description = globalsConstants.K_BLANK;
     this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
@@ -153,6 +154,7 @@ export class CourseComponent implements OnInit {
     this.selectedImg = null;
     // Setear valores al ui
     this.courseObj.id = course.id;
+    this.courseObj.active = course.active;
     this.courseObj.title = course.title;
     this.courseObj.description = course.description;
     this.courseObj.image = (course.image) ? course.image : globalsConstants.K_DEFAULT_IMAGE;

@@ -229,7 +229,7 @@ export class CoreService {
   createNotification(mod: string, action: string, name: string, to: string){
     // Create notification
     let userName = localStorage.getItem('username');
-    let message = userName + action + mod + name;
+    let message = userName + action + mod + "<b>" + name + "</b>";
     this.commandNotification(message, to).subscribe(data => {
       if (globalsConstants.K_COD_OK == data.cod){
         // Ok
@@ -243,7 +243,6 @@ export class CoreService {
     this.notificationData.user_id = this.globals.userID;
     this.notificationData.message = notification;
     this.notificationData.to = to;
-    console.log(JSON.stringify(this.notificationData));
     const url_api = this.url + '/admin/api/notification/new';
     return this.http.post(url_api, JSON.stringify(this.notificationData), this.getHeadersOptions())
     .pipe(

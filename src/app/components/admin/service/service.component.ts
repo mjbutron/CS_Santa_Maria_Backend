@@ -115,6 +115,7 @@ export class ServiceComponent implements OnInit {
     this.selectedImg = null;
 
     this.serviceObj.id = null;
+    this.serviceObj.active = 0;
     this.serviceObj.title = globalsConstants.K_BLANK;
     this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = globalsConstants.K_BLANK;
@@ -134,6 +135,7 @@ export class ServiceComponent implements OnInit {
     this.selectedImg = null;
     // Setear valores al ui
     this.serviceObj.id = service.id;
+    this.serviceObj.active = service.active;
     this.serviceObj.title = service.title;
     this.serviceObj.image = (service.image) ? service.image : globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = service.subtitle;

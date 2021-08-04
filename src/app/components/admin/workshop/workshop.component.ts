@@ -121,6 +121,7 @@ export class WorkshopComponent implements OnInit {
     this.inNewChk = true;
 
     this.workShopObj.id = null;
+    this.workShopObj.active = 0;
     this.workShopObj.home = 0;
     this.inHomeChk = false;
     this.workShopObj.title = globalsConstants.K_BLANK;
@@ -153,6 +154,7 @@ export class WorkshopComponent implements OnInit {
     this.selectedImg = null;
     // Setear valores al ui
     this.workShopObj.id = workShop.id;
+    this.workShopObj.active = workShop.active;
     this.workShopObj.home = workShop.home;
     this.inHomeChk = (workShop.home == 1) ? true : false;
     this.workShopObj.title = workShop.title;

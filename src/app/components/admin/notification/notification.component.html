@@ -51,7 +51,7 @@
                     <td class="tableNotifNew" *ngIf="notification.notified==0 && notification.read_notification==0"></td>
                     <td [routerLink]="" (click)="onReadNoRead(notification)" class="tableNotifNoRead" title="Marcar como revisada" *ngIf="notification.notified==1 && notification.read_notification==0"></td>
                     <td [routerLink]="" (click)="onReadNoRead(notification)" class="tableNotifRead" title="Marcar para revisar" *ngIf="notification.notified==1 && notification.read_notification==1"></td>
-                    <td class="align-middle">{{notification.description}}</td>
+                    <td class="align-middle"><div [innerHTML]="notification.description"></div></td>
                     <td class="align-middle">
                       {{notification.datetime_notification | date:'dd MMM yyyy HH:mm'}}
                     </td>
