@@ -7,6 +7,8 @@ import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 
 import { DataApiService } from 'src/app/services/data-api.service';
+import { CoreService } from 'src/app/services/core.service';
+
 import { ContactInterface } from 'src/app/models/contact-interface';
 
 // Constants
@@ -54,7 +56,7 @@ export class ContactComponent implements OnInit {
   phonePopData = '';
   emailPopData = '';
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
     this.infoObj = new ContactInterface();
     this.element.scrollTop = 0;
@@ -149,6 +151,9 @@ export class ContactComponent implements OnInit {
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
+        this.coreService.createNotification(
+          globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_HOME,
+          globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;
@@ -170,6 +175,9 @@ export class ContactComponent implements OnInit {
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
+        this.coreService.createNotification(
+          globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_FOOTER,
+          globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;
@@ -191,6 +199,9 @@ export class ContactComponent implements OnInit {
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod){
         this.isLoaded = true;
+        this.coreService.createNotification(
+          globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_CONTACT,
+          globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       } else{
         this.isLoaded = true;

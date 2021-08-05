@@ -185,6 +185,9 @@ export class OpinionComponent implements OnInit {
               data.message,
               'success'
             )
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_OPINION, globalsConstants.K_DELETE_MOD, opinion.name,
+              globalsConstants.K_ALL_USERS);
           } else {
             this.isLoaded = true;
             Swal.fire(
@@ -261,6 +264,9 @@ export class OpinionComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getOpinionsByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_OPINION, globalsConstants.K_UPDATE_MOD, this.opinionObj.name,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
             } else{
@@ -274,6 +280,9 @@ export class OpinionComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getOpinionsByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_OPINION, globalsConstants.K_UPDATE_MOD, this.opinionObj.name,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           } else{
@@ -292,6 +301,9 @@ export class OpinionComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getOpinionsByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_OPINION, globalsConstants.K_INSERT_NEW_MOD, this.opinionObj.name,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_F_STR);
             } else{
@@ -305,6 +317,9 @@ export class OpinionComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getOpinionsByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_OPINION, globalsConstants.K_INSERT_NEW_MOD, this.opinionObj.name,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_F_STR);
           } else{
