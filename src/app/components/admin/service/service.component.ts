@@ -173,6 +173,9 @@ export class ServiceComponent implements OnInit {
               data.message,
               'success'
             )
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_SERVICE, globalsConstants.K_DELETE_MOD, service.title,
+              globalsConstants.K_ALL_USERS);
           } else{
             this.isLoaded = true;
             Swal.fire(
@@ -249,6 +252,9 @@ export class ServiceComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_SERVICE, globalsConstants.K_UPDATE_MOD, this.serviceObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
@@ -262,6 +268,9 @@ export class ServiceComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_SERVICE, globalsConstants.K_UPDATE_MOD, this.serviceObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
@@ -280,6 +289,9 @@ export class ServiceComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getServicesByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_SERVICE, globalsConstants.K_INSERT_NEW_MOD, this.serviceObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
@@ -293,6 +305,9 @@ export class ServiceComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getServicesByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_SERVICE, globalsConstants.K_INSERT_NEW_MOD, this.serviceObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{
@@ -380,6 +395,16 @@ export class ServiceComponent implements OnInit {
               this.actionTextActiveStr,
               'success'
             )
+            if(!service.active){
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_SERVICE ,globalsConstants.K_ACTIVE_MOD, service.title,
+                globalsConstants.K_ALL_USERS);
+            }
+            else{
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_SERVICE ,globalsConstants.K_DEACTIVE_MOD, service.title,
+                globalsConstants.K_ALL_USERS);
+            }
           } else{
             service.active = auxActive;
             this.isLoaded = true;

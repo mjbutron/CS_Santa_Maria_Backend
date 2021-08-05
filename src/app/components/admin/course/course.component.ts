@@ -205,6 +205,9 @@ export class CourseComponent implements OnInit {
               data.message,
               'success'
             )
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_COURSE, globalsConstants.K_DELETE_MOD, course.title,
+              globalsConstants.K_ALL_USERS);
           } else{
             this.isLoaded = true;
             Swal.fire(
@@ -281,6 +284,9 @@ export class CourseComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getCoursesByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_COURSE, globalsConstants.K_UPDATE_MOD, this.courseObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
             } else{
@@ -294,6 +300,9 @@ export class CourseComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_COURSE, globalsConstants.K_UPDATE_MOD, this.courseObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
           } else{
@@ -313,6 +322,9 @@ export class CourseComponent implements OnInit {
             if (globalsConstants.K_COD_OK == data.cod){
               this.getCoursesByPage(this.page);
               this.onCancel();
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_COURSE, globalsConstants.K_INSERT_NEW_MOD, this.courseObj.title,
+                globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_STR);
             } else{
@@ -326,6 +338,9 @@ export class CourseComponent implements OnInit {
           if (globalsConstants.K_COD_OK == data.cod){
             this.getCoursesByPage(this.page);
             this.onCancel();
+            this.coreService.createNotification(
+              globalsConstants.K_MOD_COURSE, globalsConstants.K_INSERT_NEW_MOD, this.courseObj.title,
+              globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
           } else{
@@ -408,6 +423,7 @@ export class CourseComponent implements OnInit {
         course.active = (course.active == 0) ? 1 : 0; // Así no tener que hacer esto
         this.dataApi.updateCourseById(course).subscribe((data) => {
           if (globalsConstants.K_COD_OK == data.cod){
+            course.active = auxActive;
             this.getCoursesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -417,6 +433,16 @@ export class CourseComponent implements OnInit {
               this.actionTextActiveStr,
               'success'
             )
+            if(!course.active){
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_COURSE ,globalsConstants.K_ACTIVE_MOD, course.title,
+                globalsConstants.K_ALL_USERS);
+            }
+            else{
+              this.coreService.createNotification(
+                globalsConstants.K_MOD_COURSE ,globalsConstants.K_DEACTIVE_MOD, course.title,
+                globalsConstants.K_ALL_USERS);
+            }
           } else{
             course.active = auxActive;
             this.isLoaded = true;

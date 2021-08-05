@@ -443,7 +443,6 @@ export class WorkshopComponent implements OnInit {
                 globalsConstants.K_MOD_WORKSHOP ,globalsConstants.K_DEACTIVE_MOD, workshop.title,
                 globalsConstants.K_ALL_USERS);
             }
-
           } else{
             workshop.active = auxActive;
             this.isLoaded = true;

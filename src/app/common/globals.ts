@@ -45,6 +45,7 @@ export const K_ALL_USERS = 'ALL';
 export const K_ADMIN_USERS = 'ADMIN';
 export const K_MOD_WORKSHOP = 'el taller ';
 export const K_MOD_SERVICE = 'el servicio ';
+export const K_MOD_COURSE = 'el curso ';
 export const K_INSERT_NEW_MOD = ' ha añadido ';
 export const K_UPDATE_MOD = ' ha modificado ';
 export const K_DELETE_MOD = ' ha eliminado ';
