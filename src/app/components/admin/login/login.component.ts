@@ -105,6 +105,7 @@ export class LoginComponent implements OnInit {
 
   checkStatusAndNotifications(){
     this.getAllWorkshops();
+    this.getAllCourses();
   }
 
   getAllWorkshops(){
@@ -119,16 +120,50 @@ export class LoginComponent implements OnInit {
             else if(this.tomorrowDateStr == wspDate.session_date){
               notif = "Taller de " + wspDate.title + " mañana a las " + this.pipe.transform(wspDate.session_start);
             }
-            this.coreService.commandNotification(notif, globalsConstants.K_OWN_USER).subscribe(data => {
-              if (globalsConstants.K_COD_OK == data.cod){
-                // Do nothing
-              } else{
-                // Do nothing
-              }
-            });
+            // Check if notification
+            if("" != notif){
+              this.coreService.commandNotification(notif, globalsConstants.K_OWN_USER).subscribe(data => {
+                if (globalsConstants.K_COD_OK == data.cod){
+                  // Do nothing
+                } else{
+                  // Do nothing
+                }
+              });
+            }
+            notif = "";
           }
         }
       }
     });
   }
+
+  getAllCourses(){
+    let notif = "";
+    this.dataApi.getAllCourses().subscribe((data) => {
+        if (globalsConstants.K_COD_OK == data.cod){
+          if(0 < data.allCourses.length){
+            for(let crsDate of data.allCourses){
+              if(this.todayDateStr == crsDate.session_date){
+                notif = "¡Hoy curso de " + crsDate.title + " a las " + this.pipe.transform(crsDate.session_start) + "!";
+              }
+              else if(this.tomorrowDateStr == crsDate.session_date){
+                notif = "Curso de " + crsDate.title + " mañana a las " + this.pipe.transform(crsDate.session_start);
+              }
+              // Check if notification
+              if("" != notif){
+                this.coreService.commandNotification(notif, globalsConstants.K_OWN_USER).subscribe(data => {
+                  if (globalsConstants.K_COD_OK == data.cod){
+                    // Do nothing
+                  } else{
+                    // Do nothing
+                  }
+                });
+              }
+              notif = "";
+            }
+          }
+        }
+    });
+  }
+
 }
