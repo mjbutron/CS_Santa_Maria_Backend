@@ -43,6 +43,7 @@ export const K_DELETE_NOTIF_STR = '¡Eliminadas!';
 export const K_READ_NOTIF_STR = '¡Revisadas!';
 export const K_ALL_USERS = 'ALL';
 export const K_ADMIN_USERS = 'ADMIN';
+export const K_OWN_USER = 'USER';
 export const K_MOD_WORKSHOP = 'el taller de ';
 export const K_MOD_SERVICE = 'el servicio de ';
 export const K_MOD_COURSE = 'el curso de ';

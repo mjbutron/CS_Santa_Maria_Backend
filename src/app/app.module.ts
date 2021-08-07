@@ -83,6 +83,7 @@ registerLocaleData(localeEs);
   ],
   providers: [
     Globals,
+    TimeWithoutSecPipe,
     {provide : LocationStrategy , useClass: HashLocationStrategy},
     {provide: LOCALE_ID, useValue: 'es'}
   ],

@@ -4,5 +4,6 @@ export class NotificationInterface {
   datetime_notification?: string;
   read_notification?: number;
   notified?: number;
+  urgent?: number;
   user_id?: number;
 }

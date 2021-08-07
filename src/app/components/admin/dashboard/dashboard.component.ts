@@ -124,6 +124,7 @@ export class DashboardComponent implements OnInit {
             if(!this.isNextWsp && this.todayDate < wspDate.session_date){
               this.isNextWsp = true;
               this.nextDateWsp = wspDate.session_date;
+              break;
             }
           }
           if(!this.isNextWsp){
@@ -165,6 +166,7 @@ export class DashboardComponent implements OnInit {
               if(!this.isNextCrs && this.todayDate < crsDate.session_date){
                 this.isNextCrs = true;
                 this.nextDateCrs = crsDate.session_date;
+                break;
               }
             }
             if(!this.isNextCrs){

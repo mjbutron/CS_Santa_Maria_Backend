@@ -3,11 +3,16 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import * as globalsConstants from 'src/app/common/globals';
+import { formatDate } from '@angular/common';
 
 import { Globals } from 'src/app/common/globals';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { CoreService } from 'src/app/services/core.service';
+
 import { UserInterface } from 'src/app/models/user-interface';
+import { TimeWithoutSecPipe } from 'src/app/pipes/time-without-sec.pipe';
 
 // Constants
 const K_WAIT_ALERT = 'Por favor, espere...';
@@ -23,9 +28,20 @@ export class LoginComponent implements OnInit {
   user: UserInterface;
   rememberUser = false;
   globals: Globals;
+  // Today date
+  todayDate = new Date();
+  todayDateStr = '';
+  // Tomorrow date
+  tomorrowDate = new Date();
+  tomorrowDateStr = '';
 
-  constructor(private auth: AuthService, private router: Router, globals: Globals) {
+  constructor(private auth: AuthService, private router: Router, globals: Globals,
+    private dataApi: DataApiService, private coreService: CoreService,
+    private pipe: TimeWithoutSecPipe) {
     this.globals = globals;
+    this.tomorrowDate.setDate(this.todayDate.getDate() + 1);
+    this.todayDateStr = formatDate(this.todayDate, globalsConstants.K_FORMAT_DATE,globalsConstants.K_LOCALE_EN);
+    this.tomorrowDateStr = formatDate(this.tomorrowDate, globalsConstants.K_FORMAT_DATE,globalsConstants.K_LOCALE_EN);
   }
 
   ngOnInit() {
@@ -50,6 +66,7 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.user).subscribe(data => {
       if (!data.error && globalsConstants.K_COD_OK == data.cod){
+        this.checkStatusAndNotifications();
         Swal.close();
         localStorage.setItem('username', data.user.name);
         localStorage.setItem('rolname', data.user.rol_name);
@@ -81,6 +98,35 @@ export class LoginComponent implements OnInit {
             icon: 'error',
             title: data.message
           });
+        }
+      }
+    });
+  }
+
+  checkStatusAndNotifications(){
+    this.getAllWorkshops();
+  }
+
+  getAllWorkshops(){
+    let notif = "";
+    this.dataApi.getAllWorkshops().subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod){
+        if(0 < data.allWorkshops.length){
+          for(let wspDate of data.allWorkshops){
+            if(this.todayDateStr == wspDate.session_date){
+              notif = "¡Hoy taller de " + wspDate.title + " a las " + this.pipe.transform(wspDate.session_start) + "!";
+            }
+            else if(this.tomorrowDateStr == wspDate.session_date){
+              notif = "Taller de " + wspDate.title + " mañana a las " + this.pipe.transform(wspDate.session_start);
+            }
+            this.coreService.commandNotification(notif, globalsConstants.K_OWN_USER).subscribe(data => {
+              if (globalsConstants.K_COD_OK == data.cod){
+                // Do nothing
+              } else{
+                // Do nothing
+              }
+            });
+          }
         }
       }
     });
