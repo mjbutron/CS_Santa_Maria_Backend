@@ -38,8 +38,8 @@ export class UserComponent implements OnInit {
   @ViewChild("editSocial", { static: false }) editSocial: ElementRef;
   // Scroll Image Form
   @ViewChild("editImage", { static: false }) editImage: ElementRef;
-  // Errors
-  errors = "";
+  // Notifications
+  numNotifications = 0;
   // Form
   activeForm = false;
   activeFormPass = false;
@@ -78,6 +78,7 @@ export class UserComponent implements OnInit {
     this.disabledFormImage = true;
     this.uploadSuccess = false;
     this.getUserProfile();
+    this.findNotifications();
   }
 
   setGlobalsData(){
@@ -98,6 +99,16 @@ export class UserComponent implements OnInit {
       else{
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
+      }
+    });
+  }
+
+  findNotifications(){
+    this.coreService.findNotifications().subscribe(data => {
+      if (globalsConstants.K_COD_OK == data.cod){
+        this.numNotifications = data.foundNotifications;
+      } else{
+        this.numNotifications = globalsConstants.K_ZERO_RESULTS;
       }
     });
   }

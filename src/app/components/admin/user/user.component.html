@@ -136,12 +136,14 @@
           {{userObj.aboutme}}
         </p> -->
         <div class="card" style="padding: 8px;">
-          <span  style="font-size: 1em; color: #0095A6;">
-            <i class="fas fa-bell"></i> 8 Notificaciones sin leer
-          </span>
+          <a class="btn" [routerLink]="['/admin/notificaciones']" title="Ir a notificaciones">
+            <span  style="font-size: 1em; color: #0095A6;">
+              <i class="fas fa-bell"></i> {{numNotifications}} Notificaciones sin leer
+            </span>
+          </a>
         </div>
-        <div class="card" style="padding: 8px;">
-          <span  style="font-size: 1em; color: #0095A6;">
+        <div class="card btn" style="padding: 8px;">
+          <span style="font-size: 1em; color: #0095A6;">
             <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.last_login | date}}
           </span>
         </div>
