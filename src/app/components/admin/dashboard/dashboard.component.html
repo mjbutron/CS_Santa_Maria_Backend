@@ -246,6 +246,7 @@
                       <th>Fecha</th>
                       <th>Horario</th>
                       <th>Precio</th>
+                      <th>Disponibilidad</th>
                     </tr>
                   </thead>
                   <tbody *ngIf="wspInHome?.length">
@@ -259,6 +260,14 @@
                       </td>
                       <td class="align-middle">{{workshop.session_start | timeWithoutSec}} - {{workshop.session_end | timeWithoutSec}}</td>
                       <td class="align-middle">{{workshop.price}}€</td>
+                      <td class="align-middle">
+                        <div class="progress">
+                          <div *ngIf="workshop.free_places!=0" class="progress-bar bg-success" title="Plazas libres: {{workshop.free_places}}/{{workshop.places}}"
+                          [style.width]="(workshop.free_places/workshop.places)*100+'%'"></div>
+                          <div *ngIf="workshop.free_places==0" class="progress-bar bg-danger"
+                          style="width: 100%;">Completo</div>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                   <tbody *ngIf="!wspInHome?.length">
