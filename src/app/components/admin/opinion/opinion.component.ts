@@ -27,17 +27,17 @@ export class OpinionComponent implements OnInit {
 
   // Editor HTML WYSIWYG
   public Editor = ClassicEditor;
-  public config = {
-        language: 'es',
-        toolbar: [ 'undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable' ],
-        heading: {
-            options: [
-                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-            ]
-        }
-    };
+  // public config = {
+  //       language: 'es',
+  //       heading: {
+  //           options: [
+  //               { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+  //               { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+  //               { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+  //           ]
+  //       },
+  //       toolbar: [ 'undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable' ]
+  //   };
   // Globals
   globals: Globals;
   // Path
@@ -114,6 +114,7 @@ export class OpinionComponent implements OnInit {
   }
 
   onReload(){
+    this.isLoaded = false;
     this.getOpinionsByPage(this.page);
   }
 
@@ -253,7 +254,21 @@ export class OpinionComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    console.log(form);
     this.isLoaded = false;
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+    else{
+      if(1 > this.opinionObj.rating){
+        this.opinionObj.rating = 1;
+      }
+      else if(5 < this.opinionObj.rating){
+        this.opinionObj.rating = 5;
+      }
+    }
+
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

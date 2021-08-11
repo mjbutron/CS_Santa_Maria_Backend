@@ -101,25 +101,39 @@
             <div class="row p-2">
               <div class="col-md-10">
                 <div class="form-group">
-                  <label for="name">Nombre del usuario</label>
-                  <input name="name" id="name" type="text" [(ngModel)]="opinionObj.name" class="form-control">
+                  <label for="name">Nombre del usuario*</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="opinionObj.name"
+                    class="form-control" [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['name'].errors }"
+                    required>
+                    <div *ngIf="opinionForm.submitted && opinionForm.controls['name'].errors" class="invalid-feedback">
+                        <div *ngIf="opinionForm.controls['name'].errors.required">El nombre es obligatorio</div>
+                    </div>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
-                  <label for="rating">Valoración (<span style="font-size: 0.7em; color: gold;">
-                      <i class="fas fa-star"></i>
-                    </span>)</label>
-                  <input name="rating" id="rating" type="number" min="0" max="5" [(ngModel)]="opinionObj.rating" class="form-control">
+                  <label for="rating">Valoración* (<span style="font-size: 0.7em; color: gold;"><i class="fas fa-star"></i></span>)</label>
+                  <input name="rating" id="rating" type="number" [(ngModel)]="opinionObj.rating"
+                  class="form-control" [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['rating'].errors }"
+                  required min="1" max="5">
+                  <div *ngIf="opinionForm.submitted && opinionForm.controls['rating'].errors" class="invalid-feedback">
+                      <div *ngIf="opinionForm.controls['rating'].errors.required">La valoración es obligatoria (de 1 a 5)</div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-10">
                 <div class="form-group">
-                  <label for="commentary">Comentario</label>
-                  <!-- <textarea name="commentary" id="commentary" rows="4" cols="80" class="form-control"></textarea> -->
-                  <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor>
+                  <label for="commentary">Comentario*</label>
+                  <textarea name="commentary" id="commentary" maxlength="300" rows="4" cols="80" [(ngModel)]="opinionObj.commentary"
+                  class="form-control" [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['commentary'].errors }"
+                  required></textarea>
+                  <div *ngIf="opinionForm.submitted && opinionForm.controls['commentary'].errors" class="invalid-feedback">
+                      <div *ngIf="opinionForm.controls['commentary'].errors.required">El comentario es obligatorio</div>
+                  </div>
+                  <!-- <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor> -->
+                  <!-- <ckeditor #editor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor"></ckeditor> -->
                 </div>
               </div>
               <div class="col-md-2">
