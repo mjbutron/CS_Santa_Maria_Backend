@@ -126,14 +126,20 @@
               <div class="col-md-10">
                 <div class="form-group">
                   <label for="commentary">Comentario*</label>
-                  <textarea name="commentary" id="commentary" maxlength="300" rows="4" cols="80" [(ngModel)]="opinionObj.commentary"
+                  <!-- <textarea name="commentary" id="commentary" maxlength="300" rows="4" cols="80" [(ngModel)]="opinionObj.commentary"
                   class="form-control" [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['commentary'].errors }"
                   required></textarea>
                   <div *ngIf="opinionForm.submitted && opinionForm.controls['commentary'].errors" class="invalid-feedback">
                       <div *ngIf="opinionForm.controls['commentary'].errors.required">El comentario es obligatorio</div>
-                  </div>
+                  </div> -->
                   <!-- <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor> -->
-                  <!-- <ckeditor #editor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor"></ckeditor> -->
+                  <ckeditor tagName="textarea" name="commentary" [(ngModel)]="opinionObj.commentary" [editor]="Editor"
+                  [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['commentary'].errors }" required></ckeditor>
+                  <div *ngIf="opinionForm.submitted && opinionForm.controls['commentary'].errors" class="invalid-feedback">
+                      <div *ngIf="opinionForm.controls['commentary'].errors.required">
+                        El comentario es obligatorio <i class="fas fa-exclamation-circle"></i>
+                      </div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-2">

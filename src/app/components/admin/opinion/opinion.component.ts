@@ -5,8 +5,7 @@ import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -145,16 +144,17 @@ export class OpinionComponent implements OnInit {
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
-    // Setear valores al ui
-    this.opinionObj.id = opinion.id;
-    this.opinionObj.home = opinion.home;
-    this.inHomeChk = (opinion.home == 1) ? true : false;
-    this.opinionObj.name = opinion.name;
-    this.opinionObj.commentary = opinion.commentary;
     this.opinionObj.image = (opinion.image) ? opinion.image : globalsConstants.K_DEFAULT_IMAGE;
-    this.opinionObj.rating = opinion.rating;
-    this.opinionObj.user_id = this.globals.userID;
+
     setTimeout (() => {
+          // Setear valores al ui
+          this.opinionObj.id = opinion.id;
+          this.opinionObj.home = opinion.home;
+          this.inHomeChk = (opinion.home == 1) ? true : false;
+          this.opinionObj.name = opinion.name;
+          this.opinionObj.commentary = opinion.commentary;
+          this.opinionObj.rating = opinion.rating;
+          this.opinionObj.user_id = this.globals.userID;
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
@@ -254,7 +254,6 @@ export class OpinionComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
-    console.log(form);
     this.isLoaded = false;
     if(form.invalid){
       this.isLoaded = true;

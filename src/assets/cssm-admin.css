@@ -61,3 +61,13 @@
 #toast-container > div {
     opacity: 1;
 }
+
+h3.fancy, .ck.ck-button.ckeditor-title {
+  color: #fff;
+  font-family: "Amatic SC", cursive;
+  font-size: 2rem;
+  font-weight: 400;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #0e94a0;
+}
