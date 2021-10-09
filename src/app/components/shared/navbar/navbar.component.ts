@@ -7,6 +7,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CoreService } from 'src/app/services/core.service';
 import { Globals } from 'src/app/common/globals';
 
+// Constants
+const K_CLASS_BELL = 'far fa-bell ';
+const K_CLASS_EFECT_BELL = 'animate__animated animate__swing ';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -20,6 +24,7 @@ export class NavbarComponent implements OnInit {
   globals: Globals;
   isLoading = false;
   hasNotifications = false;
+  classNotifications: string;
   // User
   userObj = {
     email: ""
@@ -28,6 +33,7 @@ export class NavbarComponent implements OnInit {
   constructor(private auth: AuthService, private dataApi: DataApiService, private coreService: CoreService, public toastr: ToastrService, globals: Globals) {
     this.globals = globals;
     this.globals.userImage = localStorage.getItem('userImage');
+    this.classNotifications = K_CLASS_BELL;
 
     // Check notifications
     setInterval (() => {
@@ -68,11 +74,12 @@ export class NavbarComponent implements OnInit {
       if (globalsConstants.K_COD_OK == data.cod){
         if(globalsConstants.K_ZERO_RESULTS < data.foundNotifications){
           this.hasNotifications = true;
+          this.classNotifications = K_CLASS_BELL + K_CLASS_EFECT_BELL;
         }else{
-          this.hasNotifications = false;
+          this.hasNotifications = K_CLASS_BELL;
         }
       } else{
-        this.hasNotifications = false;
+        this.hasNotifications = K_CLASS_BELL;
       }
     });
   }
