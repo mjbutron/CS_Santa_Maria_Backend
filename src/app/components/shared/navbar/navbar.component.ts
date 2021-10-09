@@ -76,10 +76,12 @@ export class NavbarComponent implements OnInit {
           this.hasNotifications = true;
           this.classNotifications = K_CLASS_BELL + K_CLASS_EFECT_BELL;
         }else{
-          this.hasNotifications = K_CLASS_BELL;
+          this.hasNotifications = false;
+          this.classNotifications = K_CLASS_BELL;
         }
       } else{
-        this.hasNotifications = K_CLASS_BELL;
+        this.hasNotifications = false;
+        this.classNotifications = K_CLASS_BELL;
       }
     });
   }
