@@ -5,6 +5,7 @@ import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -28,6 +29,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el curso.';
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
+  // Editor
+  public Editor = ClassicEditor;
   // Globals
   globals: Globals;
   // Path
@@ -147,33 +150,35 @@ export class CourseComponent implements OnInit {
   }
 
   onEditCourse(course: CourseInterface) {
-    // Habilitar form en formato eedición
+    // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
-    // Setear valores al ui
-    this.courseObj.id = course.id;
-    this.courseObj.active = course.active;
-    this.courseObj.title = course.title;
-    this.courseObj.description = course.description;
+    this.courseObj.description = globalsConstants.K_BLANK;
     this.courseObj.image = (course.image) ? course.image : globalsConstants.K_DEFAULT_IMAGE;
-    this.courseObj.new_course = course.new_course;
-    this.inNewChk = (course.new_course == 1) ? true : false;
-    this.courseObj.offer = course.offer;
-    this.inOfferChk = (course.offer == 1) ? true : false;
-    this.courseObj.address = course.address;
-    this.courseObj.session_date = course.session_date;
-    this.courseObj.session_start = course.session_start;
-    this.courseObj.session_end = course.session_end;
-    this.courseObj.sessions = course.sessions;
-    this.courseObj.hours = course.hours;
-    this.courseObj.impart = course.impart;
-    this.courseObj.places = course.places;
-    this.courseObj.free_places = course.free_places;
-    this.courseObj.price = course.price;
-    this.courseObj.user_id = this.globals.userID;
+
     setTimeout (() => {
+          // Setear valores al ui
+          this.courseObj.id = course.id;
+          this.courseObj.active = course.active;
+          this.courseObj.title = course.title;
+          this.courseObj.description = course.description;
+          this.courseObj.new_course = course.new_course;
+          this.inNewChk = (course.new_course == 1) ? true : false;
+          this.courseObj.offer = course.offer;
+          this.inOfferChk = (course.offer == 1) ? true : false;
+          this.courseObj.address = course.address;
+          this.courseObj.session_date = course.session_date;
+          this.courseObj.session_start = course.session_start;
+          this.courseObj.session_end = course.session_end;
+          this.courseObj.sessions = course.sessions;
+          this.courseObj.hours = course.hours;
+          this.courseObj.impart = course.impart;
+          this.courseObj.places = course.places;
+          this.courseObj.free_places = course.free_places;
+          this.courseObj.price = course.price;
+          this.courseObj.user_id = this.globals.userID;
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
@@ -274,6 +279,11 @@ export class CourseComponent implements OnInit {
 
   onSubmit(form: NgForm){
     this.isLoaded = false;
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

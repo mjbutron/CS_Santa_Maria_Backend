@@ -23,8 +23,7 @@ const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
   styleUrls: ['./opinion.component.css']
 })
 export class OpinionComponent implements OnInit {
-
-  // Editor HTML WYSIWYG
+  // Editor
   public Editor = ClassicEditor;
   // public config = {
   //       language: 'es',
@@ -144,6 +143,7 @@ export class OpinionComponent implements OnInit {
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
+    this.opinionObj.commentary = globalsConstants.K_BLANK;
     this.opinionObj.image = (opinion.image) ? opinion.image : globalsConstants.K_DEFAULT_IMAGE;
 
     setTimeout (() => {
