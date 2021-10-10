@@ -5,6 +5,7 @@ import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -28,6 +29,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el servicio.';
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
+  // Editor
+  public Editor = ClassicEditor;
   // Globals
   globals: Globals;
   // Path
@@ -133,15 +136,17 @@ export class ServiceComponent implements OnInit {
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
-    // Setear valores al ui
-    this.serviceObj.id = service.id;
-    this.serviceObj.active = service.active;
-    this.serviceObj.title = service.title;
+    this.serviceObj.description = globalsConstants.K_BLANK;
     this.serviceObj.image = (service.image) ? service.image : globalsConstants.K_DEFAULT_IMAGE;
-    this.serviceObj.subtitle = service.subtitle;
-    this.serviceObj.description = service.description;
-    this.serviceObj.user_id = this.globals.userID;
+
     setTimeout (() => {
+          // Setear valores al ui
+          this.serviceObj.id = service.id;
+          this.serviceObj.active = service.active;
+          this.serviceObj.title = service.title;
+          this.serviceObj.subtitle = service.subtitle;
+          this.serviceObj.description = service.description;
+          this.serviceObj.user_id = this.globals.userID;
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
@@ -242,6 +247,11 @@ export class ServiceComponent implements OnInit {
 
   onSubmit(form: NgForm){
     this.isLoaded = false;
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

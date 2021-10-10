@@ -4,7 +4,7 @@
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
-      <div class="card border-0 rounded-0">
+      <div class="card border-0">
         <div class="card-title mb-1 p-3">
           <h5><b>Servicios ({{numServices}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewService()" >
@@ -31,7 +31,6 @@
                   <tr>
                     <th>Imagen</th>
                     <th>Servicio</th>
-                    <th>Información</th>
                     <th>Activo</th>
                     <th></th>
                     <th></th>
@@ -42,7 +41,6 @@
                   <tr *ngFor="let service of services">
                     <td class="align-middle"><img [src]="path+service.image" name="picture" id="picture" width="100" alt="..."/></td>
                     <td class="align-middle">{{service.title}}</td>
-                    <td class="align-middle">{{service.subtitle}}</td>
                     <td  class="align-middle" *ngIf="service.active==0">
                       <i class="fas fa-minus"></i>
                     </td>
@@ -50,20 +48,20 @@
                       <i class="fas fa-check"></i>
                     </td>
                     <td class="align-middle">
-                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                      <a class="btn btn-sm btn-outline-lightning"
                           (click)="onActiveService(service)" title="Activa/Desactiva el servicio. Esto hará que sea visible o no para los usuarios de la web.">
                         <i class="far fa-eye-slash" *ngIf="service.active==1"></i>
                         <i class="far fa-eye" *ngIf="service.active==0"></i>
                       </a>
                     </td>
                     <td class="align-middle">
-                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                      <a class="btn btn-sm btn-outline-lightning"
                           (click)="onEditService(service)" title="Ver/Editar">
                         <i class="far fa-edit"></i>
                       </a>
                     </td>
                     <td class="align-middle">
-                      <a class="btn btn-sm btn-outline-lightning rounded-0"
+                      <a class="btn btn-sm btn-outline-lightning"
                           (click)="onDeleteService(service)" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
                       </a>
@@ -106,8 +104,13 @@
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="title">Nombre/Título</label>
-                  <input name="title" id="title" type="text" [(ngModel)]="serviceObj.title" class="form-control">
+                  <label for="title">Nombre/Título*</label>
+                  <input name="title" id="title" type="text" [(ngModel)]="serviceObj.title"
+                  class="form-control" [ngClass]="{ 'is-invalid': serviceForm.submitted && serviceForm.controls['title'].errors }"
+                  required>
+                  <div *ngIf="serviceForm.submitted && serviceForm.controls['title'].errors" class="invalid-feedback">
+                      <div *ngIf="serviceForm.controls['title'].errors.required">El nombre/título es obligatorio</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,8 +125,14 @@
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="desc">Descripción del servcio</label>
-                  <textarea name="desc" id="desc" [(ngModel)]="serviceObj.description" rows="4" cols="80" class="form-control"></textarea>
+                  <label for="desc">Descripción del servcio*</label>
+                  <ckeditor tagName="textarea" name="description" [(ngModel)]="serviceObj.description" [editor]="Editor"
+                  [ngClass]="{ 'is-invalid': serviceForm.submitted && serviceForm.controls['description'].errors }" required></ckeditor>
+                  <div *ngIf="serviceForm.submitted && serviceForm.controls['description'].errors" class="invalid-feedback">
+                      <div *ngIf="serviceForm.controls['description'].errors.required">
+                        La descripción es obligatoria <i class="fas fa-exclamation-circle"></i>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,16 +159,16 @@
             <div class="row p-2">
               <div class="col-md-6">
                 <button *ngIf="!changeImage" type="button" name="button"
-                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  class="btn btn-outline-lightning mb-2"
                   (click)="onEditImage()">Editar imagen
                 </button>
                 <button *ngIf="changeImage" type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onDeleteImage()">Eliminar actual
+                  class="btn btn-outline-lightning mb-2" (click)="onDeleteImage()">Eliminar actual
                 </button>
               </div>
               <div class="col-md-6">
                 <button *ngIf="changeImage" type="button" name="button"
-                  class="btn btn-outline-lightning rounded-0 mb-2"
+                  class="btn btn-outline-lightning mb-2"
                   (click)="onCancelEditImage()">Cancelar
                 </button>
               </div>
@@ -177,13 +186,13 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button *ngIf="isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">Actualizar</button>
                   <button *ngIf="!isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">Crear</button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
+                  class="btn btn-outline-lightning mb-2" (click)="onCancel()">Cancelar</button>
               </div>
             </div>
           </form>
