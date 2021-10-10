@@ -5,6 +5,7 @@ import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
 
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
@@ -28,6 +29,8 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el taller.';
   styleUrls: ['./workshop.component.css']
 })
 export class WorkshopComponent implements OnInit {
+  // Editor
+  public Editor = ClassicEditor;
   // Globals
   globals: Globals;
   // Path
@@ -152,29 +155,31 @@ export class WorkshopComponent implements OnInit {
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
-    // Setear valores al ui
-    this.workShopObj.id = workShop.id;
-    this.workShopObj.active = workShop.active;
-    this.workShopObj.home = workShop.home;
-    this.inHomeChk = (workShop.home == 1) ? true : false;
-    this.workShopObj.title = workShop.title;
-    this.workShopObj.description_home = workShop.description_home;
-    this.workShopObj.description = workShop.description;
-    this.workShopObj.image = (workShop.image) ? workShop.image : globalsConstants.K_DEFAULT_IMAGE;;
-    this.workShopObj.subtitle = workShop.subtitle;
-    this.workShopObj.price = workShop.price;
-    this.workShopObj.address = workShop.address;
-    this.workShopObj.session_date = workShop.session_date;
-    this.workShopObj.session_start = workShop.session_start;
-    this.workShopObj.session_end = workShop.session_end;
-    this.workShopObj.hours = workShop.hours;
-    this.workShopObj.places = workShop.places;
-    this.workShopObj.free_places = workShop.free_places;
-    this.workShopObj.new_workshop = workShop.new_workshop;
-    this.inNewChk = (workShop.new_workshop == 1) ? true : false;
-    this.workShopObj.impart = workShop.impart;
-    this.workShopObj.user_id = this.globals.userID;
+    this.workShopObj.description = globalsConstants.K_BLANK;
+    this.workShopObj.image = (workShop.image) ? workShop.image : globalsConstants.K_DEFAULT_IMAGE;
+
     setTimeout (() => {
+          // Setear valores al ui
+          this.workShopObj.id = workShop.id;
+          this.workShopObj.active = workShop.active;
+          this.workShopObj.home = workShop.home;
+          this.inHomeChk = (workShop.home == 1) ? true : false;
+          this.workShopObj.title = workShop.title;
+          this.workShopObj.description_home = workShop.description_home;
+          this.workShopObj.description = workShop.description;
+          this.workShopObj.subtitle = workShop.subtitle;
+          this.workShopObj.price = workShop.price;
+          this.workShopObj.address = workShop.address;
+          this.workShopObj.session_date = workShop.session_date;
+          this.workShopObj.session_start = workShop.session_start;
+          this.workShopObj.session_end = workShop.session_end;
+          this.workShopObj.hours = workShop.hours;
+          this.workShopObj.places = workShop.places;
+          this.workShopObj.free_places = workShop.free_places;
+          this.workShopObj.new_workshop = workShop.new_workshop;
+          this.inNewChk = (workShop.new_workshop == 1) ? true : false;
+          this.workShopObj.impart = workShop.impart;
+          this.workShopObj.user_id = this.globals.userID;
          // Mover el scroll al form
          this.scrollToForm();
       }, 200);
@@ -275,6 +280,11 @@ export class WorkshopComponent implements OnInit {
 
   onSubmit(form: NgForm){
     this.isLoaded = false;
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

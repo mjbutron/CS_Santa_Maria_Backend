@@ -157,7 +157,7 @@ export class OpinionComponent implements OnInit {
           this.opinionObj.user_id = this.globals.userID;
          // Mover el scroll al form
          this.scrollToForm();
-      }, 300);
+      }, 200);
   }
 
   onDeleteOpinion(opinion: OpinionInterface){
