@@ -71,3 +71,14 @@ h3.fancy, .ck.ck-button.ckeditor-title {
   line-height: 1.2;
   color: #0e94a0;
 }
+
+p.fancy, .ck.ck-button.ckeditor-paragraph {
+  margin: 0;
+  font-family: 'Handlee', cursive;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #638699;
+  text-align: left;
+  background-color: #fff;
+}
