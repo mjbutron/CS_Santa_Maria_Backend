@@ -149,6 +149,14 @@
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
+                  <label for="short_desc">Breve descripción del curso</label>
+                  <textarea name="short_desc" id="short_desc" [(ngModel)]="courseObj.short_description" rows="4" cols="80" class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-12">
+                <div class="form-group">
                   <label for="desc">Descripción/Información del curso*</label>
                   <ckeditor tagName="textarea" name="description" [(ngModel)]="courseObj.description" [editor]="Editor"
                   [ngClass]="{ 'is-invalid': courseForm.submitted && courseForm.controls['description'].errors }" required></ckeditor>

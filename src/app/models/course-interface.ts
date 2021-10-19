@@ -2,6 +2,7 @@ export class CourseInterface {
   id?: number;
   active?: number;
   title?: string;
+  short_description?: string;
   description?: string;
   image?: string;
   new_course?: number;

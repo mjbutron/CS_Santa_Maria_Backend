@@ -128,6 +128,7 @@ export class CourseComponent implements OnInit {
     this.courseObj.id = null;
     this.courseObj.active = 0;
     this.courseObj.title = globalsConstants.K_BLANK;
+    this.courseObj.short_description = globalsConstants.K_BLANK;
     this.courseObj.description = globalsConstants.K_BLANK;
     this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.courseObj.new_course = 1;
@@ -163,6 +164,7 @@ export class CourseComponent implements OnInit {
           this.courseObj.id = course.id;
           this.courseObj.active = course.active;
           this.courseObj.title = course.title;
+          this.courseObj.short_description = course.short_description;
           this.courseObj.description = course.description;
           this.courseObj.new_course = course.new_course;
           this.inNewChk = (course.new_course == 1) ? true : false;
