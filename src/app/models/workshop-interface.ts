@@ -3,7 +3,7 @@ export class WorkshopInterface {
   active?: number;
   home?: number;
   title?: string;
-  description_home?: string;
+  short_description?: string;
   description?: string;
   image?: string;
   subtitle?: string;

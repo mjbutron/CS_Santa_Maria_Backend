@@ -128,7 +128,7 @@ export class WorkshopComponent implements OnInit {
     this.workShopObj.home = 0;
     this.inHomeChk = false;
     this.workShopObj.title = globalsConstants.K_BLANK;
-    this.workShopObj.description_home = globalsConstants.K_BLANK;
+    this.workShopObj.short_description = globalsConstants.K_BLANK;
     this.workShopObj.description = globalsConstants.K_BLANK;
     this.workShopObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.workShopObj.subtitle = globalsConstants.K_BLANK;
@@ -165,7 +165,7 @@ export class WorkshopComponent implements OnInit {
           this.workShopObj.home = workShop.home;
           this.inHomeChk = (workShop.home == 1) ? true : false;
           this.workShopObj.title = workShop.title;
-          this.workShopObj.description_home = workShop.description_home;
+          this.workShopObj.short_description = workShop.short_description;
           this.workShopObj.description = workShop.description;
           this.workShopObj.subtitle = workShop.subtitle;
           this.workShopObj.price = workShop.price;
