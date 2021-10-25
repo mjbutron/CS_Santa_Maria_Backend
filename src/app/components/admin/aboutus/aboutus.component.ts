@@ -242,6 +242,11 @@ export class AboutusComponent implements OnInit {
 
   onSubmit(form: NgForm){
     this.isLoaded = false;
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+
     if(this.isEditForm){
       if(this.changeImage && this.selectedImg != null){
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {

@@ -267,6 +267,7 @@ export class DashboardComponent implements OnInit {
   onSubmit(form: NgForm){
     this.isLoaded = false;
     if(form.invalid){
+      this.isLoaded = true;
       return;
     }
       if(this.changeImage && this.selectedImg != null){

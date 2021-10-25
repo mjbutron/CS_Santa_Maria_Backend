@@ -93,14 +93,24 @@
             <div class="row p-2">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="name">Nombre</label>
-                  <input name="name" id="name" type="text" [(ngModel)]="aboutUsObj.name" class="form-control">
+                  <label for="name">Nombre*</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="aboutUsObj.name"
+                  class="form-control" [ngClass]="{ 'is-invalid': aboutusForm.submitted && aboutusForm.controls['name'].errors }"
+                  required>
+                  <div *ngIf="aboutusForm.submitted && aboutusForm.controls['name'].errors" class="invalid-feedback">
+                      <div *ngIf="aboutusForm.controls['name'].errors.required">El nombre es obligatorio</div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="surn1">Primer Apellido</label>
-                  <input name="surn1" id="surn1" type="text" [(ngModel)]="aboutUsObj.surname1" class="form-control">
+                  <label for="surn1">Primer Apellido*</label>
+                  <input name="surn1" id="surn1" type="text" [(ngModel)]="aboutUsObj.surname1"
+                  class="form-control" [ngClass]="{ 'is-invalid': aboutusForm.submitted && aboutusForm.controls['surn1'].errors }"
+                  required>
+                  <div *ngIf="aboutusForm.submitted && aboutusForm.controls['surn1'].errors" class="invalid-feedback">
+                      <div *ngIf="aboutusForm.controls['surn1'].errors.required">El primer apellido es obligatorio</div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-4">
@@ -113,8 +123,13 @@
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="description">Biografía</label>
-                  <textarea name="description" id="description" [(ngModel)]="aboutUsObj.description" rows="4" cols="80" class="form-control"></textarea>
+                  <label for="description">Biografía*</label>
+                  <textarea name="description" id="description" [(ngModel)]="aboutUsObj.description" rows="4" cols="80"
+                  class="form-control" [ngClass]="{ 'is-invalid': aboutusForm.submitted && aboutusForm.controls['description'].errors }"
+                  required></textarea>
+                  <div *ngIf="aboutusForm.submitted && aboutusForm.controls['description'].errors" class="invalid-feedback">
+                      <div *ngIf="aboutusForm.controls['description'].errors.required">La descripción es obligatoria</div>
+                  </div>
                 </div>
               </div>
             </div>
