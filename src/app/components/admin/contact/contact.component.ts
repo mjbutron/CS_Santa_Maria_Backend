@@ -14,7 +14,6 @@ import { ContactInterface } from 'src/app/models/contact-interface';
 // Constants
 const K_INFO_POP_TITLE = "Información de sección";
 const K_INFO_POP_TITLE_TIME = "Ejemplo de horario"
-const K_INFO_POP_TITLE_PHONE = "Información de teléfonos";
 const K_INFO_POP_TITLE_EMAIL = "Información de Emails";
 const K_HOME_POP_DATA = "En esta sección podrá indicar los números de teléfono y "
 + "redes sociales que quiere que aparezcan en la barra superior de la página web."
@@ -24,7 +23,6 @@ const K_CONTACT_POP_DATA = "En esta sección podrá indicar la información "
 + "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
 + "la localización directamente haciendo click en el mapa.";
 const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
-const K_PHONE_POP_DATA = "Podrá indicar varios teléfonos separandolos con ( ; ).";
 const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
 
 @Component({
@@ -47,13 +45,11 @@ export class ContactComponent implements OnInit {
   // Popover
   infoPopTitle = '';
   infoPopTitleTime = '';
-  infoPopTitlePhone = '';
   infoPopTitleEmail = '';
   homePopData = '';
   footerPopData = '';
   contactPopData = '';
   timePopData = '';
-  phonePopData = '';
   emailPopData = '';
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
@@ -73,14 +69,12 @@ export class ContactComponent implements OnInit {
   populatePopData(){
     this.infoPopTitle = K_INFO_POP_TITLE;
     this.infoPopTitleTime = K_INFO_POP_TITLE_TIME;
-    this.infoPopTitlePhone = K_INFO_POP_TITLE_PHONE;
     this.infoPopTitleEmail = K_INFO_POP_TITLE_EMAIL;
 
     this.homePopData = K_HOME_POP_DATA;
     this.footerPopData = K_FOOTER_POP_DATA;
     this.contactPopData = K_CONTACT_POP_DATA;
-    this.timePopData = K_TIME_POP_DATA
-    this.phonePopData = K_PHONE_POP_DATA;
+    this.timePopData = K_TIME_POP_DATA;
     this.emailPopData = K_EMAIL_POP_DATA;
   }
 
