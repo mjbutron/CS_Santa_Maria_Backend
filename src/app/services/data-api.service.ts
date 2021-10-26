@@ -613,4 +613,16 @@ export class DataApiService {
       shareReplay()
     )
   }
+
+  validateEmail(user: UserInterface){
+    const url_api = this.url + '/admin/api/validateEmail';
+    return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
+    .pipe(
+      this.delayRetry(2000, 3),
+      catchError( err => {
+        return of( err.value.error );
+      }),
+      shareReplay()
+    )
+  }
 }

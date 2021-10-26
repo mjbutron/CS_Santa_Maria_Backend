@@ -34,6 +34,7 @@ export class UsermgtComponent implements OnInit {
   // User
   userObj: UserInterface;
   users: UserInterface[] = [];
+  auxEmail : string;
   // Utils
   globals: Globals;
   alertLockStr = "";
@@ -79,6 +80,7 @@ export class UsermgtComponent implements OnInit {
     this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
+    this.auxEmail = "";
     this.getUsersByPage(this.page);
   }
 
@@ -121,6 +123,7 @@ export class UsermgtComponent implements OnInit {
     // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = false;
+    this.auxEmail = "";
 
     // Setear valores por defecto
     this.userObj.id = null;
@@ -143,6 +146,7 @@ export class UsermgtComponent implements OnInit {
     // Habilitar form en formato edición
     this.activeForm = true;
     this.isEditForm = true;
+    this.auxEmail = user.email;
 
     // Setear valores al ui
     this.userObj.id = user.id;
@@ -256,30 +260,48 @@ export class UsermgtComponent implements OnInit {
 
   onSubmit(form: NgForm){
     this.isLoaded = false;
-    if(this.isEditForm){
-      this.userObj.rol_id = this.userRol.id;
-      this.dataApi.updateUserById(this.userObj).subscribe((data) => {
+    if(form.invalid){
+      this.isLoaded = true;
+      return;
+    }
+    else {
+      // Check email
+      this.dataApi.validateEmail(this.userObj).subscribe((data) => {
         if (globalsConstants.K_COD_OK == data.cod){
-          this.getUsersByPage(this.page);
-          this.onCancel();
-          this.isLoaded = true;
-          this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-        } else{
-          this.isLoaded = true;
-          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
-        }
-      });
-    } else{
-      this.userObj.rol_id = this.userRol.id;
-      this.dataApi.createUser(this.userObj).subscribe((data) => {
-        if (globalsConstants.K_COD_OK == data.cod){
-          this.getUsersByPage(this.page);
-          this.onCancel();
-          this.isLoaded = true;
-          this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-        } else{
-          this.isLoaded = true;
-          this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
+          if(data.exists && this.auxEmail != this.userObj.email){
+            this.isLoaded = true;
+            form.controls.email.setErrors({emailExists:true});
+            return;
+          }
+          else{
+            if(this.isEditForm){
+              this.userObj.rol_id = this.userRol.id;
+              this.dataApi.updateUserById(this.userObj).subscribe((data) => {
+                if (globalsConstants.K_COD_OK == data.cod){
+                  this.getUsersByPage(this.page);
+                  this.onCancel();
+                  this.isLoaded = true;
+                  this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
+                } else{
+                  this.isLoaded = true;
+                  this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
+                }
+              });
+            } else{
+              this.userObj.rol_id = this.userRol.id;
+              this.dataApi.createUser(this.userObj).subscribe((data) => {
+                if (globalsConstants.K_COD_OK == data.cod){
+                  this.getUsersByPage(this.page);
+                  this.onCancel();
+                  this.isLoaded = true;
+                  this.toastr.success(data.message, globalsConstants.K_ADD_STR);
+                } else{
+                  this.isLoaded = true;
+                  this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
+                }
+              });
+            }
+          }
         }
       });
     }

@@ -48,7 +48,7 @@
                   class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_surname'].errors }"
                   [disabled]="disabledForm" required>
                   <div *ngIf="userForm.submitted && userForm.controls['usr_surname'].errors" class="invalid-feedback">
-                      <div *ngIf="userForm.controls['usr_surname'].errors.required">Los apellidos son obligatorio</div>
+                      <div *ngIf="userForm.controls['usr_surname'].errors.required">Los apellidos son obligatorios</div>
                   </div>
               </div>
             </div>
@@ -56,7 +56,7 @@
               <div class="form-group">
                 <label for="usr_telephone">Teléfono*</label>
                 <input name="usr_telephone" id="usr_telephone" type="text" [(ngModel)]="userObj.telephone"
-                  class="form-control"  [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_telephone'].errors }"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['usr_telephone'].errors }"
                   [disabled]="disabledForm" required>
                   <div *ngIf="userForm.submitted && userForm.controls['usr_telephone'].errors" class="invalid-feedback">
                       <div *ngIf="userForm.controls['usr_telephone'].errors.required">El teléfono es obligatorio</div>

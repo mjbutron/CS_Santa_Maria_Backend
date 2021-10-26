@@ -115,28 +115,51 @@
             <div class="row p-2">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="title">Nombre</label>
-                  <input name="name" id="name" type="text" [(ngModel)]="userObj.name" class="form-control">
+                  <label for="title">Nombre*</label>
+                  <input name="name" id="name" type="text" [(ngModel)]="userObj.name"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['name'].errors }"
+                  required>
+                  <div *ngIf="userForm.submitted && userForm.controls['name'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['name'].errors.required">El nombre es obligatorio</div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="surname">Apellidos</label>
-                  <input name="surname" id="surname" type="text" [(ngModel)]="userObj.surname" class="form-control">
+                  <label for="surname">Apellidos*</label>
+                  <input name="surname" id="surname" type="text" [(ngModel)]="userObj.surname"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['surname'].errors }"
+                  required>
+                  <div *ngIf="userForm.submitted && userForm.controls['surname'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['surname'].errors.required">Los apellidos son obligatorios</div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input name="email" id="email" type="email" [(ngModel)]="userObj.email" class="form-control">
+                  <label for="email">Email*</label>
+                  <input name="email" id="email" type="email" [(ngModel)]="userObj.email"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['email'].errors }"
+                  email required>
+                  <div *ngIf="userForm.submitted && userForm.controls['email'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['email'].errors.required">El email es obligatorio</div>
+                      <div *ngIf="userForm.controls['email'].errors.email">El email no es correcto</div>
+                      <div *ngIf="userForm.controls['email'].errors.emailExists">Este email ya existe</div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="telephone">Teléfono</label>
-                  <input name="telephone" id="telephone" type="number" [(ngModel)]="userObj.telephone" class="form-control">
+                  <label for="telephone">Teléfono*</label>
+                  <input name="telephone" id="telephone" type="tel" [(ngModel)]="userObj.telephone"
+                  class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['telephone'].errors }"
+                  pattern="[0-9]{9}" required>
+                  <div *ngIf="userForm.submitted && userForm.controls['telephone'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['telephone'].errors.required">El teléfono es obligatorio</div>
+                      <div *ngIf="userForm.controls['telephone'].errors.pattern">El teléfono no es correcto</div>
+                  </div>
                 </div>
               </div>
             </div>
