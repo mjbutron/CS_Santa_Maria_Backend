@@ -112,6 +112,14 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="ftr_email">Email de información</label>
+                  <button type="button" class="btn" style="padding: 0rem 0rem 0rem 0.5rem;"
+                    popover={{infoEmailPopData}}
+                    popoverTitle={{infoPopTitleEmail}}
+                    triggers="focus" placement="left">
+                    <span  style="font-size: 1em; color: #0095A6;">
+                      <span><i class="fas fa-info-circle text-muted"></i></span>
+                    </span>
+                  </button>
                   <input name="ftr_email" id="ftr_email" type="text" [(ngModel)]="infoObj.footer_email" class="form-control">
                 </div>
               </div>

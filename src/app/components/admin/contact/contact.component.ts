@@ -24,6 +24,7 @@ const K_CONTACT_POP_DATA = "En esta sección podrá indicar la información "
 + "la localización directamente haciendo click en el mapa.";
 const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
 const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
+const K_INFO_EMAIL_POP_DATA = "El email indicado aquí es donde se recibiran las consultas e inscripciones de la web.";
 
 @Component({
   selector: 'app-contact',
@@ -51,6 +52,7 @@ export class ContactComponent implements OnInit {
   contactPopData = '';
   timePopData = '';
   emailPopData = '';
+  infoEmailPopData ='';
 
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
@@ -76,6 +78,7 @@ export class ContactComponent implements OnInit {
     this.contactPopData = K_CONTACT_POP_DATA;
     this.timePopData = K_TIME_POP_DATA;
     this.emailPopData = K_EMAIL_POP_DATA;
+    this.infoEmailPopData = K_INFO_EMAIL_POP_DATA;
   }
 
   getHomeInfo(){
