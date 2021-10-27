@@ -42,7 +42,9 @@
                 </thead>
                 <tbody *ngIf="workShops?.length">
                   <tr *ngFor="let workshop of workShops">
-                    <td class="align-middle">{{workshop.title}}</td>
+                    <td class="align-middle" [title]="workshop.title">
+                      {{(workshop.title.length>35)? (workshop.title | slice:0:35)+'...':(workshop.title)}}
+                    </td>
                     <td class="align-middle">
                       {{(workshop.session_date == noDate)? 'Sin fecha':workshop.session_date | date}}
                     </td>

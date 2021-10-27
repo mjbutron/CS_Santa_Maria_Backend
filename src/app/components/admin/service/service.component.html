@@ -40,7 +40,9 @@
                 <tbody *ngIf="services?.length">
                   <tr *ngFor="let service of services">
                     <td class="align-middle"><img [src]="path+service.image" name="picture" id="picture" width="100" alt="..."/></td>
-                    <td class="align-middle">{{service.title}}</td>
+                    <td class="align-middle" [title]="service.title">
+                      {{(service.title.length>70)? (service.title | slice:0:70)+'...':(service.title)}}
+                    </td>
                     <td  class="align-middle" *ngIf="service.active==0">
                       <i class="fas fa-minus"></i>
                     </td>

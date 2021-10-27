@@ -43,7 +43,9 @@
                 </thead>
                 <tbody *ngIf="courses?.length">
                   <tr *ngFor="let course of courses">
-                    <td class="align-middle">{{course.title}}</td>
+                    <td class="align-middle" [title]="course.title">
+                      {{(course.title.length>35)? (course.title | slice:0:35)+'...':(course.title)}}
+                    </td>
                     <td class="align-middle">
                       {{(course.session_date == noDate)? 'Sin fecha':course.session_date | date}}
                     </td>
