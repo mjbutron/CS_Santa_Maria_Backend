@@ -40,6 +40,7 @@ export class WorkshopComponent implements OnInit {
   workShops: WorkshopInterface[] = [];
   workshopImg: string;
   inHomeChk: boolean;
+  noDate = globalsConstants.K_NO_DATE_STR;
   // Form
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
   // Workshops - Image

@@ -41,6 +41,7 @@ export class CourseComponent implements OnInit {
   courseImg: string;
   inOfferChk: boolean;
   inNewChk: boolean;
+  noDate = globalsConstants.K_NO_DATE_STR;
   // Form
   @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
   // Courses - Image

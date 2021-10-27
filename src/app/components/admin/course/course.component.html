@@ -45,10 +45,14 @@
                   <tr *ngFor="let course of courses">
                     <td class="align-middle">{{course.title}}</td>
                     <td class="align-middle">
-                      {{course.session_date | date}}
+                      {{(course.session_date == noDate)? 'Sin fecha':course.session_date | date}}
                     </td>
-                    <td class="align-middle">{{course.session_start | timeWithoutSec}}</td>
-                    <td class="align-middle">{{course.price}}€</td>
+                    <td class="align-middle">
+                      {{course.session_start | timeWithoutSec}}
+                    </td>
+                    <td class="align-middle">
+                      {{(course.price==0 || course.price==null)? '--':(course.price)+'€'}}
+                    </td>
                     <td class="align-middle">{{course.places}}</td>
                     <td class="align-middle">{{course.free_places}}</td>
                     <td  class="align-middle" *ngIf="course.active==0">
