@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit {
   numWsp: number;
   isNextWsp = false;
   nextDateWsp: string;
+  noDate = globalsConstants.K_NO_DATE_STR;
   // Course
   course: CourseInterface[] = [];
   numCrs: number;

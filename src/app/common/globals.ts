@@ -38,6 +38,7 @@ export const K_CANCEL_BUTTON_STR = 'Cancelar';
 export const K_NO_DATE = '--/--/----';
 export const K_FORMAT_DATE = 'yyyy-MM-dd';
 export const K_LOCALE_EN = 'en';
+export const K_NO_DATE_STR = '0000-00-00';
 // Notifications
 export const K_DELETE_NOTIF_STR = '¡Eliminadas!';
 export const K_READ_NOTIF_STR = '¡Revisadas!';

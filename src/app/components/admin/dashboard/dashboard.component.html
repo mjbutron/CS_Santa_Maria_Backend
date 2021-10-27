@@ -253,13 +253,14 @@
                     <tr *ngFor="let workshop of wspInHome">
                       <td>{{workshop.title}}</td>
                       <td class="align-middle">
-                        {{workshop.session_date | date}}
-                        <!-- <div class="progress" style="height: 3px;">
-                          <div class="progress-bar bg-danger" style="width: 15% ;"></div>
-                        </div> -->
+                        {{(workshop.session_date == noDate)? 'Sin fecha':workshop.session_date | date}}
                       </td>
-                      <td class="align-middle">{{workshop.session_start | timeWithoutSec}} - {{workshop.session_end | timeWithoutSec}}</td>
-                      <td class="align-middle">{{workshop.price}}€</td>
+                      <td class="align-middle">
+                        {{workshop.session_start | timeWithoutSec}} a {{workshop.session_end | timeWithoutSec}}
+                      </td>
+                      <td class="align-middle">
+                        {{(workshop.price==0 || workshop.price==null)? '--':(workshop.price)+'€'}}
+                      </td>
                       <td class="align-middle">
                         <div class="progress">
                           <div *ngIf="workshop.free_places!=0" class="progress-bar bg-success" title="Plazas libres: {{workshop.free_places}}/{{workshop.places}}"
