@@ -59,7 +59,7 @@ export class AboutusComponent implements OnInit {
    * @param dataApi      Data API object
    * @param toastr       Toastr service
    * @param coreService  Core service object
-   * @param globals      Globals constants
+   * @param globals      Globals
    */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;

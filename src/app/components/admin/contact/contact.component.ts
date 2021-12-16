@@ -5,26 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
-
+// Services
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { ContactInterface } from 'src/app/models/contact-interface';
-
-// Constants
-const K_INFO_POP_TITLE = "Información de sección";
-const K_INFO_POP_TITLE_TIME = "Ejemplo de horario"
-const K_INFO_POP_TITLE_EMAIL = "Información de Emails";
-const K_HOME_POP_DATA = "En esta sección podrá indicar los números de teléfono y "
-+ "redes sociales que quiere que aparezcan en la barra superior de la página web."
-const K_FOOTER_POP_DATA = "En esta sección podrá indicar la información "
-+ "que quiere que aparezca en el pie de página de la página web.";
-const K_CONTACT_POP_DATA = "En esta sección podrá indicar la información "
-+ "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
-+ "la localización directamente haciendo click en el mapa.";
-const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
-const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
-const K_INFO_EMAIL_POP_DATA = "El email indicado aquí es donde se recibiran las consultas e inscripciones de la web.";
 
 @Component({
   selector: 'app-contact',
@@ -34,7 +19,7 @@ const K_INFO_EMAIL_POP_DATA = "El email indicado aquí es donde se recibiran las
 export class ContactComponent implements OnInit {
   // Globals
   globals: Globals;
-  // Info Obj
+  // Contact information
   infoObj: ContactInterface;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
@@ -52,15 +37,27 @@ export class ContactComponent implements OnInit {
   contactPopData = '';
   timePopData = '';
   emailPopData = '';
-  infoEmailPopData ='';
+  infoEmailPopData = '';
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service object
+   * @param globals      Globals
+   */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
     this.infoObj = new ContactInterface();
     this.element.scrollTop = 0;
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.isLoaded = false;
     this.populatePopData();
     this.getHomeInfo();
@@ -68,23 +65,29 @@ export class ContactComponent implements OnInit {
     this.getContactInfo();
   }
 
-  populatePopData(){
-    this.infoPopTitle = K_INFO_POP_TITLE;
-    this.infoPopTitleTime = K_INFO_POP_TITLE_TIME;
-    this.infoPopTitleEmail = K_INFO_POP_TITLE_EMAIL;
+  /**
+   * Filling pop-ups
+   */
+  populatePopData(): void {
+    this.infoPopTitle = globalsConstants.K_INFO_POP_TITLE;
+    this.infoPopTitleTime = globalsConstants.K_INFO_POP_TITLE_TIME;
+    this.infoPopTitleEmail = globalsConstants.K_INFO_POP_TITLE_EMAIL;
 
-    this.homePopData = K_HOME_POP_DATA;
-    this.footerPopData = K_FOOTER_POP_DATA;
-    this.contactPopData = K_CONTACT_POP_DATA;
-    this.timePopData = K_TIME_POP_DATA;
-    this.emailPopData = K_EMAIL_POP_DATA;
-    this.infoEmailPopData = K_INFO_EMAIL_POP_DATA;
+    this.homePopData = globalsConstants.K_HOME_POP_DATA;
+    this.footerPopData = globalsConstants.K_FOOTER_POP_DATA;
+    this.contactPopData = globalsConstants.K_CONTACT_POP_DATA;
+    this.timePopData = globalsConstants.K_TIME_POP_DATA;
+    this.emailPopData = globalsConstants.K_EMAIL_POP_DATA;
+    this.infoEmailPopData = globalsConstants.K_INFO_EMAIL_POP_DATA;
   }
 
-  getHomeInfo(){
-    this.dataApi.getInfoHome().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data.homeInfo.length){
-        for(let i = 0; i < data.homeInfo.length; i++){
+  /**
+   * Get information from the Home section
+   */
+  getHomeInfo(): void {
+    this.dataApi.getInfoHome().subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.homeInfo.length) {
+        for (let i = 0; i < data.homeInfo.length; i++) {
           this.infoObj.id = data.homeInfo[i].id;
           this.infoObj.home_first_ph = data.homeInfo[i].home_first_ph;
           this.infoObj.home_second_ph = data.homeInfo[i].home_second_ph;
@@ -93,17 +96,20 @@ export class ContactComponent implements OnInit {
           this.infoObj.home_insta = data.homeInfo[i].home_insta;
         }
         this.isLoaded = true;
-      } else{
+      } else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  getFooterInfo(){
-    this.dataApi.getInfoFooter().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data.footerInfo.length){
-        for(let i = 0; i < data.footerInfo.length; i++){
+  /**
+   * Get information from the Footer section
+   */
+  getFooterInfo(): void {
+    this.dataApi.getInfoFooter().subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.footerInfo.length) {
+        for (let i = 0; i < data.footerInfo.length; i++) {
           this.infoObj.footer_address = data.footerInfo[i].footer_address;
           this.infoObj.footer_email = data.footerInfo[i].footer_email;
           this.infoObj.footer_ph = data.footerInfo[i].footer_ph;
@@ -117,10 +123,13 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  getContactInfo(){
-    this.dataApi.getInfoContact().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod && 0 < data.contactInfo.length){
-        for(let i = 0; i < data.contactInfo.length; i++){
+  /**
+   * Get information from the Contact section
+   */
+  getContactInfo(): void {
+    this.dataApi.getInfoContact().subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod && 0 < data.contactInfo.length) {
+        for (let i = 0; i < data.contactInfo.length; i++) {
           this.infoObj.cnt_address = data.contactInfo[i].cnt_address;
           this.infoObj.cnt_ph_appo = data.contactInfo[i].cnt_ph_appo;
           this.infoObj.cnt_emails = data.contactInfo[i].cnt_emails;
@@ -139,84 +148,110 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  onSubmitHome(form: NgForm){
-    if(form.invalid){
+  /**
+   * Submit form information to create or edit Home information
+   * @param form  Form with the information
+   */
+  onSubmitHome(form: NgForm): void {
+    if (form.invalid) {
       return;
     }
     this.isLoaded = false;
     this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
         this.coreService.createNotification(
           globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_HOME,
           globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
-      } else{
+      } else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  onResetHome(form: NgForm){
+  /**
+   * Reset Home form
+   * @param form  Form to be cleaned
+   */
+  onResetHome(form: NgForm): void {
     form.reset();
   }
 
-  onSubmitFooter(form: NgForm){
-    if(form.invalid){
+  /**
+   * Submit form information to create or edit Footer information
+   * @param form  Form with the information
+   */
+  onSubmitFooter(form: NgForm): void {
+    if (form.invalid) {
       return;
     }
     this.isLoaded = false;
     this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
         this.coreService.createNotification(
           globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_FOOTER,
           globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
-      } else{
+      } else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  onResetFooter(form: NgForm){
+  /**
+   * Reset Footer form
+   * @param form  Form to be cleaned
+   */
+  onResetFooter(form: NgForm): void {
     form.reset();
   }
 
-  onSubmitContact(form: NgForm){
-    if(form.invalid){
+  /**
+   * Submit form information to create or edit Contact information
+   * @param form  Form with the information
+   */
+  onSubmitContact(form: NgForm): void {
+    if (form.invalid) {
       return;
     }
     this.isLoaded = false;
     this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
         this.coreService.createNotification(
           globalsConstants.K_MOD_INFO, globalsConstants.K_UPDATE_MOD, globalsConstants.K_MOD_INFO_CONTACT,
           globalsConstants.K_ALL_USERS);
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
-      } else{
+      } else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  onResetContact(form: NgForm){
+  /**
+   * Reset Contact form
+   * @param form  Form to be cleaned
+   */
+  onResetContact(form: NgForm): void {
     form.reset();
   }
 
-  // Maps
-  mapClicked($event: MouseEvent) {
+  /**
+   * Get coordinates marked on the map
+   * @param $event  Event click
+   */
+  mapClicked($event: MouseEvent): void {
     this.lat = $event.coords.lat;
     this.lon = $event.coords.lng;
     this.infoObj.cnt_lat = this.lat.toString();
     this.infoObj.cnt_lon = this.lon.toString();
   }
-
 }

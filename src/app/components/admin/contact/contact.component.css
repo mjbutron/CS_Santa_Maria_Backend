@@ -1,4 +1,6 @@
-/* Popover style */
+/* Contact CSS style */
+
+/* Popover header style */
 :host >>> .popover-header {
   background-color: #0095A6;
   color: #ffffff;

@@ -65,6 +65,7 @@ export const K_SLIDER_TEXT_COLOR = '#ffffff';
 export const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
 export const K_OK_BUTTON_STR = 'Aceptar';
 export const K_UPDATE_BUTTON_STR = 'Actualizar';
+export const K_RESET_BUTTON_STR = 'Reiniciar';
 export const K_CREATE_BUTTON_STR = 'Crear';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
 //// About Us
@@ -78,7 +79,23 @@ export const K_ABOUTUS_POSITION_STR = 'Cargo';
 export const K_ABOUTUS_NO_DATA_STR = ' No existen registros';
 export const K_ABOUTUS_EDIT_RECORD_STR = 'Editar entrada';
 export const K_ABOUTUS_NEW_RECORD_STR = 'Crear entrada';
-////
+//// Contact
+export const K_CONTACT_HOME_TITLE_STR = "Información de página de inicio";
+export const K_CONTACT_FOOTER_TITLE_STR = "Información de pie de página";
+export const K_CONTACT_CONTACT_TITLE_STR = "Información de página de contacto";
+export const K_INFO_POP_TITLE = "Información de sección";
+export const K_INFO_POP_TITLE_TIME = "Ejemplo de horario"
+export const K_INFO_POP_TITLE_EMAIL = "Información de Emails";
+export const K_HOME_POP_DATA = "En esta sección podrá indicar los números de teléfono y "
++ "redes sociales que quiere que aparezcan en la barra superior de la página web."
+export const K_FOOTER_POP_DATA = "En esta sección podrá indicar la información "
++ "que quiere que aparezca en el pie de página de la página web.";
+export const K_CONTACT_POP_DATA = "En esta sección podrá indicar la información "
++ "que quiere que aparezca en la sección de Contacto de la página web. Podrá seleccionar "
++ "la localización directamente haciendo click en el mapa.";
+export const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
+export const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
+export const K_INFO_EMAIL_POP_DATA = "El email indicado aquí es donde se recibiran las consultas e inscripciones de la web.";
 
 @Injectable()
 export class Globals {

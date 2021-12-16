@@ -1,6 +1,9 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div class="main-content">
   <div class="row">
     <div class="col-md-12">
@@ -8,7 +11,7 @@
         <div class="card-header">
           <div class="card-title mb-1 p-3">
             <h5>
-              <b>Información de página de inicio</b>
+              <b>{{globalCnstns.K_CONTACT_HOME_TITLE_STR}}</b>
               <button class="btn float-right"
                 popover={{homePopData}}
                 popoverTitle={{infoPopTitle}}
@@ -70,11 +73,15 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetHome(homeForm)">Reiniciar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetHome(homeForm)">
+                  {{globalCnstns.K_RESET_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>
@@ -88,7 +95,7 @@
         <div class="card-header">
           <div class="card-title mb-1 p-3">
             <h5>
-              <b>Información de pie de página</b>
+              <b>{{globalCnstns.K_CONTACT_FOOTER_TITLE_STR}}</b>
               <button class="btn float-right"
                 popover={{footerPopData}}
                 popoverTitle={{infoPopTitle}}
@@ -149,11 +156,15 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetFooter(footerForm)">Reiniciar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetFooter(footerForm)">
+                  {{globalCnstns.K_RESET_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>
@@ -167,7 +178,7 @@
         <div class="card-header">
           <div class="card-title mb-1 p-3">
             <h5>
-              <b>Información de página de contacto</b>
+              <b>{{globalCnstns.K_CONTACT_CONTACT_TITLE_STR}}</b>
               <button class="btn float-right"
                 popover={{contactPopData}}
                 popoverTitle={{infoPopTitle}}
@@ -255,11 +266,15 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetContact(contactForm)">Reiniciar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onResetContact(contactForm)">
+                  {{globalCnstns.K_RESET_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>
