@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
-          <h5><b>Quiénes somos ({{numAboutUs}} resultados)</b>
+          <h5><b>{{globalCnstns.K_ABOUTUS_TITLE_STR}} ({{numAboutUs}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewAboutUs()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-plus-square ml-3 float-right" title="Añadir"></i>
@@ -29,10 +32,10 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Primer Apellido</th>
-                    <th>Segundo Apellido</th>
-                    <th>Cargo</th>
+                    <th>{{globalCnstns.K_ABOUTUS_NAME_STR}}</th>
+                    <th>{{globalCnstns.K_ABOUTUS_SURNAME_STR}}</th>
+                    <th>{{globalCnstns.K_ABOUTUS_LASTNAME_STR}}</th>
+                    <th>{{globalCnstns.K_ABOUTUS_POSITION_STR}}</th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -60,7 +63,7 @@
                 <tbody *ngIf="!aboutUs?.length">
                   <tr>
                     <td class="align-middle text-muted" colspan="6" align="center">
-                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                      <span><i class="fas fa-info-circle"></i></span> {{globalCnstns.K_ABOUTUS_NO_DATA_STR}}
                     </td>
                   </tr>
                 </tbody>
@@ -73,14 +76,15 @@
     </div>
   </div>
 
-<div #editAboutUs id="editAu"></div>
+  <!-- Form -->
+  <div #editAboutUs id="editAu"></div>
   <div *ngIf="activeForm" class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5 *ngIf="isEditForm">Editar entrada</h5>
-            <h5 *ngIf="!isEditForm">Crear entrada</h5>
+            <h5 *ngIf="isEditForm">{{globalCnstns.K_ABOUTUS_EDIT_RECORD_STR}}</h5>
+            <h5 *ngIf="!isEditForm">{{globalCnstns.K_ABOUTUS_NEW_RECORD_STR}}</h5>
           </div>
         </div>
         <div class="card-body">
@@ -195,7 +199,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="academic_degree">Estudios superior</label>
+                  <label for="academic_degree">Estudio superior</label>
                   <input name="academic_degree" id="academic_degree" type="text" [(ngModel)]="aboutUsObj.academic_degree" class="form-control">
                 </div>
               </div>
@@ -228,13 +232,19 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button *ngIf="isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
                   <button *ngIf="!isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_CREATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>

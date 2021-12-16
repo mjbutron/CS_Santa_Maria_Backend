@@ -33,8 +33,6 @@ export const K_DELETE_F_EXC_STR = '¡Eliminada!';
 export const K_TOP_ELEMENT_STR = 'rtrSup';
 export const K_CONFIRM_BUTTON_STR = '¡Sí, eliminar!';
 export const K_CONFIRM_READ_BUTTON_STR = '¡Sí, revisar!';
-export const K_OK_BUTTON_STR = 'Aceptar';
-export const K_CANCEL_BUTTON_STR = 'Cancelar';
 export const K_NO_DATE = '--/--/----';
 export const K_FORMAT_DATE = 'yyyy-MM-dd';
 export const K_LOCALE_EN = 'en';
@@ -58,11 +56,29 @@ export const K_UPDATE_MOD = ' ha modificado ';
 export const K_DELETE_MOD = ' ha eliminado ';
 export const K_ACTIVE_MOD = ' ha activado ';
 export const K_DEACTIVE_MOD = ' ha desactivado ';
-
 // Colors
 export const K_CONFIRM_BUTTON_COLOR = '#d33';
 export const K_CANCEL_BUTTON_COLOR = '#0095A6';
 export const K_SLIDER_TEXT_COLOR = '#ffffff';
+// Sections
+//// General
+export const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
+export const K_OK_BUTTON_STR = 'Aceptar';
+export const K_UPDATE_BUTTON_STR = 'Actualizar';
+export const K_CREATE_BUTTON_STR = 'Crear';
+export const K_CANCEL_BUTTON_STR = 'Cancelar';
+//// About Us
+export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
+export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_ABOUTUS_TITLE_STR = 'Nosotras ';
+export const K_ABOUTUS_NAME_STR = 'Nombre';
+export const K_ABOUTUS_SURNAME_STR = 'Primer Apellido';
+export const K_ABOUTUS_LASTNAME_STR = 'Segundo Apellido';
+export const K_ABOUTUS_POSITION_STR = 'Cargo';
+export const K_ABOUTUS_NO_DATA_STR = ' No existen registros';
+export const K_ABOUTUS_EDIT_RECORD_STR = 'Editar entrada';
+export const K_ABOUTUS_NEW_RECORD_STR = 'Crear entrada';
+////
 
 @Injectable()
 export class Globals {

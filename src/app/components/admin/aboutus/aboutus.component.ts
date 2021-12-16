@@ -5,16 +5,11 @@ import { Globals } from 'src/app/common/globals';
 import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-
+// Services
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { AboutUsInterface } from 'src/app/models/aboutus-interface';
-
-// Constants
-const K_DELETE_ABOUTUS = '¿Seguro que deseas eliminar la entrada?';
-const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
-const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
 
 @Component({
   selector: 'app-aboutus',
@@ -31,22 +26,20 @@ export class AboutusComponent implements OnInit {
   aboutUs: AboutUsInterface[] = [];
   aboutUsImg: string;
   // Form
-  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+  @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
   // AboutUs - Image
   selectedImg: File;
   uploadSuccess: boolean;
   progress: number = 0;
-  // Errors
-  errors = "";
-  // Numeros páginas
+  // Number pages
   public numberPage: number[] = [];
-  // Página actual
+  // Current page
   public page: number = 1;
-  // Total de paginas
+  // Total pages
   public totalPages: number;
-  // Total de elementos
+  // Total elements
   public numAboutUs: number;
-  // Elementos por página
+  // Registers
   private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
@@ -58,14 +51,26 @@ export class AboutusComponent implements OnInit {
   changeImage = false;
   // Load
   isLoaded: boolean;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service object
+   * @param globals      Globals constants
+   */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
     this.aboutUsObj = new AboutUsInterface();
     this.element.scrollTop = 0;
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
@@ -74,18 +79,26 @@ export class AboutusComponent implements OnInit {
     this.getAboutUsByPage(this.page);
   }
 
-  goToPage(page: number){
+  /**
+   * Go to page number
+   * @param page Number page
+   */
+  goToPage(page: number): void {
     this.page = page;
     this.getAboutUsByPage(page);
   }
 
-  getAboutUsByPage(page: Number) {
-    this.dataApi.getAboutUsByPage(page).subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+  /**
+   * Get about us information by page
+   * @param page Number page
+   */
+  getAboutUsByPage(page: Number): void {
+    this.dataApi.getAboutUsByPage(page).subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.aboutUs = data.allAboutUs;
         this.numAboutUs = data.total;
         this.totalPages = data.totalPages;
-        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
+        this.numberPage = Array.from(Array(this.totalPages)).map((x, i) => i + 1);
         this.isLoaded = true;
       } else {
         this.numAboutUs = globalsConstants.K_ZERO_RESULTS;
@@ -95,12 +108,17 @@ export class AboutusComponent implements OnInit {
     });
   }
 
-  onReload(){
+  /**
+   * Reload data
+   */
+  onReload(): void {
     this.getAboutUsByPage(this.page);
   }
 
-  onNewAboutUs() {
-    // Habilitar form en formato eedición
+  /**
+   * It enable the form and clear fields
+   */
+  onNewAboutUs(): void {
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
@@ -118,19 +136,21 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_ytube = globalsConstants.K_BLANK;
     this.aboutUsObj.user_insta = globalsConstants.K_BLANK;
     this.aboutUsObj.user_id = this.globals.userID;
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onEditAboutUs(aboutUs: AboutUsInterface) {
-    // Habilitar form en formato edición
+  /**
+   * It enable the form in edit mode and set values in fields
+   * @param aboutUs Record to edit
+   */
+  onEditAboutUs(aboutUs: AboutUsInterface): void {
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
     this.selectedImg = null;
-    // Setear valores al ui
+
     this.aboutUsObj.id = aboutUs.id;
     this.aboutUsObj.name = aboutUs.name;
     this.aboutUsObj.surname1 = aboutUs.surname1;
@@ -143,16 +163,19 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_ytube = aboutUs.user_ytube;
     this.aboutUsObj.user_insta = aboutUs.user_insta;
     this.aboutUsObj.user_id = this.globals.userID;
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onDeleteAboutUs(aboutUs: AboutUsInterface){
+  /**
+   * Delete a record
+   * @param aboutUs  Record to delete
+   */
+  onDeleteAboutUs(aboutUs: AboutUsInterface): void {
     Swal.fire({
-      title: K_DELETE_ABOUTUS,
-      text: K_WARNING_ACTION,
+      title: globalsConstants.K_ABOUTUS_DELETE,
+      text: globalsConstants.K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -163,7 +186,7 @@ export class AboutusComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteAboutUsId(aboutUs.id).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getAboutUsByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -188,19 +211,28 @@ export class AboutusComponent implements OnInit {
     });
   }
 
-  onEditImage(){
+  /**
+   * Edit image
+   */
+  onEditImage(): void {
     this.changeImage = true;
   }
 
-  onCancelEditImage(){
+  /**
+   * Cancel edit image
+   */
+  onCancelEditImage(): void {
     this.changeImage = false;
   }
 
-  onDeleteImage() {
-    if(globalsConstants.K_DEFAULT_IMAGE != this.aboutUsObj.image){
+  /**
+   * Delete image
+   */
+  onDeleteImage(): void {
+    if (globalsConstants.K_DEFAULT_IMAGE != this.aboutUsObj.image) {
       Swal.fire({
-        title: K_DELETE_IMAGE,
-        text: K_WARNING_ACTION,
+        title: globalsConstants.K_ABOUTUS_DELETE_IMAGE,
+        text: globalsConstants.K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -212,7 +244,7 @@ export class AboutusComponent implements OnInit {
           this.isLoaded = false;
           this.aboutUsObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
@@ -222,7 +254,7 @@ export class AboutusComponent implements OnInit {
                 'success'
               )
             }
-            else{
+            else {
               this.isLoaded = true;
               Swal.fire(
                 globalsConstants.K_ERROR_EXC_STR,
@@ -234,76 +266,80 @@ export class AboutusComponent implements OnInit {
         }
       });
     }
-    else{
+    else {
       this.toastr.info(globalsConstants.K_NO_IMAGE_INFO, globalsConstants.K_INFO_STR);
     }
 
   }
 
-  onSubmit(form: NgForm){
+  /**
+   * Submit form information to create or edit the record
+   * @param form Form with the information
+   */
+  onSubmit(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
 
-    if(this.isEditForm){
-      if(this.changeImage && this.selectedImg != null){
+    if (this.isEditForm) {
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.aboutUsImg = img['message'];
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.updateAboutUsById(this.aboutUsObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getAboutUsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
-    } else{
-      if(this.changeImage && this.selectedImg != null){
+    } else {
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.aboutUsImg = img['message'];
           this.aboutUsObj.image = this.aboutUsImg;
           this.uploadSuccess = false;
           this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getAboutUsByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_CREATE_F_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.createAboutUs(this.aboutUsObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getAboutUsByPage(this.page);
             this.onCancel();
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_CREATE_F_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
@@ -312,37 +348,47 @@ export class AboutusComponent implements OnInit {
     }
   }
 
-  onFileChanged($event){
-    if($event != null){
+  /**
+   * Preload image
+   * @param  $event
+   */
+  onFileChanged($event) {
+    if ($event != null) {
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+      if (this.selectedImg.size > globalsConstants.K_MAX_SIZE) {
         this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
         this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
-      } else{
-        for(let i=0; i<=100; i++){
+      } else {
+        for (let i = 0; i <= 100; i++) {
           setTimeout(() => {
-              this.progress = i; // Simulación de progreso
+            this.progress = i;
           }, 500);
         }
         this.uploadSuccess = true;
         setTimeout(() => {
-            this.progress = 0; // Eliminación de la barra de progreso
+          this.progress = 0;
         }, 2500);
       }
-    } else{
+    } else {
       return;
     }
   }
 
-  onCancel(){
+  /**
+   * Cancel edit
+   */
+  onCancel(): void {
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
     this.changeImage = false;
   }
 
-  scrollToForm() {
-      this.editAboutUs.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editAboutUs.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 }
