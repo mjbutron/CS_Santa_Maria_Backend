@@ -5,3 +5,14 @@
   background-color: #0095A6;
   color: #ffffff;
 }
+
+input[type=checkbox] {
+  width: 18px;
+  height: 18px;
+  float: left;
+}
+
+.label_checkbox {
+  float: left;
+  padding-left: 3px;
+}

@@ -21,6 +21,7 @@ export class ContactComponent implements OnInit {
   globals: Globals;
   // Contact information
   infoObj: ContactInterface;
+  inSocialChk: boolean;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Coordinates
@@ -52,6 +53,7 @@ export class ContactComponent implements OnInit {
     this.globals = globals;
     this.infoObj = new ContactInterface();
     this.element.scrollTop = 0;
+    this.inSocialChk = false;
   }
 
   /**
@@ -114,6 +116,7 @@ export class ContactComponent implements OnInit {
           this.infoObj.footer_email = data.footerInfo[i].footer_email;
           this.infoObj.footer_ph = data.footerInfo[i].footer_ph;
           this.infoObj.footer_schdl = data.footerInfo[i].footer_schdl;
+          this.inSocialChk = (data.footerInfo[i].footer_social_links == 1) ? true : false;
         }
         this.isLoaded = true;
       } else {
@@ -188,6 +191,7 @@ export class ContactComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+
     this.isLoaded = false;
     this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
@@ -242,6 +246,14 @@ export class ContactComponent implements OnInit {
    */
   onResetContact(form: NgForm): void {
     form.reset();
+  }
+
+  /**
+   * Show and hide social links in the footer
+   * @param e  Event
+   */
+  toggleVisibility(e): void{
+    this.infoObj.footer_social_links = (this.inSocialChk) ? 1 : 0;
   }
 
   /**

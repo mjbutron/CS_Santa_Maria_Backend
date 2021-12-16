@@ -9,6 +9,7 @@ export class ContactInterface {
   footer_email?: string;
   footer_ph?: number;
   footer_schdl?: string;
+  footer_social_links?: number;
   cnt_address?: string;
   cnt_ph_appo?: number;
   cnt_emails?: string;

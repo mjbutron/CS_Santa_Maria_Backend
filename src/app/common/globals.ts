@@ -83,6 +83,7 @@ export const K_ABOUTUS_NEW_RECORD_STR = 'Crear entrada';
 export const K_CONTACT_HOME_TITLE_STR = "Información de página de inicio";
 export const K_CONTACT_FOOTER_TITLE_STR = "Información de pie de página";
 export const K_CONTACT_CONTACT_TITLE_STR = "Información de página de contacto";
+export const K_CONTACT_SHOW_SOCIAL_STR = "Mostrar redes sociales en el pie de página";
 export const K_INFO_POP_TITLE = "Información de sección";
 export const K_INFO_POP_TITLE_TIME = "Ejemplo de horario"
 export const K_INFO_POP_TITLE_EMAIL = "Información de Emails";
