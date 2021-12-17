@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0">
         <div class="card-title mb-1 p-3">
-          <h5><b>Cursos ({{numCourses}} resultados)</b>
+          <h5><b>{{globalCnstns.K_COURSE_TITLE_STR}} ({{numCourses}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewCourse()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-plus-square ml-3 float-right" title="Añadir"></i>
@@ -29,13 +32,13 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Precio</th>
-                    <th>Plazas</th>
-                    <th>Libres</th>
-                    <th>Activo</th>
+                    <th>{{globalCnstns.K_COURSE_NAME_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_DATE_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_TIME_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_PRICE_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_PLACES_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_FREE_PLACES_STR}}</th>
+                    <th>{{globalCnstns.K_COURSE_ACTIVE_STR}}</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -87,7 +90,7 @@
                 <tbody *ngIf="!courses?.length">
                   <tr>
                     <td class="align-middle text-muted" colspan="10" align="center">
-                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                      <span><i class="fas fa-info-circle"></i></span> {{globalCnstns.K_NO_DATA_STR}}
                     </td>
                   </tr>
                 </tbody>
@@ -100,14 +103,14 @@
     </div>
   </div>
 
-<div #editCourse id="editCr"></div>
+  <div #editCourse id="editCr"></div>
   <div *ngIf="activeForm" class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5 *ngIf="isEditForm">Editar curso</h5>
-            <h5 *ngIf="!isEditForm">Crear curso</h5>
+            <h5 *ngIf="isEditForm">{{globalCnstns.K_COURSE_EDIT_RECORD_STR}}</h5>
+            <h5 *ngIf="!isEditForm">{{globalCnstns.K_COURSE_NEW_RECORD_STR}}</h5>
           </div>
         </div>
         <div class="card-body">
@@ -230,7 +233,7 @@
             <div class="row p-2">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="address">Direccion (Donde se imparte)</label>
+                  <label for="address">Dirección (Donde se imparte)</label>
                   <input name="address" id="address" type="text" [(ngModel)]="courseObj.address" class="form-control">
                 </div>
               </div>
@@ -296,13 +299,19 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button *ngIf="isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
                   <button *ngIf="!isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning mb-2 mr-2">Crear</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">
+                  {{globalCnstns.K_CREATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning mb-2" (click)="onCancel()">Cancelar</button>
+                  class="btn btn-outline-lightning mb-2" (click)="onCancel()">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>

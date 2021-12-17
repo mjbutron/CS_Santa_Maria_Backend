@@ -6,22 +6,11 @@ import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
-
+// Service
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { CourseInterface } from 'src/app/models/course-interface';
-
-// Constants
-const K_DELETE_COURSE = '¿Seguro que deseas eliminar el curso?';
-const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
-const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
-const K_DEACTIVE_COURSE = '¿Seguro que deseas desactivar este curso?';
-const K_ACTIVE_COURSE = '¿Seguro que deseas activar este curso?';
-const K_DEACTIVE_STR = '¡Desactivado!';
-const K_ACTIVE_STR = '¡Activado!';
-const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el curso.';
-const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el curso.';
 
 @Component({
   selector: 'app-course',
@@ -33,7 +22,7 @@ export class CourseComponent implements OnInit {
   public Editor = ClassicEditor;
   // Globals
   globals: Globals;
-  // Path
+  // Image path
   path = environment.imageRootPath;
   // Courses
   courseObj: CourseInterface;
@@ -43,22 +32,20 @@ export class CourseComponent implements OnInit {
   inNewChk: boolean;
   noDate = globalsConstants.K_NO_DATE_STR;
   // Form
-  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+  @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
   // Courses - Image
   selectedImg: File;
   uploadSuccess: boolean;
   progress: number = 0;
-  // Errors
-  errors = "";
-  // Numeros páginas
+  // Number pages
   public numberPage: number[] = [];
-  // Página actual
+  // Current page
   public page: number = 1;
-  // Total de paginas
+  // Total pages
   public totalPages: number;
-  // Total de elementos
+  // Total elements
   public numCourses: number;
-  // Elementos por página
+  // Registers
   private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
@@ -74,7 +61,16 @@ export class CourseComponent implements OnInit {
   actionTextActiveStr = "";
   // Load
   isLoaded: boolean;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service object
+   * @param globals      Globals
+   */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
     this.courseObj = new CourseInterface();
@@ -83,7 +79,10 @@ export class CourseComponent implements OnInit {
     this.element.scrollTop = 0;
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
@@ -92,20 +91,28 @@ export class CourseComponent implements OnInit {
     this.getCoursesByPage(this.page);
   }
 
-  goToPage(page: number){
+  /**
+   * Go to page number
+   * @param page Number page
+   */
+  goToPage(page: number): void {
     this.page = page;
     this.getCoursesByPage(page);
   }
 
-  getCoursesByPage(page: Number) {
-    this.dataApi.getCoursesByPage(page).subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+  /**
+   * Get courses information by page
+   * @param page Number page
+   */
+  getCoursesByPage(page: Number): void {
+    this.dataApi.getCoursesByPage(page).subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.courses = data.allCourses;
         this.numCourses = data.total;
         this.totalPages = data.totalPages;
-        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
+        this.numberPage = Array.from(Array(this.totalPages)).map((x, i) => i + 1);
         this.isLoaded = true;
-      } else{
+      } else {
         this.numCourses = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
@@ -113,12 +120,17 @@ export class CourseComponent implements OnInit {
     });
   }
 
-  onReload(){
+  /**
+   * Reload data
+   */
+  onReload(): void {
     this.getCoursesByPage(this.page);
   }
 
-  onNewCourse() {
-    // Habilitar form en formato eedición
+  /**
+   * It enable the form and clear fields
+   */
+  onNewCourse(): void {
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
@@ -145,14 +157,16 @@ export class CourseComponent implements OnInit {
     this.courseObj.free_places = 0;
     this.courseObj.price = 0;
     this.courseObj.user_id = this.globals.userID;
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onEditCourse(course: CourseInterface) {
-    // Habilitar form en formato edición
+  /**
+   * It enable the form in edit mode and set values in fields
+   * @param course Record to edit
+   */
+  onEditCourse(course: CourseInterface): void {
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
@@ -160,37 +174,39 @@ export class CourseComponent implements OnInit {
     this.courseObj.description = globalsConstants.K_BLANK;
     this.courseObj.image = (course.image) ? course.image : globalsConstants.K_DEFAULT_IMAGE;
 
-    setTimeout (() => {
-          // Setear valores al ui
-          this.courseObj.id = course.id;
-          this.courseObj.active = course.active;
-          this.courseObj.title = course.title;
-          this.courseObj.short_description = course.short_description;
-          this.courseObj.description = course.description;
-          this.courseObj.new_course = course.new_course;
-          this.inNewChk = (course.new_course == 1) ? true : false;
-          this.courseObj.offer = course.offer;
-          this.inOfferChk = (course.offer == 1) ? true : false;
-          this.courseObj.address = course.address;
-          this.courseObj.session_date = course.session_date;
-          this.courseObj.session_start = course.session_start;
-          this.courseObj.session_end = course.session_end;
-          this.courseObj.sessions = course.sessions;
-          this.courseObj.hours = course.hours;
-          this.courseObj.impart = course.impart;
-          this.courseObj.places = course.places;
-          this.courseObj.free_places = course.free_places;
-          this.courseObj.price = course.price;
-          this.courseObj.user_id = this.globals.userID;
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.courseObj.id = course.id;
+      this.courseObj.active = course.active;
+      this.courseObj.title = course.title;
+      this.courseObj.short_description = course.short_description;
+      this.courseObj.description = course.description;
+      this.courseObj.new_course = course.new_course;
+      this.inNewChk = (course.new_course == 1) ? true : false;
+      this.courseObj.offer = course.offer;
+      this.inOfferChk = (course.offer == 1) ? true : false;
+      this.courseObj.address = course.address;
+      this.courseObj.session_date = course.session_date;
+      this.courseObj.session_start = course.session_start;
+      this.courseObj.session_end = course.session_end;
+      this.courseObj.sessions = course.sessions;
+      this.courseObj.hours = course.hours;
+      this.courseObj.impart = course.impart;
+      this.courseObj.places = course.places;
+      this.courseObj.free_places = course.free_places;
+      this.courseObj.price = course.price;
+      this.courseObj.user_id = this.globals.userID;
+      this.scrollToForm();
+    }, 200);
   }
 
-  onDeleteCourse(course: CourseInterface){
+  /**
+   * Delete a record
+   * @param course  Record to delete
+   */
+  onDeleteCourse(course: CourseInterface): void {
     Swal.fire({
-      title: K_DELETE_COURSE,
-      text: K_WARNING_ACTION,
+      title: globalsConstants.K_COURSE_DELETE_COURSE,
+      text: globalsConstants.K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -201,7 +217,7 @@ export class CourseComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteCourseById(course.id).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getCoursesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -216,7 +232,7 @@ export class CourseComponent implements OnInit {
             this.coreService.createNotification(
               globalsConstants.K_MOD_COURSE, globalsConstants.K_DELETE_MOD, course.title,
               globalsConstants.K_ALL_USERS);
-          } else{
+          } else {
             this.isLoaded = true;
             Swal.fire(
               globalsConstants.K_ERROR_EXC_STR,
@@ -229,19 +245,28 @@ export class CourseComponent implements OnInit {
     });
   }
 
-  onEditImage(){
+  /**
+   * Edit image
+   */
+  onEditImage(): void {
     this.changeImage = true;
   }
 
-  onCancelEditImage(){
+  /**
+   * Cancel edit image
+   */
+  onCancelEditImage(): void {
     this.changeImage = false;
   }
 
-  onDeleteImage() {
-    if(globalsConstants.K_DEFAULT_IMAGE != this.courseObj.image){
+  /**
+   * Delete image
+   */
+  onDeleteImage(): void {
+    if (globalsConstants.K_DEFAULT_IMAGE != this.courseObj.image) {
       Swal.fire({
-        title: K_DELETE_IMAGE,
-        text: K_WARNING_ACTION,
+        title: globalsConstants.K_COURSE_DELETE_IMAGE,
+        text: globalsConstants.K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -253,7 +278,7 @@ export class CourseComponent implements OnInit {
           this.isLoaded = false;
           this.courseObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
@@ -263,7 +288,7 @@ export class CourseComponent implements OnInit {
                 'success'
               )
             }
-            else{
+            else {
               this.isLoaded = true;
               Swal.fire(
                 globalsConstants.K_ERROR_EXC_STR,
@@ -280,21 +305,25 @@ export class CourseComponent implements OnInit {
     }
   }
 
-  onSubmit(form: NgForm){
+  /**
+   * Submit form information to create or edit the record
+   * @param form Form with the information
+   */
+  onSubmit(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
 
-    if(this.isEditForm){
-      if(this.changeImage && this.selectedImg != null){
+    if (this.isEditForm) {
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.courseImg = img['message'];
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.coreService.createNotification(
@@ -302,15 +331,15 @@ export class CourseComponent implements OnInit {
                 globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.updateCourseById(this.courseObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getCoursesByPage(this.page);
             this.onCancel();
             this.coreService.createNotification(
@@ -318,21 +347,21 @@ export class CourseComponent implements OnInit {
               globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
-    } else{
+    } else {
       this.courseObj.free_places = this.courseObj.places;
-      if(this.changeImage && this.selectedImg != null){
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.courseImg = img['message'];
           this.courseObj.image = this.courseImg;
           this.uploadSuccess = false;
           this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getCoursesByPage(this.page);
               this.onCancel();
               this.coreService.createNotification(
@@ -340,15 +369,15 @@ export class CourseComponent implements OnInit {
                 globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.createCourse(this.courseObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getCoursesByPage(this.page);
             this.onCancel();
             this.coreService.createNotification(
@@ -356,7 +385,7 @@ export class CourseComponent implements OnInit {
               globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
@@ -365,58 +394,75 @@ export class CourseComponent implements OnInit {
     }
   }
 
-  onFileChanged($event){
-    if($event != null){
+  /**
+   * Preload image
+   * @param  $event
+   */
+  onFileChanged($event) {
+    if ($event != null) {
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+      if (this.selectedImg.size > globalsConstants.K_MAX_SIZE) {
         this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
         this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
-      } else{
-        for(let i=0; i<=100; i++){
+      } else {
+        for (let i = 0; i <= 100; i++) {
           setTimeout(() => {
-              this.progress = i; // Simulación de progreso
+            this.progress = i;
           }, 500);
         }
         this.uploadSuccess = true;
         setTimeout(() => {
-            this.progress = 0; // Eliminación de la barra de progreso
+          this.progress = 0;
         }, 2500);
       }
-    } else{
+    } else {
       return;
     }
   }
 
-  onCancel(){
-    // form.reset();
+  /**
+   * Cancel edit
+   */
+  onCancel(): void {
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
     this.changeImage = false;
   }
 
-  scrollToForm() {
-      this.editCourse.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editCourse.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
-  toggleVisibility(e){
+  /**
+   * Establish if it is a new course or is on offer
+   * @param e  Event
+   */
+  toggleVisibility(e): void {
     this.courseObj.new_course = (this.inNewChk) ? 1 : 0;
     this.courseObj.offer = (this.inOfferChk) ? 1 : 0;
   }
 
-  onActiveCourse(course: CourseInterface){
+  /**
+   * Active or deactive course
+   * @param course Course to deactivate or activate
+   */
+  onActiveCourse(course: CourseInterface): void {
     let auxActive = 0;
-    if(1 == course.active){
-      this.alertActiveStr = K_DEACTIVE_COURSE;
-      this.actionActiveStr = K_DEACTIVE_STR;
-      this.actionTextActiveStr = K_DEACTIVE_SUCCESS_SRT;
+    if (1 == course.active) {
+      this.alertActiveStr = globalsConstants.K_COURSE_DEACTIVE_COURSE;
+      this.actionActiveStr = globalsConstants.K_COURSE_DEACTIVE_STR;
+      this.actionTextActiveStr = globalsConstants.K_COURSE_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
-    else{
-      this.alertActiveStr = K_ACTIVE_COURSE;
-      this.actionActiveStr = K_ACTIVE_STR;
-      this.actionTextActiveStr = K_ACTIVE_SUCCESS_SRT;
+    else {
+      this.alertActiveStr = globalsConstants.K_COURSE_ACTIVE_COURSE;
+      this.actionActiveStr = globalsConstants.K_COURSE_ACTIVATED_STR;
+      this.actionTextActiveStr = globalsConstants.K_COURSE_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -432,10 +478,9 @@ export class CourseComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         course.user_id = this.globals.userID;
-        // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
-        course.active = (course.active == 0) ? 1 : 0; // Así no tener que hacer esto
+        course.active = (course.active == 0) ? 1 : 0;
         this.dataApi.updateCourseById(course).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             course.active = auxActive;
             this.getCoursesByPage(this.page);
             this.isEditForm = false;
@@ -446,17 +491,17 @@ export class CourseComponent implements OnInit {
               this.actionTextActiveStr,
               'success'
             )
-            if(!course.active){
+            if (!course.active) {
               this.coreService.createNotification(
-                globalsConstants.K_MOD_COURSE ,globalsConstants.K_ACTIVE_MOD, course.title,
+                globalsConstants.K_MOD_COURSE, globalsConstants.K_ACTIVE_MOD, course.title,
                 globalsConstants.K_ALL_USERS);
             }
-            else{
+            else {
               this.coreService.createNotification(
-                globalsConstants.K_MOD_COURSE ,globalsConstants.K_DEACTIVE_MOD, course.title,
+                globalsConstants.K_MOD_COURSE, globalsConstants.K_DEACTIVE_MOD, course.title,
                 globalsConstants.K_ALL_USERS);
             }
-          } else{
+          } else {
             course.active = auxActive;
             this.isLoaded = true;
             Swal.fire(

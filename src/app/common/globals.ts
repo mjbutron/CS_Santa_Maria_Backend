@@ -68,6 +68,7 @@ export const K_UPDATE_BUTTON_STR = 'Actualizar';
 export const K_RESET_BUTTON_STR = 'Reiniciar';
 export const K_CREATE_BUTTON_STR = 'Crear';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
+export const K_NO_DATA_STR = ' No existen registros';
 //// About Us
 export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
 export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
@@ -76,7 +77,6 @@ export const K_ABOUTUS_NAME_STR = 'Nombre';
 export const K_ABOUTUS_SURNAME_STR = 'Primer Apellido';
 export const K_ABOUTUS_LASTNAME_STR = 'Segundo Apellido';
 export const K_ABOUTUS_POSITION_STR = 'Cargo';
-export const K_ABOUTUS_NO_DATA_STR = ' No existen registros';
 export const K_ABOUTUS_EDIT_RECORD_STR = 'Editar entrada';
 export const K_ABOUTUS_NEW_RECORD_STR = 'Crear entrada';
 //// Contact
@@ -97,6 +97,26 @@ export const K_CONTACT_POP_DATA = "En esta sección podrá indicar la informaci�
 export const K_TIME_POP_DATA = "Lunes a viernes: 09:00 - 14:00 y 17:00 - 20:00.";
 export const K_EMAIL_POP_DATA = "Podrá indicar varios emails separandolos con ( ; ).";
 export const K_INFO_EMAIL_POP_DATA = "El email indicado aquí es donde se recibiran las consultas e inscripciones de la web.";
+//// Course
+export const K_COURSE_TITLE_STR = 'Cursos ';
+export const K_COURSE_DELETE_COURSE = '¿Seguro que deseas eliminar el curso?';
+export const K_COURSE_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_COURSE_DEACTIVE_COURSE = '¿Seguro que deseas desactivar este curso?';
+export const K_COURSE_ACTIVE_COURSE = '¿Seguro que deseas activar este curso?';
+export const K_COURSE_DEACTIVE_STR = '¡Desactivado!';
+export const K_COURSE_ACTIVATED_STR = '¡Activado!';
+export const K_COURSE_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el curso.';
+export const K_COURSE_ACTIVE_SUCCESS_SRT = 'Se ha activado el curso.';
+export const K_COURSE_NAME_STR = 'Nombre';
+export const K_COURSE_DATE_STR = 'Fecha';
+export const K_COURSE_TIME_STR = 'Hora';
+export const K_COURSE_PRICE_STR = 'Precio';
+export const K_COURSE_PLACES_STR = 'Plazas';
+export const K_COURSE_FREE_PLACES_STR = 'Libres';
+export const K_COURSE_ACTIVE_STR = 'Activo';
+export const K_COURSE_EDIT_RECORD_STR = 'Editar curso';
+export const K_COURSE_NEW_RECORD_STR = 'Crear curso';
+
 
 @Injectable()
 export class Globals {
