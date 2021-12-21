@@ -143,7 +143,16 @@ export const K_DASHBRD_RATING_STR = 'Valoración';
 export const K_DASHBRD_NO_WRKS_DATA_HOME_STR = 'No hay talleres visibles en la pagina de inicio';
 export const K_DASHBRD_OPINIONS_IN_HOME_STR = 'Opiniones en página de inicio';
 export const K_DASHBRD_NO_OPN_DATA_HOME_STR = 'No hay opiniones visibles en la pagina de inicio';
-
+//// Login
+export const K_LOGIN_WAIT_ALERT = 'Por favor, espere...';
+export const K_LOGIN_ERROR = 'Error en inicio de sesión';
+export const K_LOGIN_STRG_RMB_EMAIL = 'rememberEmail';
+export const K_LOGIN_STRG_USER_NAME = 'username';
+export const K_LOGIN_STRG_ROL_NAME = 'rolname';
+export const K_LOGIN_STRG_USER_IMAGE = 'userImage';
+export const K_LOGIN_STRG_EMAIL = 'email';
+export const K_LOGIN_REMEMBER_USER = 'Recordar mi usuario';
+export const K_LOGIN_BUTTON = 'Iniciar sesión';
 
 @Injectable()
 export class Globals {
