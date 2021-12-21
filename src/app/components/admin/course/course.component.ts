@@ -124,6 +124,7 @@ export class CourseComponent implements OnInit {
    * Reload data
    */
   onReload(): void {
+    this.isLoaded = false;
     this.getCoursesByPage(this.page);
   }
 

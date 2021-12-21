@@ -112,6 +112,7 @@ export class AboutusComponent implements OnInit {
    * Reload data
    */
   onReload(): void {
+    this.isLoaded = false;
     this.getAboutUsByPage(this.page);
   }
 
