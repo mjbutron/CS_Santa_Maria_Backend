@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0">
         <div class="card-title mb-1 p-3">
-          <h5><b>Opiniones ({{numOpinions}} resultados)</b>
+          <h5><b>{{globalCnstns.K_OPINION_TITLE_STR}} ({{numOpinions}} resultados)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewOpinion()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-plus-square ml-3 float-right" title="Añadir"></i>
@@ -29,11 +32,11 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Comentario</th>
-                    <th>Valoración</th>
-                    <th>Pag. Principal</th>
-                    <th>Fecha</th>
+                    <th>{{globalCnstns.K_OPINION_NAME_STR}}</th>
+                    <th>{{globalCnstns.K_OPINION_COMMENT_STR}}</th>
+                    <th>{{globalCnstns.K_OPINION_RATING_STR}}</th>
+                    <th>{{globalCnstns.K_OPINION_IN_HOME_STR}}</th>
+                    <th>{{globalCnstns.K_OPINION_DATE_STR}}</th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -47,7 +50,7 @@
                       <div class="ck-content" [innerHTML]="(opinion.commentary.length>200)? (opinion.commentary | slice:0:200)+'...':(opinion.commentary)"></div>
                     </td>
                     <td class="align-middle">
-                      <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
+                      <span *ngFor='let in of counterRating(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
                         <i class="fas fa-star"></i>
                       </span>
                     </td>
@@ -75,7 +78,7 @@
                 <tbody *ngIf="!opinions?.length">
                   <tr>
                     <td class="align-middle text-muted" colspan="7" align="center">
-                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                      <span><i class="fas fa-info-circle"></i></span>{{globalCnstns.K_NO_DATA_STR}}
                     </td>
                   </tr>
                 </tbody>
@@ -88,14 +91,14 @@
     </div>
   </div>
 
-<div #editOpinion id="editOp"></div>
+  <div #editOpinion id="editOp"></div>
   <div *ngIf="activeForm" class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5 *ngIf="isEditForm">Editar opinión</h5>
-            <h5 *ngIf="!isEditForm">Crear opinión</h5>
+            <h5 *ngIf="isEditForm">{{globalCnstns.K_OPINION_EDIT}}</h5>
+            <h5 *ngIf="!isEditForm">{{globalCnstns.K_OPINION_NEW}}</h5>
           </div>
         </div>
         <div class="card-body">
@@ -128,13 +131,6 @@
               <div class="col-md-10">
                 <div class="form-group">
                   <label for="commentary">Comentario*</label>
-                  <!-- <textarea name="commentary" id="commentary" maxlength="300" rows="4" cols="80" [(ngModel)]="opinionObj.commentary"
-                  class="form-control" [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['commentary'].errors }"
-                  required></textarea>
-                  <div *ngIf="opinionForm.submitted && opinionForm.controls['commentary'].errors" class="invalid-feedback">
-                      <div *ngIf="opinionForm.controls['commentary'].errors.required">El comentario es obligatorio</div>
-                  </div> -->
-                  <!-- <ckeditor tagName="commentary" name="commentaryEditor" [(ngModel)]="opinionObj.commentary" [editor]="Editor" [config]="config"></ckeditor> -->
                   <ckeditor tagName="textarea" name="commentary" [(ngModel)]="opinionObj.commentary" [editor]="Editor"
                   [ngClass]="{ 'is-invalid': opinionForm.submitted && opinionForm.controls['commentary'].errors }" required></ckeditor>
                   <div *ngIf="opinionForm.submitted && opinionForm.controls['commentary'].errors" class="invalid-feedback">
@@ -203,13 +199,19 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button *ngIf="isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
                   <button *ngIf="!isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning mb-2 mr-2">Crear</button>
+                  class="btn btn-outline-lightning mb-2 mr-2">
+                  {{globalCnstns.K_CREATE_BUTTON_STR}}
+                </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning mb-2" (click)="onCancel()">Cancelar</button>
+                  class="btn btn-outline-lightning mb-2" (click)="onCancel()">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>

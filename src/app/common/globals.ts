@@ -163,8 +163,17 @@ export const K_NOTIF_READ_STR = 'Revisadas';
 export const K_NOTIFICATION_STR = 'Notificación';
 export const K_NOTIF_DATETIME_STR = 'Fecha/Hora';
 export const K_NOTIF_NO_DATA = ' No tiene notificaciones';
-
-
+//// Opinion
+export const K_OPINION_TITLE_STR = 'Opiniones ';
+export const K_OPINION_DELETE = '¿Seguro que deseas eliminar esta opinión?';
+export const K_OPINION_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_OPINION_NAME_STR = 'Nombre';
+export const K_OPINION_DATE_STR = 'Fecha';
+export const K_OPINION_COMMENT_STR = 'Comentario';
+export const K_OPINION_RATING_STR = 'Valoración';
+export const K_OPINION_IN_HOME_STR = 'Pag. Principal';
+export const K_OPINION_EDIT = 'Editar opinión';
+export const K_OPINION_NEW = 'Crear opinión';
 
 @Injectable()
 export class Globals {
