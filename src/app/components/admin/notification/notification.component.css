@@ -1,10 +1,14 @@
+/* Contact CSS style */
+
 #legend{
   position: relative;
   text-align:center;
 }
+
 #legend ul{
   padding: 0px;
 }
+
 #legend li{
   display:inline;
   font: bold 8pt Verdana, Tahoma, Arial;

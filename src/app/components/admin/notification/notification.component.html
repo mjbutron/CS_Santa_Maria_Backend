@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
-          <h5><b>Notificaciones ({{numNotifications}} resultados)</b>
+          <h5><b>{{globalCnstns.K_NOTIF_TITLE_STR}} ({{numNotifications}} resultados)</b>
             <a [routerLink]="" (click)="onDeleteAll()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-trash-alt ml-3 float-right" title="Eliminar todas"></i>
@@ -28,11 +31,11 @@
           <div id=legend>
                 <ul>
                 <li class=notifNew></li>
-                <li class="notifSpace">Nuevas</li>
+                <li class="notifSpace">{{globalCnstns.K_NOTIF_NEW_STR}}</li>
                 <li class=notifNoRead></li>
-                <li class="notifSpace">No revisadas</li>
+                <li class="notifSpace">{{globalCnstns.K_NOTIF_NO_READ_STR}}</li>
                 <li class=notifRead></li>
-                <li class="notifSpace">Revisadas</li>
+                <li class="notifSpace">{{globalCnstns.K_NOTIF_READ_STR}}</li>
                 </ul>
             </div>
           <div class="table-responsive-md">
@@ -41,8 +44,8 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Notificación</th>
-                    <th>Fecha/Hora</th>
+                    <th>{{globalCnstns.K_NOTIFICATION_STR}}</th>
+                    <th>{{globalCnstns.K_NOTIF_DATETIME_STR}}</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -62,18 +65,17 @@
                     </td>
                     <td class="align-middle" *ngIf="notification.urgent==0">
                     </td>
-
                     <!-- <td class="align-middle">
                       <a class="btn btn-sm btn-outline-lightning rounded-0" [routerLink]="['/admin/talleres']">
                         <i class="fas fa-long-arrow-alt-right"></i>
                       </a>
-                    </td> -->
+                    </td>  -->
                   </tr>
                 </tbody>
                 <tbody *ngIf="!notifications?.length">
                   <tr>
                     <td class="align-middle text-muted" colspan="10" align="center">
-                      <span><i class="fas fa-info-circle"></i></span> No tiene notificaciones
+                      <span><i class="fas fa-info-circle"></i></span>{{globalCnstns.K_NOTIF_NO_DATA}}
                     </td>
                   </tr>
                 </tbody>

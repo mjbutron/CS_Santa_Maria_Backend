@@ -153,6 +153,18 @@ export const K_LOGIN_STRG_USER_IMAGE = 'userImage';
 export const K_LOGIN_STRG_EMAIL = 'email';
 export const K_LOGIN_REMEMBER_USER = 'Recordar mi usuario';
 export const K_LOGIN_BUTTON = 'Iniciar sesión';
+//// Notifications
+export const K_NOTIF_TITLE_STR = 'Notificaciones ';
+export const K_NOTIF_DELETE = '¿Seguro que deseas eliminar todas las notificaciones?';
+export const K_NOTIF_READ = '¿Seguro que deseas marcar todas las notificaciones como revisadas?';
+export const K_NOTIF_NEW_STR = 'Nuevas';
+export const K_NOTIF_NO_READ_STR = 'No revisadas';
+export const K_NOTIF_READ_STR = 'Revisadas';
+export const K_NOTIFICATION_STR = 'Notificación';
+export const K_NOTIF_DATETIME_STR = 'Fecha/Hora';
+export const K_NOTIF_NO_DATA = ' No tiene notificaciones';
+
+
 
 @Injectable()
 export class Globals {
