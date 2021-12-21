@@ -69,6 +69,10 @@ export const K_RESET_BUTTON_STR = 'Reiniciar';
 export const K_CREATE_BUTTON_STR = 'Crear';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
 export const K_NO_DATA_STR = ' No existen registros';
+export const K_SERVICE_STR = 'Servicios';
+export const K_WORKSHOP_STR = 'Talleres';
+export const K_COURSE_STR = 'Cursos';
+export const K_OPINION_STR = 'Opiniones';
 //// About Us
 export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
 export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
@@ -116,6 +120,29 @@ export const K_COURSE_FREE_PLACES_STR = 'Libres';
 export const K_COURSE_ACTIVE_STR = 'Activo';
 export const K_COURSE_EDIT_RECORD_STR = 'Editar curso';
 export const K_COURSE_NEW_RECORD_STR = 'Crear curso';
+//// Dashboard
+export const K_DASHBRD_UPDATE_ORDER = 'Se ha modificado el orden de la cabecera';
+export const K_DASHBRD_TITLE_STR = 'Centro Sanitario Santa María ';
+export const K_DASHBRD_LAST_SERVICE_STR = 'Ult. añadido:  ';
+export const K_DASHBRD_NEXT_WORKSHOP_STR = 'Próximo Taller: ';
+export const K_DASHBRD_NEXT_COURSE_STR = 'Próximo Curso: ';
+export const K_DASHBRD_LAST_OPINION_STR = 'Ult. añadida:  ';
+export const K_DASHBRD_HEADER_TITLE_STR = 'Imagenes de cabecera';
+export const K_DASHBRD_SUBTEXT_HEADER_STR = 'Cambia el orden arrastrando la imagen o modifica la cabecera seleccionando una de ellas.';
+export const K_DASHBRD_EDIT_HEADER_STR = 'Editar cabecera';
+export const K_DASHBRD_WORKSHOP_IN_HOME_STR = 'Talleres en página de inicio';
+export const K_DASHBRD_NAME_STR = 'Nombre';
+export const K_DASHBRD_DATE_STR = 'Fecha';
+export const K_DASHBRD_SHEDULE_STR = 'Horario';
+export const K_DASHBRD_PRICE_STR = 'Precio';
+export const K_DASHBRD_AVAILABLE_STR = 'Disponibilidad';
+export const K_DASHBRD_COMPLETE_STR = 'Completo';
+export const K_DASHBRD_IMAGE_STR = 'Imagen';
+export const K_DASHBRD_COMMENT_STR = 'Comentario';
+export const K_DASHBRD_RATING_STR = 'Valoración';
+export const K_DASHBRD_NO_WRKS_DATA_HOME_STR = 'No hay talleres visibles en la pagina de inicio';
+export const K_DASHBRD_OPINIONS_IN_HOME_STR = 'Opiniones en página de inicio';
+export const K_DASHBRD_NO_OPN_DATA_HOME_STR = 'No hay opiniones visibles en la pagina de inicio';
 
 
 @Injectable()

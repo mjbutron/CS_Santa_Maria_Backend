@@ -1,13 +1,17 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
-  <h4 class="mb-4 text-muted">Centro Sanitario Santa María </h4>
+  <!-- Cards -->
+  <h4 class="mb-4 text-muted">{{globalCnstns.K_DASHBRD_TITLE_STR}}</h4>
   <div class="row">
     <div class="col-md-6 col-lg-3 mb-4">
       <div class="text-center" *ngIf="!isLoaded">
         <div class="spinner-border" style="color:#0095A6" role="status">
-          <span class="sr-only">Cargando...</span>
+          <span class="sr-only"></span>
         </div>
       </div>
       <div class="card border-0 rounded-0" *ngIf="isLoaded">
@@ -17,15 +21,14 @@
               <i class="fa fa-tasks" aria-hidden="true"></i>
             </div>
             <div class="ml-auto">
-              <p class="card-label text-right text-muted">Servicios</p>
+              <p class="card-label text-right text-muted">{{globalCnstns.K_SERVICE_STR}}</p>
               <h4 class="card-text text-right ">{{numSrv}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex ">
-          <small class="text-muted">Ult. añadido:  </small>
+          <small class="text-muted">{{globalCnstns.K_DASHBRD_LAST_SERVICE_STR}}</small>
           <small class="text-info ml-auto" *ngIf="isLastSrv">
-            <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
             {{lastDateSrv | date}}
           </small>
           <small class="text-info ml-auto" *ngIf="!isLastSrv">
@@ -38,7 +41,7 @@
     <div class="col-md-6 col-lg-3 mb-4">
       <div class="text-center" *ngIf="!isLoaded">
         <div class="spinner-border" style="color:#0095A6" role="status">
-          <span class="sr-only">Cargando...</span>
+          <span class="sr-only"></span>
         </div>
       </div>
       <div class="card border-0 rounded-0" *ngIf="isLoaded">
@@ -48,15 +51,14 @@
               <i class="fa fa-globe" aria-hidden="true"></i>
             </div>
             <div class="ml-auto">
-              <p class="card-label text-right text-muted">Talleres</p>
+              <p class="card-label text-right text-muted">{{globalCnstns.K_WORKSHOP_STR}}</p>
               <h4 class="card-text text-right">{{numWsp}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex">
-          <small class="text-muted">Próximo Taller: </small>
+          <small class="text-muted">{{globalCnstns.K_DASHBRD_NEXT_WORKSHOP_STR}}</small>
           <small class="text-success ml-auto" *ngIf="isNextWsp">
-            <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
             {{nextDateWsp | date}}
           </small>
           <small class="text-danger ml-auto" *ngIf="!isNextWsp">
@@ -69,7 +71,7 @@
     <div class="col-md-6 col-lg-3 mb-4">
       <div class="text-center" *ngIf="!isLoaded">
         <div class="spinner-border" style="color:#0095A6" role="status">
-          <span class="sr-only">Cargando...</span>
+          <span class="sr-only"></span>
         </div>
       </div>
       <div class="card border-0 rounded-0" *ngIf="isLoaded">
@@ -79,13 +81,13 @@
               <i class="fa fa-graduation-cap" aria-hidden="true"></i>
             </div>
             <div class="ml-auto">
-              <p class="card-label text-right text-muted">Cursos</p>
+              <p class="card-label text-right text-muted">{{globalCnstns.K_COURSE_STR}}</p>
               <h4 class="card-text text-right ">{{numCrs}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex ">
-          <small class="text-muted">Próximo Curso: </small>
+          <small class="text-muted">{{globalCnstns.K_DASHBRD_NEXT_COURSE_STR}}</small>
           <small class="text-success ml-auto" *ngIf="isNextCrs">
             {{nextDateCrs | date}}
           </small>
@@ -99,7 +101,7 @@
     <div class="col-md-6 col-lg-3 mb-4">
       <div class="text-center" *ngIf="!isLoaded">
         <div class="spinner-border" style="color:#0095A6" role="status">
-          <span class="sr-only">Cargando...</span>
+          <span class="sr-only"></span>
         </div>
       </div>
       <div class="card border-0 rounded-0" *ngIf="isLoaded">
@@ -109,15 +111,14 @@
               <i class="fa fa-comments" aria-hidden="true"></i>
             </div>
             <div class="ml-auto">
-              <p class="card-label text-right text-muted">Opiniones</p>
+              <p class="card-label text-right text-muted">{{globalCnstns.K_OPINION_STR}}</p>
               <h4 class="card-text text-right ">{{numOpn}}</h4>
             </div>
           </div>
         </div>
         <div class="card-footer d-flex ">
-          <small class="text-muted">Ult. añadida: </small>
+          <small class="text-muted">{{globalCnstns.K_DASHBRD_LAST_OPINION_STR}}</small>
           <small class="text-info ml-auto" *ngIf="isLastOpn">
-            <!-- <i class="fa fa-caret-up" aria-hidden="true"></i> -->
             {{nextDateOpn | date}}
           </small>
           <small class="text-info ml-auto" *ngIf="!isLastOpn">
@@ -126,18 +127,15 @@
         </div>
       </div>
     </div>
-
   </div>
-
-
+  <!-- Main header -->
   <div>
-
     <div class="row">
       <div class="col-md-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5><b>Cabecera principal (Slider)</b></h5>
-            <p class="cssm-subtitle">Cambia el orden arrastrando la imagen o modifica la cabecera seleccionando una de ellas.</p>
+            <h5><b>{{globalCnstns.K_DASHBRD_HEADER_TITLE_STR}}</b></h5>
+            <p class="cssm-subtitle">{{globalCnstns.K_DASHBRD_SUBTEXT_HEADER_STR}}</p>
           </div>
           <div class="card-body">
             <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
@@ -154,13 +152,12 @@
               </div>
             </div>
           </div>
-
+          <!-- Edit header -->
           <div class="card-title mb-1 p-3">
-            <h5><b>Editar cabecera</b></h5>
+            <h5><b>{{globalCnstns.K_DASHBRD_EDIT_HEADER_STR}}</b></h5>
           </div>
           <div class="card-body">
             <form (ngSubmit)="onSubmit( sliderForm )" #sliderForm="ngForm" enctype="multipart/form-data">
-            <!-- <div class="form-group"> -->
               <label for="title" class="col-sm-2 col-form-label text-nowrap">Título</label>
               <span *ngIf="sliderForm.submitted && sliderForm.controls['title'].errors"
                     class="text-danger animated fadeIn">El título es obligatorio</span>
@@ -168,8 +165,6 @@
                 <input type="text" class="form-control rounded-0" name="title" [disabled]="disabledForm"
                 [(ngModel)]="sliderObj.title" required>
               </div>
-            <!-- </div> -->
-            <!-- <div class="form-group"> -->
               <label for="descSlider" class="col-sm-2 col-form-label text-nowrap">Descripción</label>
               <span *ngIf="sliderForm.submitted && sliderForm.controls['description'].errors"
                     class="text-danger animated fadeIn">La descripción es obligatoria</span>
@@ -177,8 +172,6 @@
                 <input type="text" class="form-control rounded-0" name="description" [disabled]="disabledForm"
                 [(ngModel)]="sliderObj.description" required>
               </div>
-            <!-- </div> -->
-            <!-- <div class="form-group"> -->
               <label for="colorSlider" class="col-sm-2 col-form-label text-nowrap">Color de letra</label>
               <span *ngIf="sliderForm.submitted && sliderForm.controls['color'].errors"
                     class="text-danger animated fadeIn">El color es obligatorio</span>
@@ -186,8 +179,6 @@
                 <input id="color" type="color" name="color" [disabled]="disabledForm"
                 [(ngModel)]="sliderObj.color_text" required>
               </div>
-            <!-- </div>
-            <div class="form-group"> -->
               <label for="imageSlider" class="col-sm-2 col-form-label text-nowrap">Imágen</label>
               <div class="row p-2">
                 <div class="col-md-6">
@@ -199,37 +190,31 @@
                   </div>
                 </div>
               </div>
-            <!-- </div> -->
-            <!-- <div class="form-group"> -->
               <label for="" class="col-sm-2 col-form-label"></label>
                 <div class="row">
                   <div class="col-md-6">
                     <button type="submit" name="submit"
-                    class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">Aceptar</button>
+                    class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="disabledForm">{{globalCnstns.K_OK_BUTTON_STR}}</button>
                   </div>
                   <div class="col-md-6">
                     <button type="button" name="cancel"
-                    class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">Cancelar</button>
+                    class="btn btn-outline-lightning rounded-0 mb-2" [disabled]="disabledForm" (click)="onCancel()">{{globalCnstns.K_CANCEL_BUTTON_STR}}</button>
                   </div>
                 </div>
-              <!-- <div class="col-sm-10 mb-3"></div> -->
-            <!-- </div> -->
-          </form>
+            </form>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
-
+  <!-- Workshop Section -->
   <div>
     <div class="row">
       <div class="col-md-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5><b>Talleres en página de inicio</b>
-              <a href="http://localhost:4300/#/admin/talleres">
+            <h5><b>{{globalCnstns.K_DASHBRD_WORKSHOP_IN_HOME_STR}}</b>
+              <a [routerLink]="['/admin/talleres']" title="Editar talleres">
                 <span style="font-size: 1.7em; color: #0095A6;">
                   <i class="fas fa-edit float-right"></i>
                 </span>
@@ -242,11 +227,11 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Nombre</th>
-                      <th>Fecha</th>
-                      <th>Horario</th>
-                      <th>Precio</th>
-                      <th>Disponibilidad</th>
+                      <th>{{globalCnstns.K_DASHBRD_NAME_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_DATE_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_SHEDULE_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_PRICE_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_AVAILABLE_STR}}</th>
                     </tr>
                   </thead>
                   <tbody *ngIf="wspInHome?.length">
@@ -268,14 +253,16 @@
                           <div *ngIf="workshop.free_places!=0" class="progress-bar bg-success" title="Plazas libres: {{workshop.free_places}}/{{workshop.places}}"
                           [style.width]="(workshop.free_places/workshop.places)*100+'%'"></div>
                           <div *ngIf="workshop.free_places==0" class="progress-bar bg-danger"
-                          style="width: 100%;">Completo</div>
+                          style="width: 100%;">{{globalCnstns.K_DASHBRD_COMPLETE_STR}}</div>
                         </div>
                       </td>
                     </tr>
                   </tbody>
                   <tbody *ngIf="!wspInHome?.length">
                     <tr>
-                      <td colspan="4" class="table-info" align="center">No hay talleres visibles en la pagina de inicio</td>
+                      <td colspan="4" class="table-info" align="center">
+                        {{globalCnstns.K_DASHBRD_NO_WRKS_DATA_HOME_STR}}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -286,17 +273,14 @@
       </div>
     </div>
   </div>
-
+  <!-- Opinions Section -->
   <div>
-
     <div class="row">
-
       <div class="col-md-12 mb-4">
-
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5><b>Opiniones en página de inicio</b>
-              <a href="http://localhost:4300/#/admin/opiniones">
+            <h5><b>{{globalCnstns.K_DASHBRD_OPINIONS_IN_HOME_STR}}</b>
+              <a [routerLink]="['/admin/opiniones']" title="Editar opiniones">
                 <span style="font-size: 1.7em; color: #0095A6;">
                   <i class="fas fa-edit float-right"></i>
                 </span>
@@ -309,11 +293,11 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th>Imagen</th>
-                      <th>Nombre</th>
-                      <th>Comentario</th>
-                      <th>Valoración</th>
-                      <th>Fecha</th>
+                      <th>{{globalCnstns.K_DASHBRD_IMAGE_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_NAME_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_COMMENT_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_RATING_STR}}</th>
+                      <th>{{globalCnstns.K_DASHBRD_DATE_STR}}</th>
                     </tr>
                   </thead>
                   <tbody *ngIf="opnInHome?.length">
@@ -324,7 +308,7 @@
                           <div class="ck-content" [innerHTML]="(opinion.commentary.length>200)? (opinion.commentary | slice:0:200)+'...':(opinion.commentary)"></div>
                         </td>
                         <td class="align-middle">
-                          <span *ngFor='let in of counter(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
+                          <span *ngFor='let in of counterRating(opinion.rating);let i = index' style="font-size: 0.7em; color: gold;">
                             <i class="fas fa-star"></i>
                           </span>
                         </td>
@@ -333,7 +317,9 @@
                   </tbody>
                   <tbody *ngIf="!opnInHome?.length">
                     <tr>
-                      <td colspan="5" class="table-info" align="center">No hay opiniones visibles en la pagina de inicio</td>
+                      <td colspan="5" class="table-info" align="center">
+                        {{globalCnstns.K_DASHBRD_NO_OPN_DATA_HOME_STR}}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
