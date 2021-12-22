@@ -189,6 +189,25 @@ export const K_SERVICE_SERV_STR = 'Servicio';
 export const K_SERVICE_ACTIVE_STR = 'Activo';
 export const K_SERVICE_EDIT = 'Editar servicio';
 export const K_SERVICE_NEW = 'Crear servicio';
+//// User managment
+export const K_USERMGT_TITLE_STR = 'Gestión de usuarios ';
+export const K_USERMGT_DELETE_USER = '¿Seguro que deseas eliminar al usuario?';
+export const K_USERMGT_DEACTIVE_USER = '¿Seguro que deseas desactivar este usuario?';
+export const K_USERMGT_ACTIVE_USER = '¿Seguro que deseas activar este usuario?';
+export const K_USERMGT_DEACTIVATED_STR = '¡Desactivado!';
+export const K_USERMGT_ACTIVATED_STR = '¡Activado!';
+export const K_USERMGT_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el usuario.';
+export const K_USERMGT_ACTIVE_SUCCESS_SRT = 'Se ha activado el usuario.';
+export const K_USERMGT_IMAGE_STR = 'Imagen';
+export const K_USERMGT_NAME_STR = 'Nombre';
+export const K_USERMGT_SURNAME_STR = 'Apellidos';
+export const K_USERMGT_EMAIL_STR = 'Email';
+export const K_USERMGT_PHONE_STR = 'Teléfono';
+export const K_USERMGT_ROL_STR = 'Rol';
+export const K_USERMGT_ACTIVE_STR = 'Activo';
+export const K_USERMGT_EDIT = 'Editar usuario';
+export const K_USERMGT_NEW = 'Crear usuario';
+
 
 @Injectable()
 export class Globals {

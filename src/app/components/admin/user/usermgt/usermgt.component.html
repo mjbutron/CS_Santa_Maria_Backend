@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div>
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card border-0 rounded-0">
         <div class="card-title mb-1 p-3">
-          <h5><b>Gestión de usuarios ({{numUsers}} usuarios)</b>
+          <h5><b>{{globalCnstns.K_USERMGT_TITLE_STR}} ({{numUsers}} usuarios)</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onNewUser()" >
               <span  style="font-size: 1.2em; color: #0095A6;">
                 <i class="fas fa-plus-square ml-3 float-right" title="Añadir"></i>
@@ -29,13 +32,13 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Email</th>
-                    <th>Teléfono</th>
-                    <th>Rol</th>
-                    <th>Activo</th>
+                    <th>{{globalCnstns.K_USERMGT_IMAGE_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_NAME_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_SURNAME_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_EMAIL_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_PHONE_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_ROL_STR}}</th>
+                    <th>{{globalCnstns.K_USERMGT_ACTIVE_STR}}</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -82,7 +85,7 @@
                 <tbody *ngIf="!users?.length">
                   <tr>
                     <td class="align-middle text-muted" colspan="10" align="center">
-                      <span><i class="fas fa-info-circle"></i></span> No existen registros
+                      <span><i class="fas fa-info-circle"></i></span>{{globalCnstns.K_NO_DATA_STR}}
                     </td>
                   </tr>
                 </tbody>
@@ -95,14 +98,14 @@
     </div>
   </div>
 
-<div #editUser id="editUsr"></div>
+  <div #editUser id="editUsr"></div>
   <div *ngIf="activeForm" class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5 *ngIf="isEditForm">Editar usuario</h5>
-            <h5 *ngIf="!isEditForm">Crear usuario</h5>
+            <h5 *ngIf="isEditForm">{{globalCnstns.K_USERMGT_EDIT}}</h5>
+            <h5 *ngIf="!isEditForm">{{globalCnstns.K_USERMGT_NEW}}</h5>
           </div>
         </div>
         <div class="card-body">
@@ -216,13 +219,19 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button *ngIf="isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Actualizar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                  </button>
                   <button *ngIf="!isEditForm" type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">Crear</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
+                  {{globalCnstns.K_CREATE_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancel()">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>

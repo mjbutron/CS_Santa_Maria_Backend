@@ -5,22 +5,12 @@ import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { Globals } from 'src/app/common/globals';
-
+// Services
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { UserInterface } from 'src/app/models/user-interface';
 import { RolInterface } from 'src/app/models/rol-interface';
-
-// Constants
-const K_DELETE_USER = '¿Seguro que deseas eliminar al usuario?';
-const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
-const K_DEACTIVE_USER = '¿Seguro que deseas desactivar este usuario?';
-const K_ACTIVE_USER = '¿Seguro que deseas activar este usuario?';
-const K_DEACTIVE_STR = '¡Desactivado!';
-const K_ACTIVE_STR = '¡Activado!';
-const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el usuario.';
-const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el usuario.';
 
 @Component({
   selector: 'app-usermgt',
@@ -28,39 +18,36 @@ const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el usuario.';
   styleUrls: ['./usermgt.component.css']
 })
 export class UsermgtComponent implements OnInit {
-
   // Path
   path = environment.imageRootPath;
   // User
   userObj: UserInterface;
   users: UserInterface[] = [];
-  auxEmail : string;
+  auxEmail: string;
   // Utils
   globals: Globals;
   alertLockStr = "";
   actionLockStr = "";
   actionTextLockStr = "";
   // Role
-  userRol : RolInterface;
+  userRol: RolInterface;
   roles: RolInterface[] = [];
-  // Errors
-  errors = "";
   // Number pages
   public numberPage: number[] = [];
   // Current page
   public page: number = 1;
   // Total pages
   public totalPages: number = 0;
-  // Total de elementos
+  // Total elements
   public numUsers: number = 0;
-  // Elements by pages
+  // Registers
   private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
   // Scroll Form
   @ViewChild("editUser", { static: false }) editUser: ElementRef;
   // Form
-  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+  @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
   // Form
   activeForm = false;
   isEditForm = false;
@@ -68,7 +55,15 @@ export class UsermgtComponent implements OnInit {
   userInSession = "";
   // Load
   isLoaded: boolean;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service
+   */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
     this.userObj = new UserInterface();
     this.element.scrollTop = 0;
@@ -76,7 +71,10 @@ export class UsermgtComponent implements OnInit {
     this.getAllRoles();
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
@@ -84,18 +82,26 @@ export class UsermgtComponent implements OnInit {
     this.getUsersByPage(this.page);
   }
 
-  goToPage(page: number){
+  /**
+   * Go to page number
+   * @param page Number page
+   */
+  goToPage(page: number): void {
     this.page = page;
     this.getUsersByPage(page);
   }
 
-  getUsersByPage(page: Number) {
-    this.dataApi.getUsersByPage(page).subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+  /**
+   * Get user information by page
+   * @param page Number page
+   */
+  getUsersByPage(page: Number): void {
+    this.dataApi.getUsersByPage(page).subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.users = data.allUsers;
         this.numUsers = data.total;
         this.totalPages = data.totalPages;
-        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
+        this.numberPage = Array.from(Array(this.totalPages)).map((x, i) => i + 1);
         this.isLoaded = true;
       } else {
         this.numUsers = globalsConstants.K_ZERO_RESULTS;
@@ -105,13 +111,20 @@ export class UsermgtComponent implements OnInit {
     });
   }
 
-  onReload(){
+  /**
+   * Reload data
+   */
+  onReload(): void {
+    this.isLoaded = false;
     this.getUsersByPage(this.page);
   }
 
-  getAllRoles() {
-    this.dataApi.getAllRoles().subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+  /**
+   * Get all roles
+   */
+  getAllRoles(): void {
+    this.dataApi.getAllRoles().subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.roles = data.allRoles;
       } else {
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
@@ -119,13 +132,14 @@ export class UsermgtComponent implements OnInit {
     });
   }
 
-  onNewUser() {
-    // Habilitar form en formato edición
+  /**
+   * It enable the form and clear fields
+   */
+  onNewUser(): void {
     this.activeForm = true;
     this.isEditForm = false;
     this.auxEmail = "";
 
-    // Setear valores por defecto
     this.userObj.id = null;
     this.userObj.name = globalsConstants.K_BLANK;;
     this.userObj.surname = globalsConstants.K_BLANK;;
@@ -135,20 +149,20 @@ export class UsermgtComponent implements OnInit {
     this.userObj.zipcode = null;
     this.userObj.city = globalsConstants.K_BLANK;;
     this.userObj.province = globalsConstants.K_BLANK;;
-
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onEditUser(user: UserInterface) {
-    // Habilitar form en formato edición
+  /**
+   * It enable the form in edit mode and set values in fields
+   * @param user  Record to edit
+   */
+  onEditUser(user: UserInterface): void {
     this.activeForm = true;
     this.isEditForm = true;
     this.auxEmail = user.email;
 
-    // Setear valores al ui
     this.userObj.id = user.id;
     this.userObj.name = user.name;
     this.userObj.surname = user.surname;
@@ -159,19 +173,21 @@ export class UsermgtComponent implements OnInit {
     this.userObj.province = user.province;
     this.userObj.zipcode = user.zipcode;
     this.userObj.rol_id = user.rol_id;
-    // Buscamos el objeto rol según un identificador
     this.userRol = this.roles.find(e => e.id === user.rol_id);
 
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onDeleteUser(user: UserInterface){
+  /**
+   * Delete a record
+   * @param user  Record to delete
+   */
+  onDeleteUser(user: UserInterface): void {
     Swal.fire({
-      title: K_DELETE_USER,
-      text: K_WARNING_ACTION,
+      title: globalsConstants.K_USERMGT_DELETE_USER,
+      text: globalsConstants.K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -182,7 +198,7 @@ export class UsermgtComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteUserById(user.id).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getUsersByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -205,18 +221,22 @@ export class UsermgtComponent implements OnInit {
     });
   }
 
-  onLockUser(user: UserInterface){
+  /**
+   * Block or unblock users
+   * @param user  User to block or unblock
+   */
+  onLockUser(user: UserInterface): void {
     let auxActive = 0;
-    if(1 == user.active){
-      this.alertLockStr = K_DEACTIVE_USER;
-      this.actionLockStr = K_DEACTIVE_STR;
-      this.actionTextLockStr = K_DEACTIVE_SUCCESS_SRT;
+    if (1 == user.active) {
+      this.alertLockStr = globalsConstants.K_USERMGT_DEACTIVE_USER;
+      this.actionLockStr = globalsConstants.K_USERMGT_DEACTIVATED_STR;
+      this.actionTextLockStr = globalsConstants.K_USERMGT_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
-    else{
-      this.alertLockStr = K_ACTIVE_USER;
-      this.actionLockStr = K_ACTIVE_STR;
-      this.actionTextLockStr = K_ACTIVE_SUCCESS_SRT;
+    else {
+      this.alertLockStr = globalsConstants.K_USERMGT_ACTIVE_USER;
+      this.actionLockStr = globalsConstants.K_USERMGT_ACTIVATED_STR;
+      this.actionTextLockStr = globalsConstants.K_USERMGT_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -233,7 +253,7 @@ export class UsermgtComponent implements OnInit {
         this.isLoaded = false;
         user.active = (user.active == 0) ? 1 : 0;
         this.dataApi.updateUserById(user).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             user.active = auxActive;
             this.getUsersByPage(this.page);
             this.isEditForm = false;
@@ -258,44 +278,47 @@ export class UsermgtComponent implements OnInit {
     });
   }
 
-  onSubmit(form: NgForm){
+  /**
+   * Submit form information to create or edit the record
+   * @param form Form with the information
+   */
+  onSubmit(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
     else {
-      // Check email
       this.dataApi.validateEmail(this.userObj).subscribe((data) => {
-        if (globalsConstants.K_COD_OK == data.cod){
-          if(data.exists && this.auxEmail != this.userObj.email){
+        if (globalsConstants.K_COD_OK == data.cod) {
+          if (data.exists && this.auxEmail != this.userObj.email) {
             this.isLoaded = true;
-            form.controls.email.setErrors({emailExists:true});
+            form.controls.email.setErrors({ emailExists: true });
             return;
           }
-          else{
-            if(this.isEditForm){
+          else {
+            if (this.isEditForm) {
               this.userObj.rol_id = this.userRol.id;
               this.dataApi.updateUserById(this.userObj).subscribe((data) => {
-                if (globalsConstants.K_COD_OK == data.cod){
+                if (globalsConstants.K_COD_OK == data.cod) {
                   this.getUsersByPage(this.page);
                   this.onCancel();
                   this.isLoaded = true;
                   this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-                } else{
+                } else {
                   this.isLoaded = true;
                   this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
                 }
               });
-            } else{
+            } else {
               this.userObj.rol_id = this.userRol.id;
               this.dataApi.createUser(this.userObj).subscribe((data) => {
-                if (globalsConstants.K_COD_OK == data.cod){
+                if (globalsConstants.K_COD_OK == data.cod) {
                   this.getUsersByPage(this.page);
                   this.onCancel();
                   this.isLoaded = true;
                   this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-                } else{
+                } else {
                   this.isLoaded = true;
                   this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
                 }
@@ -307,13 +330,19 @@ export class UsermgtComponent implements OnInit {
     }
   }
 
-  onCancel(){
+  /**
+   * Cancel edit
+   */
+  onCancel(): void {
     this.isEditForm = false;
     this.activeForm = false;
   }
 
-  scrollToForm() {
-      this.editUser.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editUser.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
 }
