@@ -6,22 +6,11 @@ import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-custom';
-
+// Services
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { ServiceInterface } from 'src/app/models/service-interface';
-
-// Constants
-const K_DELETE_SERV = '¿Seguro que deseas eliminar el servicio?';
-const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
-const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
-const K_DEACTIVE_SERVICE = '¿Seguro que deseas desactivar este servicio?';
-const K_ACTIVE_SERVICE = '¿Seguro que deseas activar este servicio?';
-const K_DEACTIVE_STR = '¡Desactivado!';
-const K_ACTIVE_STR = '¡Activado!';
-const K_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el servicio.';
-const K_ACTIVE_SUCCESS_SRT = 'Se ha activado el servicio.';
 
 @Component({
   selector: 'app-service',
@@ -40,20 +29,20 @@ export class ServiceComponent implements OnInit {
   services: ServiceInterface[] = [];
   serviceImg: string;
   // Form
-  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+  @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
   // Services - Image
   selectedImg: File;
   uploadSuccess: boolean;
   progress: number = 0;
-  // Numeros páginas
+  // Number pages
   public numberPage: number[] = [];
-  // Página actual
+  // Current page
   public page: number = 1;
-  // Total de paginas
+  // Total Pages
   public totalPages: number;
-  // Total de elementos
+  // Total elements
   public numServices: number;
-  // Elementos por página
+  // Registers
   private numResults: number = globalsConstants.K_NUM_RESULTS_PAGE;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
@@ -69,14 +58,26 @@ export class ServiceComponent implements OnInit {
   actionTextActiveStr = "";
   // Load
   isLoaded: boolean;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service object
+   * @param globals      Globals
+   */
   constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.globals = globals;
     this.serviceObj = new ServiceInterface();
     this.element.scrollTop = 0;
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.isLoaded = false;
     this.activeForm = false;
     this.isEditForm = false;
@@ -85,20 +86,28 @@ export class ServiceComponent implements OnInit {
     this.getServicesByPage(this.page);
   }
 
-  goToPage(page: number){
+  /**
+   * Go to page number
+   * @param page Number page
+   */
+  goToPage(page: number): void {
     this.page = page;
     this.getServicesByPage(page);
   }
 
-  getServicesByPage(page: Number) {
-    this.dataApi.getServicesByPage(page).subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+  /**
+   * Get services information by page
+   * @param page Number page
+   */
+  getServicesByPage(page: Number): void {
+    this.dataApi.getServicesByPage(page).subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.services = data.allServices;
         this.numServices = data.total;
         this.totalPages = data.totalPages;
-        this.numberPage = Array.from(Array(this.totalPages)).map((x,i)=>i+1);
+        this.numberPage = Array.from(Array(this.totalPages)).map((x, i) => i + 1);
         this.isLoaded = true;
-      } else{
+      } else {
         this.numServices = globalsConstants.K_ZERO_RESULTS;
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
@@ -106,12 +115,18 @@ export class ServiceComponent implements OnInit {
     });
   }
 
-  onReload(){
+  /**
+   * Reload data
+   */
+  onReload(): void {
+    this.isLoaded = false;
     this.getServicesByPage(this.page);
   }
 
-  onNewService() {
-    // Habilitar form en formato eedición
+  /**
+   * It enable the form and clear fields
+   */
+  onNewService(): void {
     this.activeForm = true;
     this.isEditForm = false;
     this.changeImage = false;
@@ -124,14 +139,16 @@ export class ServiceComponent implements OnInit {
     this.serviceObj.subtitle = globalsConstants.K_BLANK;
     this.serviceObj.description = globalsConstants.K_BLANK;
     this.serviceObj.user_id = this.globals.userID;
-    setTimeout (() => {
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 200);
   }
 
-  onEditService(service: ServiceInterface) {
-    // Habilitar form en formato edición
+  /**
+   * It enable the form in edit mode and set values in fields
+   * @param service  Record to edit
+   */
+  onEditService(service: ServiceInterface): void {
     this.activeForm = true;
     this.isEditForm = true;
     this.changeImage = false;
@@ -139,23 +156,25 @@ export class ServiceComponent implements OnInit {
     this.serviceObj.description = globalsConstants.K_BLANK;
     this.serviceObj.image = (service.image) ? service.image : globalsConstants.K_DEFAULT_IMAGE;
 
-    setTimeout (() => {
-          // Setear valores al ui
-          this.serviceObj.id = service.id;
-          this.serviceObj.active = service.active;
-          this.serviceObj.title = service.title;
-          this.serviceObj.subtitle = service.subtitle;
-          this.serviceObj.description = service.description;
-          this.serviceObj.user_id = this.globals.userID;
-         // Mover el scroll al form
-         this.scrollToForm();
-      }, 200);
+    setTimeout(() => {
+      this.serviceObj.id = service.id;
+      this.serviceObj.active = service.active;
+      this.serviceObj.title = service.title;
+      this.serviceObj.subtitle = service.subtitle;
+      this.serviceObj.description = service.description;
+      this.serviceObj.user_id = this.globals.userID;
+      this.scrollToForm();
+    }, 200);
   }
 
-  onDeleteService(service: ServiceInterface){
+  /**
+   * Delete a record
+   * @param service  Record to delete
+   */
+  onDeleteService(service: ServiceInterface): void {
     Swal.fire({
-      title: K_DELETE_SERV,
-      text: K_WARNING_ACTION,
+      title: globalsConstants.K_SERVICE_DELETE,
+      text: globalsConstants.K_WARNING_ACTION,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -166,7 +185,7 @@ export class ServiceComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         this.dataApi.deleteServiceById(service.id).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getServicesByPage(this.page);
             this.isEditForm = false;
             this.activeForm = false;
@@ -181,7 +200,7 @@ export class ServiceComponent implements OnInit {
             this.coreService.createNotification(
               globalsConstants.K_MOD_SERVICE, globalsConstants.K_DELETE_MOD, service.title,
               globalsConstants.K_ALL_USERS);
-          } else{
+          } else {
             this.isLoaded = true;
             Swal.fire(
               globalsConstants.K_ERROR_EXC_STR,
@@ -194,19 +213,28 @@ export class ServiceComponent implements OnInit {
     });
   }
 
-  onEditImage(){
+  /**
+   * Edit image
+   */
+  onEditImage(): void {
     this.changeImage = true;
   }
 
-  onCancelEditImage(){
+  /**
+   * Cancel edit image
+   */
+  onCancelEditImage(): void {
     this.changeImage = false;
   }
 
-  onDeleteImage() {
-    if(globalsConstants.K_DEFAULT_IMAGE != this.serviceObj.image){
+  /**
+   * Delete image
+   */
+  onDeleteImage(): void {
+    if (globalsConstants.K_DEFAULT_IMAGE != this.serviceObj.image) {
       Swal.fire({
-        title: K_DELETE_IMAGE,
-        text: K_WARNING_ACTION,
+        title: globalsConstants.K_SERVICE_DELETE_IMAGE,
+        text: globalsConstants.K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -218,7 +246,7 @@ export class ServiceComponent implements OnInit {
           this.isLoaded = false;
           this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getServicesByPage(this.page);
               this.onCancel();
               this.isLoaded = true;
@@ -228,7 +256,7 @@ export class ServiceComponent implements OnInit {
                 'success'
               )
             }
-            else{
+            else {
               this.isLoaded = true;
               Swal.fire(
                 globalsConstants.K_ERROR_EXC_STR,
@@ -245,21 +273,25 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  onSubmit(form: NgForm){
+  /**
+   * Submit form information to create or edit the record
+   * @param form Form with the information
+   */
+  onSubmit(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
 
-    if(this.isEditForm){
-      if(this.changeImage && this.selectedImg != null){
+    if (this.isEditForm) {
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
           this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getServicesByPage(this.page);
               this.onCancel();
               this.coreService.createNotification(
@@ -267,15 +299,15 @@ export class ServiceComponent implements OnInit {
                 globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.updateServiceById(this.serviceObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getServicesByPage(this.page);
             this.onCancel();
             this.coreService.createNotification(
@@ -283,20 +315,20 @@ export class ServiceComponent implements OnInit {
               globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
         });
       }
-    } else{
-      if(this.changeImage && this.selectedImg != null){
+    } else {
+      if (this.changeImage && this.selectedImg != null) {
         this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
           this.serviceImg = img['message'];
           this.serviceObj.image = this.serviceImg;
           this.uploadSuccess = false;
           this.dataApi.createService(this.serviceObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.getServicesByPage(this.page);
               this.onCancel();
               this.coreService.createNotification(
@@ -304,15 +336,15 @@ export class ServiceComponent implements OnInit {
                 globalsConstants.K_ALL_USERS);
               this.isLoaded = true;
               this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-            } else{
+            } else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         });
-      } else{
+      } else {
         this.dataApi.createService(this.serviceObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             this.getServicesByPage(this.page);
             this.onCancel();
             this.coreService.createNotification(
@@ -320,7 +352,7 @@ export class ServiceComponent implements OnInit {
               globalsConstants.K_ALL_USERS);
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_ADD_STR);
-          } else{
+          } else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
@@ -329,53 +361,66 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  onFileChanged($event){
-    if($event != null){
+  /**
+   * Preload image
+   * @param  $event
+   */
+  onFileChanged($event) {
+    if ($event != null) {
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+      if (this.selectedImg.size > globalsConstants.K_MAX_SIZE) {
         this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
         this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
-      } else{
-        for(let i=0; i<=100; i++){
+      } else {
+        for (let i = 0; i <= 100; i++) {
           setTimeout(() => {
-              this.progress = i; // Simulación de progreso
+            this.progress = i;
           }, 500);
         }
         this.uploadSuccess = true;
         setTimeout(() => {
-            this.progress = 0; // Eliminación de la barra de progreso
+          this.progress = 0;
         }, 2500);
       }
-    } else{
+    } else {
       return;
     }
   }
 
-  onCancel(){
-    // form.reset();
+  /**
+   * Cancel edit
+   */
+  onCancel(): void {
     this.isEditForm = false;
     this.activeForm = false;
     this.uploadSuccess = false;
     this.changeImage = false;
   }
 
-  scrollToForm() {
-      this.editService.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editService.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
-  onActiveService(service: ServiceInterface){
+  /**
+   * Active or deactive service
+   * @param service Service to deactivate or activate
+   */
+  onActiveService(service: ServiceInterface): void {
     let auxActive = 0;
-    if(1 == service.active){
-      this.alertActiveStr = K_DEACTIVE_SERVICE;
-      this.actionActiveStr = K_DEACTIVE_STR;
-      this.actionTextActiveStr = K_DEACTIVE_SUCCESS_SRT;
+    if (1 == service.active) {
+      this.alertActiveStr = globalsConstants.K_SERVICE_DEACTIVE_SERVICE;
+      this.actionActiveStr = globalsConstants.K_SERVICE_DEACTIVATED_STR;
+      this.actionTextActiveStr = globalsConstants.K_SERVICE_DEACTIVE_SUCCESS_SRT;
       auxActive = 1;
     }
-    else{
-      this.alertActiveStr = K_ACTIVE_SERVICE;
-      this.actionActiveStr = K_ACTIVE_STR;
-      this.actionTextActiveStr = K_ACTIVE_SUCCESS_SRT;
+    else {
+      this.alertActiveStr = globalsConstants.K_SERVICE_ACTIVE_SERVICE;
+      this.actionActiveStr = globalsConstants.K_SERVICE_ACTIVATED_STR;
+      this.actionTextActiveStr = globalsConstants.K_SERVICE_ACTIVE_SUCCESS_SRT;
       auxActive = 0;
     }
 
@@ -391,10 +436,9 @@ export class ServiceComponent implements OnInit {
       if (result.value) {
         this.isLoaded = false;
         service.user_id = this.globals.userID;
-        // Posibilidad de nuevo servicio en data-api.service para activar/desactivar
-        service.active = (service.active == 0) ? 1 : 0;  // Así no tener que hace esto
+        service.active = (service.active == 0) ? 1 : 0;
         this.dataApi.updateServiceById(service).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             service.active = auxActive;
             this.getServicesByPage(this.page);
             this.isEditForm = false;
@@ -405,17 +449,17 @@ export class ServiceComponent implements OnInit {
               this.actionTextActiveStr,
               'success'
             )
-            if(!service.active){
+            if (!service.active) {
               this.coreService.createNotification(
-                globalsConstants.K_MOD_SERVICE ,globalsConstants.K_ACTIVE_MOD, service.title,
+                globalsConstants.K_MOD_SERVICE, globalsConstants.K_ACTIVE_MOD, service.title,
                 globalsConstants.K_ALL_USERS);
             }
-            else{
+            else {
               this.coreService.createNotification(
-                globalsConstants.K_MOD_SERVICE ,globalsConstants.K_DEACTIVE_MOD, service.title,
+                globalsConstants.K_MOD_SERVICE, globalsConstants.K_DEACTIVE_MOD, service.title,
                 globalsConstants.K_ALL_USERS);
             }
-          } else{
+          } else {
             service.active = auxActive;
             this.isLoaded = true;
             Swal.fire(

@@ -174,6 +174,21 @@ export const K_OPINION_RATING_STR = 'Valoración';
 export const K_OPINION_IN_HOME_STR = 'Pag. Principal';
 export const K_OPINION_EDIT = 'Editar opinión';
 export const K_OPINION_NEW = 'Crear opinión';
+//// Services
+export const K_SERVICE_TITLE_STR = 'Servicios ';
+export const K_SERVICE_DELETE = '¿Seguro que deseas eliminar el servicio?';
+export const K_SERVICE_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_SERVICE_DEACTIVE_SERVICE = '¿Seguro que deseas desactivar este servicio?';
+export const K_SERVICE_ACTIVE_SERVICE = '¿Seguro que deseas activar este servicio?';
+export const K_SERVICE_DEACTIVATED_STR = '¡Desactivado!';
+export const K_SERVICE_ACTIVATED_STR = '¡Activado!';
+export const K_SERVICE_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el servicio.';
+export const K_SERVICE_ACTIVE_SUCCESS_SRT = 'Se ha activado el servicio.';
+export const K_SERVICE_IMAGE_STR = 'Imagen';
+export const K_SERVICE_SERV_STR = 'Servicio';
+export const K_SERVICE_ACTIVE_STR = 'Activo';
+export const K_SERVICE_EDIT = 'Editar servicio';
+export const K_SERVICE_NEW = 'Crear servicio';
 
 @Injectable()
 export class Globals {
