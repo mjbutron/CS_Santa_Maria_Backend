@@ -220,6 +220,24 @@ export const K_USER_INFO_SOCIAL_LINKS = 'Insertar enlaces completos, copiados de
 export const K_USER_CHANGE_IMAGE = 'Cambiar imagen';
 export const K_USER_CURRENT_DELETE = 'Eliminar actual';
 export const K_USER_MODIFY_PASS = ' Modificar contraseña';
+//// Workshop
+export const K_WORKSHOP_TITLE_STR = 'Talleres ';
+export const K_WORKSHOP_DELETE_WORKSHOP = '¿Seguro que deseas eliminar el taller?';
+export const K_WORKSHOP_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_WORKSHOP_DEACTIVE_WORKSHOP = '¿Seguro que deseas desactivar este taller?';
+export const K_WORKSHOP_ACTIVE_WORKSHOP = '¿Seguro que deseas activar este taller?';
+export const K_WORKSHOP_DEACTIVATED_STR = '¡Desactivado!';
+export const K_WORKSHOP_ACTIVATED_STR = '¡Activado!';
+export const K_WORKSHOP_DEACTIVE_SUCCESS_SRT = 'Se ha desactivado el taller.';
+export const K_WORKSHOP_ACTIVE_SUCCESS_SRT = 'Se ha activado el taller.';
+export const K_WORKSHOP_NAME_STR = 'Nombre';
+export const K_WORKSHOP_DATE_STR = 'Fecha';
+export const K_WORKSHOP_TIME_STR = 'Hora';
+export const K_WORKSHOP_PRICE_STR = 'Precio';
+export const K_WORKSHOP_IN_HOME_STR = 'Pag. Principal';
+export const K_WORKSHOP_ACTIVE_STR = 'Activo';
+export const K_WORKSHOP_EDIT = 'Editar taller';
+export const K_WORKSHOP_NEW = 'Crear taller';
 
 @Injectable()
 export class Globals {
