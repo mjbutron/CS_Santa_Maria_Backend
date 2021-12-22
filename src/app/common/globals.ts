@@ -65,6 +65,7 @@ export const K_SLIDER_TEXT_COLOR = '#ffffff';
 export const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
 export const K_OK_BUTTON_STR = 'Aceptar';
 export const K_UPDATE_BUTTON_STR = 'Actualizar';
+export const K_MODIFY_BUTTON_STR = 'Modificar';
 export const K_RESET_BUTTON_STR = 'Reiniciar';
 export const K_CREATE_BUTTON_STR = 'Crear';
 export const K_CANCEL_BUTTON_STR = 'Cancelar';
@@ -207,7 +208,18 @@ export const K_USERMGT_ROL_STR = 'Rol';
 export const K_USERMGT_ACTIVE_STR = 'Activo';
 export const K_USERMGT_EDIT = 'Editar usuario';
 export const K_USERMGT_NEW = 'Crear usuario';
-
+//// User
+export const K_USER_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
+export const K_USER_SAME_PASS_ALERT = '¡La nueva contraseña es igual a la anterior!';
+export const K_USER_PASS_NOT_MATCH_ALERT = '¡Las contraseñas no coinciden!';
+export const K_USER_PASS_CHANGE_SUCCESS = 'Se ha actualizado la contraseña';
+export const K_USER_WRONG_PASS = '¡La contraseña actual es incorrecta!';
+export const K_USER_PROFILE = 'Perfil de usuario';
+export const K_USER_SOCIAL_LINKS = 'Redes sociales';
+export const K_USER_INFO_SOCIAL_LINKS = 'Insertar enlaces completos, copiados desde la barra de direcciones (https://www...).';
+export const K_USER_CHANGE_IMAGE = 'Cambiar imagen';
+export const K_USER_CURRENT_DELETE = 'Eliminar actual';
+export const K_USER_MODIFY_PASS = ' Modificar contraseña';
 
 @Injectable()
 export class Globals {

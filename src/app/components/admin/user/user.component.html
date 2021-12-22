@@ -1,12 +1,15 @@
+<!-- Loading -->
 <div id="preloader" *ngIf="!isLoaded">
   <div id="loader"></div>
 </div>
+
+<!-- Content -->
 <div class="row">
   <div class="col-md-8">
     <div class="card">
       <div class="card-header">
         <div class="card-title mb-1 p-3">
-          <h5><b>Perfil de usuario</b>
+          <h5><b>{{globalCnstns.K_USER_PROFILE}}</b>
             <a *ngIf="!activeForm" [routerLink]="" (click)="onEditUser()" >
               <span  style="font-size: 1.5em; color: #0095A6;">
                 <i class="fas fa-edit float-right" title="Editar"></i>
@@ -92,22 +95,18 @@
               </div>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="usr_about">Acerca de mí</label>
-                <textarea name="usr_about" id="usr_about" rows="4" cols="80"  [(ngModel)]="userObj.aboutme" class="form-control" [disabled]="disabledForm"></textarea>
-              </div>
-            </div>
-          </div> -->
           <div class="row p-2">
             <div class="col-md-6">
                 <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledForm">Actualizar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledForm">
+                {{globalCnstns.K_UPDATE_BUTTON_STR}}
+                </button>
             </div>
             <div class="col-md-6">
                 <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEdit()" [hidden]="disabledForm">Cancelar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEdit()" [hidden]="disabledForm">
+                {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                </button>
             </div>
           </div>
         </form>
@@ -132,9 +131,6 @@
         <div class="mb-3">
           <hr>
         </div>
-        <!-- <p class="description text-center">
-          {{userObj.aboutme}}
-        </p> -->
         <div class="card" style="padding: 8px;">
           <a class="btn" [routerLink]="['/admin/notificaciones']" title="Ir a notificaciones">
             <span  style="font-size: 1em; color: #0095A6;">
@@ -174,21 +170,6 @@
         </button>
       </div>
     </div>
-    <!-- <div class="card" style="padding: 8px;">
-      <span  style="font-size: 1em; color: #0095A6;">
-        <i class="fas fa-bell"></i> 8 Notificaciones sin leer
-      </span>
-    </div> -->
-    <!-- <div class="card" style="padding: 8px;">
-      <span  style="font-size: 1em; color: #0095A6;">
-        <i class="fas fa-sign-out-alt"></i> Últ. conexión {{userObj.last_login | date}}
-      </span>
-    </div> -->
-    <!-- <div class="card" style="padding: 8px;">
-      <span  style="font-size: 1em; color: #0095A6;">
-        <i class="far fa-comments"></i> Últ. entrada del blog 18/03/2020
-      </span>
-    </div> -->
   </div>
 </div>
 
@@ -198,7 +179,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5><b>Redes sociales</b>
+            <h5><b>{{globalCnstns.K_USER_SOCIAL_LINKS}}</b>
               <a *ngIf="!activeFormSocial" [routerLink]="" (click)="onEditSocial()" >
                 <span  style="font-size: 1.5em; color: #0095A6;">
                   <i class="fas fa-edit float-right" title="Editar"></i>
@@ -251,18 +232,22 @@
                   <span  style="font-size: 0.8em; color: #eb6f00;" [hidden]="disabledFormSocial">
                     <i class="fas fa-exclamation-triangle" title="Atención">  </i>
                   </span>
-                  Insertar enlaces completos, copiados desde la barra de direcciones (https://www...).
+                  {{globalCnstns.K_USER_INFO_SOCIAL_LINKS}}
                 </p>
               </div>
             </div>
             <div class="row p-2">
               <div class="col-md-6">
                   <button type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormSocial">Modificar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormSocial">
+                  {{globalCnstns.K_MODIFY_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditSocial()" [hidden]="disabledFormSocial">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditSocial()" [hidden]="disabledFormSocial">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>
@@ -278,7 +263,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title mb-1 p-3">
-            <h5><b>Cambiar imagen</b>
+            <h5><b>{{globalCnstns.K_USER_CHANGE_IMAGE}}</b>
               <a *ngIf="!activeFormImage" [routerLink]="" (click)="onEditImage()" >
                 <span  style="font-size: 1.5em; color: #0095A6;">
                   <i class="fas fa-edit float-right" title="Editar"></i>
@@ -308,7 +293,6 @@
           <div *ngIf="activeFormImage" class="row p-2">
             <div class="col-md-6">
               <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)">
-              <!-- <span *ngIf="uploadSuccess" style="font-size: 1.5em; color: limegreen;"><i class="far fa-check-circle"></i></span> -->
             </div>
             <div class="col-md-6">
               <div class="progress form-group" *ngIf="progress > 0">
@@ -319,15 +303,21 @@
           <div class="row p-2">
             <div class="col-md-4">
                 <button type="submit" name="submit"
-                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">Modificar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [disabled]="!uploadSuccess" [hidden]="disabledFormImage">
+                {{globalCnstns.K_MODIFY_BUTTON_STR}}
+                </button>
             </div>
             <div class="col-md-4">
                 <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onDeleteImage()" [hidden]="disabledFormImage">Eliminar actual</button>
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onDeleteImage()" [hidden]="disabledFormImage">
+                {{globalCnstns.K_USER_CURRENT_DELETE}}
+                </button>
             </div>
             <div class="col-md-4">
                 <button type="button" name="clear"
-                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">Cancelar</button>
+                class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">
+                {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                </button>
             </div>
           </div>
         </form>
@@ -346,7 +336,7 @@
               <span  style="font-size: 0.8em; color: #eb6f00;">
                 <i class="fas fa-exclamation-triangle" title="Precaución"></i>
               </span>
-              <b> Modificar contraseña</b>
+              <b>{{globalCnstns.K_USER_MODIFY_PASS}}</b>
               <a *ngIf="!activeFormPass" [routerLink]="" (click)="onEditPassword()" >
                 <span  style="font-size: 1.5em; color: #0095A6;">
                   <i class="fas fa-edit float-right" title="Editar"></i>
@@ -401,11 +391,15 @@
             <div class="row p-2">
               <div class="col-md-6">
                   <button type="submit" name="submit"
-                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormPass">Modificar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2 mr-2" [hidden]="disabledFormPass">
+                  {{globalCnstns.K_MODIFY_BUTTON_STR}}
+                  </button>
               </div>
               <div class="col-md-6">
                   <button type="button" name="clear"
-                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass(passForm)" [hidden]="disabledFormPass">Cancelar</button>
+                  class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditPass(passForm)" [hidden]="disabledFormPass">
+                  {{globalCnstns.K_CANCEL_BUTTON_STR}}
+                  </button>
               </div>
             </div>
           </form>

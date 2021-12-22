@@ -5,19 +5,11 @@ import * as globalsConstants from 'src/app/common/globals';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Globals } from 'src/app/common/globals';
-
+// Services
 import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
-
+// Interfaces
 import { UserInterface } from 'src/app/models/user-interface';
-
-// Constants
-const K_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
-const K_WARNING_ACTION = 'Atención: Esta acción no se puede deshacer.';
-const K_SAME_PASS_ALERT = '¡La nueva contraseña es igual a la anterior!';
-const K_PASS_NOT_MATCH_ALERT = '¡Las contraseñas no coinciden!';
-const K_PASS_CHANGE_SUCCESS = 'Se ha actualizado la contraseña';
-const K_WRONG_PASS = '¡La contraseña actual es incorrecta!';
 
 @Component({
   selector: 'app-user',
@@ -25,7 +17,6 @@ const K_WRONG_PASS = '¡La contraseña actual es incorrecta!';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
   // Path
   path = environment.imageRootPath;
   // User Obj
@@ -54,7 +45,7 @@ export class UserComponent implements OnInit {
   activeFormImage: boolean;
   disabledFormImage: boolean;
   progress: number = 0;
-  @ViewChild('cssmFile', {static: false}) imageFile: ElementRef;
+  @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
   // Pass
   currentPass = "";
   errorCurrentPass = "";
@@ -64,8 +55,17 @@ export class UserComponent implements OnInit {
   errorRepetNewPass = "";
   // Load
   isLoaded: boolean;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, globals: Globals, private coreService: CoreService) {
+  /**
+   * Constructor
+   * @param dataApi      Data API object
+   * @param toastr       Toastr service
+   * @param coreService  Core service
+   * @param globals      Globals
+   */
+  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService, globals: Globals) {
     this.userObj = new UserInterface();
     this.userObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.globals = globals;
@@ -73,7 +73,10 @@ export class UserComponent implements OnInit {
     this.setGlobalsData();
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
     this.activeFormImage = false;
     this.disabledFormImage = true;
     this.uploadSuccess = false;
@@ -81,48 +84,63 @@ export class UserComponent implements OnInit {
     this.findNotifications();
   }
 
-  setGlobalsData(){
+  /**
+   * Sets global data. Obtained from local storage
+   */
+  setGlobalsData(): void {
     this.globals.user_name = localStorage.getItem('username');
     this.globals.rol_name = localStorage.getItem('rolname');
     this.globals.userImage = localStorage.getItem('userImage');
   }
 
-  getUserProfile() {
+  /**
+   * Get user profile information
+   */
+  getUserProfile(): void {
     this.isLoaded = false;
     this.userObj.email = localStorage.getItem('email');
-    this.dataApi.getUserProfile(this.userObj).subscribe((data) =>{
-      if (globalsConstants.K_COD_OK == data.cod){
+    this.dataApi.getUserProfile(this.userObj).subscribe((data) => {
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.userObj = data.user;
         this.userObj.image = (data.user.image) ? data.user.image : globalsConstants.K_DEFAULT_AVATAR;
         this.isLoaded = true;
       }
-      else{
+      else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  findNotifications(){
+  /**
+   * Check notifications
+   */
+  findNotifications(): void {
     this.coreService.findNotifications().subscribe(data => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.numNotifications = data.foundNotifications;
-      } else{
+      } else {
         this.numNotifications = globalsConstants.K_ZERO_RESULTS;
       }
     });
   }
 
-  onEditUser() {
+  /**
+   * Edit user
+   */
+  onEditUser(): void {
     this.disabledForm = false;
     this.activeForm = true;
   }
 
-  onDeleteImage() {
-    if(globalsConstants.K_DEFAULT_IMAGE != this.userObj.image){
+  /**
+   * Delete image
+   */
+  onDeleteImage(): void {
+    if (globalsConstants.K_DEFAULT_IMAGE != this.userObj.image) {
       Swal.fire({
-        title: K_DELETE_IMAGE,
-        text: K_WARNING_ACTION,
+        title: globalsConstants.K_USER_DELETE_IMAGE,
+        text: globalsConstants.K_WARNING_ACTION,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: globalsConstants.K_CONFIRM_BUTTON_COLOR,
@@ -134,7 +152,7 @@ export class UserComponent implements OnInit {
           this.isLoaded = false;
           this.userObj.image = globalsConstants.K_DEFAULT_IMAGE;
           this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               localStorage.setItem('userImage', this.userObj.image);
               this.setGlobalsData();
               this.getUserProfile();
@@ -146,7 +164,7 @@ export class UserComponent implements OnInit {
                 'success'
               )
             }
-            else{
+            else {
               this.isLoaded = true;
               Swal.fire(
                 globalsConstants.K_ERROR_EXC_STR,
@@ -163,53 +181,79 @@ export class UserComponent implements OnInit {
     }
   }
 
-  onCancelEdit() {
+  /**
+   * Cancel edit user
+   */
+  onCancelEdit(): void {
     this.getUserProfile();
     this.activeForm = false;
     this.disabledForm = true;
   }
 
-  onEditPassword() {
+  /**
+   * Edit user password
+   */
+  onEditPassword(): void {
     this.disabledFormPass = false;
     this.activeFormPass = true;
   }
 
-  onCancelEditPass(form: NgForm) {
+  /**
+   * Cancel edit password
+   * @param form  Form to reset
+   */
+  onCancelEditPass(form: NgForm): void {
     this.activeFormPass = false;
     this.disabledFormPass = true;
     form.reset();
   }
 
-  onEditSocial() {
+  /**
+   * Edit social links
+   */
+  onEditSocial(): void {
     this.disabledFormSocial = false;
     this.activeFormSocial = true;
   }
 
-  onCancelEditSocial() {
+  /**
+   * Cancel edit social links
+   */
+  onCancelEditSocial(): void {
     this.getUserProfile();
     this.activeFormSocial = false;
     this.disabledFormSocial = true;
   }
 
-  onEditImage(){
+  /**
+   * Edit image
+   */
+  onEditImage(): void {
     this.disabledFormImage = false;
     this.activeFormImage = true;
   }
 
-  onCancelEditImage(){
+  /**
+   * Cancel edit image
+   */
+  onCancelEditImage(): void {
     this.activeFormImage = false;
     this.disabledFormImage = true;
     this.uploadSuccess = false;
   }
 
-  onSubmitUser(form: NgForm){
+  /**
+   * Submit form information to edit user
+   * @param form Form with the information
+   */
+  onSubmitUser(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         localStorage.setItem('username', this.userObj.name);
         this.setGlobalsData();
         this.activeForm = false;
@@ -217,22 +261,26 @@ export class UserComponent implements OnInit {
         this.isLoaded = true;
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       }
-      else{
+      else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  onSubmitImage(form: NgForm){
+  /**
+   * Submit form information to edit image
+   * @param form Form with the information
+   */
+  onSubmitImage(form: NgForm): void {
     this.isLoaded = false;
-    if(this.activeFormImage && this.selectedImg != null){
+    if (this.activeFormImage && this.selectedImg != null) {
       this.coreService.uploadFiles(this.selectedImg).subscribe((img) => {
         this.userImg = img['message'];
         this.userObj.image = this.userImg;
         this.uploadSuccess = false;
         this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-          if (globalsConstants.K_COD_OK == data.cod){
+          if (globalsConstants.K_COD_OK == data.cod) {
             localStorage.setItem('userImage', this.userObj.image);
             this.setGlobalsData();
             this.getUserProfile();
@@ -240,7 +288,7 @@ export class UserComponent implements OnInit {
             this.isLoaded = true;
             this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
           }
-          else{
+          else {
             this.isLoaded = true;
             this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
           }
@@ -249,109 +297,131 @@ export class UserComponent implements OnInit {
     }
   }
 
-  onSubmitSocial(form: NgForm){
+  /**
+   * Submit form information to edit social links
+   * @param form Form with the information
+   */
+  onSubmitSocial(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
     }
     this.dataApi.updateUserProfile(this.userObj).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
+      if (globalsConstants.K_COD_OK == data.cod) {
         this.activeFormSocial = false;
         this.disabledFormSocial = true;
         this.isLoaded = true;
         this.toastr.success(data.message, globalsConstants.K_UPDATE_F_STR);
       }
-      else{
+      else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  onSubmitPass(form: NgForm){
+  /**
+   * Submit form information to edit password
+   * @param form Form with the information
+   */
+  onSubmitPass(form: NgForm): void {
     this.isLoaded = false;
-    if(form.invalid){
+    if (form.invalid) {
       this.isLoaded = true;
       return;
-    } else if(this.currentPass == this.newPass){
+    } else if (this.currentPass == this.newPass) {
       this.isLoaded = true;
       Swal.fire({
         icon: 'error',
-        text: K_SAME_PASS_ALERT
+        text: globalsConstants.K_USER_SAME_PASS_ALERT
       });
       return;
-    } else if(this.newPass != this.repetNewPass){
+    } else if (this.newPass != this.repetNewPass) {
       this.isLoaded = true;
       Swal.fire({
         icon: 'error',
-        text: K_PASS_NOT_MATCH_ALERT
+        text: globalsConstants.K_USER_PASS_NOT_MATCH_ALERT
       });
       return;
     }
     this.dataApi.checkPassword(this.userObj, this.currentPass).subscribe((data) => {
-      if (globalsConstants.K_COD_OK == data.cod){
-        if(data.check){
+      if (globalsConstants.K_COD_OK == data.cod) {
+        if (data.check) {
           this.dataApi.updatePassword(this.userObj, this.newPass).subscribe((data) => {
-            if (globalsConstants.K_COD_OK == data.cod){
+            if (globalsConstants.K_COD_OK == data.cod) {
               this.globals.isChangePass = true;
               this.onCancelEditPass(form);
               this.isLoaded = true;
-              this.toastr.success(K_PASS_CHANGE_SUCCESS, globalsConstants.K_UPDATE_F_STR);
+              this.toastr.success(globalsConstants.K_USER_PASS_CHANGE_SUCCESS, globalsConstants.K_UPDATE_F_STR);
             }
-            else{
+            else {
               this.isLoaded = true;
               this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
             }
           });
         }
-        else{
-         this.isLoaded = true;
-         Swal.fire({
-           icon: 'error',
-           text: K_WRONG_PASS
-         });
-         return;
-       }
+        else {
+          this.isLoaded = true;
+          Swal.fire({
+            icon: 'error',
+            text: globalsConstants.K_USER_WRONG_PASS
+          });
+          return;
+        }
       }
-      else{
+      else {
         this.isLoaded = true;
         this.toastr.error(data.message, globalsConstants.K_ERROR_STR);
       }
     });
   }
 
-  scrollToForm() {
-      this.editSocial.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editSocial.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
-  goToLink(url: string){
+  /**
+   * Go to social link
+   * @param url  Url social link
+   */
+  goToLink(url: string): void {
     window.open(url, "_blank");
   }
 
-  scrollToChangeImage(){
-    this.editImage.nativeElement.scrollIntoView({behavior:"smooth"});
+  /**
+   * Scroll to image
+   */
+  scrollToChangeImage(): void {
+    this.editImage.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
-  onFileChanged($event){
-    if($event != null){
+  /**
+   * Preload image
+   * @param  $event
+   */
+  onFileChanged($event) {
+    if ($event != null) {
       this.selectedImg = $event.target.files[0];
-      if(this.selectedImg.size > globalsConstants.K_MAX_SIZE){
+      if (this.selectedImg.size > globalsConstants.K_MAX_SIZE) {
         this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
         this.toastr.error(globalsConstants.K_ERROR_SIZE, globalsConstants.K_ERROR_STR);
         return;
-      } else{
-        for(let i=0; i<=100; i++){
+      } else {
+        for (let i = 0; i <= 100; i++) {
           setTimeout(() => {
-              this.progress = i; // Simulación progreso
+            this.progress = i;
           }, 500);
         }
         this.uploadSuccess = true;
         setTimeout(() => {
-            this.progress = 0; // Eliminación de la barra de progreso
+          this.progress = 0;
         }, 2500);
       }
-    } else{
+    } else {
       return;
     }
   }
