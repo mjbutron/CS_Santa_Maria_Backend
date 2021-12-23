@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 const K_SPLIT_LIMIT = 3;
 const K_NO_TIME = "00:00:00";
+const K_DEFAULT_DATA = "--:--";
 
 @Pipe({
   name: 'timeWithoutSec'
@@ -14,7 +15,7 @@ export class TimeWithoutSecPipe implements PipeTransform {
       return splitted[0] + ":" + splitted[1];
     }
     else{
-      return "--:--"
+      return K_DEFAULT_DATA;
     }
   }
 }
