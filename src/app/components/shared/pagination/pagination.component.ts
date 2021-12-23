@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
@@ -6,34 +6,56 @@ import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-
+  // Current page
   @Input() private page: number;
+  // Total pages
   @Input() private totalPages: number;
+  // Total elements
   @Input() public numElements: number;
+  // Registers by page
   @Input() public numberPage: number;
-  @Output() pageEmitter: EventEmitter<number> =  new EventEmitter();
+  // Event emitter
+  @Output() pageEmitter: EventEmitter<number> = new EventEmitter();
 
+  /**
+   * [constructor description]
+   */
   constructor() { }
 
-  ngOnInit() {
-  }
+  /**
+   * Initialize
+   */
+  ngOnInit(): void { }
 
-  nextPage(){
+  /**
+   * Change next page
+   */
+  nextPage(): void {
     this.page++;
     this.turnPage();
   }
 
-  previousPage(){
+  /**
+   * Change previous page
+   */
+  previousPage(): void {
     this.page--;
     this.turnPage();
   }
 
-  goNumberPage(page: number){
+  /**
+   * Go to the indicated page
+   * @param page  Page to show
+   */
+  goNumberPage(page: number): void {
     this.page = page;
     this.turnPage();
   }
 
-  turnPage(){
+  /**
+   * Turn page
+   */
+  turnPage(): void {
     this.pageEmitter.emit(this.page);
   }
 }
