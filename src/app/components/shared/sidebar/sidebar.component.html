@@ -16,54 +16,47 @@
   <nav class="sidebar-menu pt-3 pb-3">
     <ul class="menu-items">
       <li >
-        <a [routerLink]="['admin/dashboard']" routerLinkActive="active" title="Dashboard">
+        <a [routerLink]="['admin/dashboard']" routerLinkActive="active" title="Página principal">
           <i class="fa fa-tv"></i>
-          <span>Principal</span>
-          <!-- <span class="badge badge-warning rounded-0 text-dark p-1">NEW</span> -->
+          <span>{{globalCnstns.K_DASHBOARD_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/contacto']" routerLinkActive="active" title="Información de contacto">
           <i class="far fa-address-card"></i>
-          <span>Info. Contacto</span>
+          <span>{{globalCnstns.K_INFO_CONTACT_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/nosotras']" routerLinkActive="active" title="Nosotras">
           <i class="far fa-id-badge"></i>
-          <span>Nosotras</span>
+          <span>{{globalCnstns.K_ABOUT_US_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/servicios']" routerLinkActive="active" title="Servicios">
           <i class="fa fa-tasks"></i>
-          <span>Servicios</span>
+          <span>{{globalCnstns.K_SERVICE_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/talleres']" routerLinkActive="active" title="Talleres">
           <i class="fa fa-globe"></i>
-          <span>Talleres</span>
+          <span>{{globalCnstns.K_WORKSHOP_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/cursos']" routerLinkActive="active" title="Cursos">
           <i class="fas fa-graduation-cap"></i>
-          <span>Cursos</span>
+          <span>{{globalCnstns.K_COURSE_STR}}</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['admin/opiniones']" routerLinkActive="active" title="Opiniones">
           <i class="fas fa-comment-dots"></i>
-          <span>Opiniones</span>
+          <span>{{globalCnstns.K_OPINION_STR}}</span>
         </a>
       </li>
-      <!-- <li>
-        <a href="#" routerLink="/notifications" routerLinkActive="active">
-          <i class="far fa-comments"></i>
-          <span>Blog</span><span class="badge rounded-pill bg-info text-dark">Próximamente</span>
-        </a>
-      </li> -->
     </ul>
   </nav>
 </aside>
