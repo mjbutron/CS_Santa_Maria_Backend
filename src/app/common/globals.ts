@@ -155,6 +155,7 @@ export const K_LOGIN_STRG_USER_NAME = 'username';
 export const K_LOGIN_STRG_ROL_NAME = 'rolname';
 export const K_LOGIN_STRG_USER_IMAGE = 'userImage';
 export const K_LOGIN_STRG_EMAIL = 'email';
+export const K_LOGIN_STRG_ACCESSTKN = 'accessTkn';
 export const K_LOGIN_REMEMBER_USER = 'Recordar mi usuario';
 export const K_LOGIN_BUTTON = 'Iniciar sesión';
 //// Notifications
