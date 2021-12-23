@@ -238,6 +238,9 @@ export const K_WORKSHOP_IN_HOME_STR = 'Pag. Principal';
 export const K_WORKSHOP_ACTIVE_STR = 'Activo';
 export const K_WORKSHOP_EDIT = 'Editar taller';
 export const K_WORKSHOP_NEW = 'Crear taller';
+//// Footer
+export const K_FOOTER_NAME_CENTER = ' Centro Sanitario Santa María';
+
 
 @Injectable()
 export class Globals {

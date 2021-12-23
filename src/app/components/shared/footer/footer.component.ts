@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as globalsConstants from 'src/app/common/globals';
 
 @Component({
   selector: 'app-footer',
@@ -7,13 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
   // Year
-  year:number;
+  year: number;
+  // Global Constants
+  globalCnstns = globalsConstants;
 
+  /**
+   * Constructor
+   */
   constructor() {
     this.year = new Date().getFullYear();
   }
 
-  ngOnInit() {
+  /**
+   * Initialize
+   */
+  ngOnInit(): void {
   }
-
 }
