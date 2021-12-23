@@ -240,7 +240,16 @@ export const K_WORKSHOP_EDIT = 'Editar taller';
 export const K_WORKSHOP_NEW = 'Crear taller';
 //// Footer
 export const K_FOOTER_NAME_CENTER = ' Centro Sanitario Santa María';
-
+//// Navigation Bar
+export const K_NAVBAR_CLASS_BELL = 'far fa-bell ';
+export const K_NAVBAR_CLASS_EFECT_BELL = 'animate__animated animate__swing ';
+export const K_NAVBAR_NAME_CENTER = 'C.S. Santa María';
+export const K_NAVBAR_VISIT_WEB = 'Visitar la web';
+export const K_NAVBAR_USERS = 'Usuarios';
+export const K_NAVBAR_NOTIFICATIONS = 'Notificaciones';
+export const K_NAVBAR_PROFILE = 'Mi cuenta';
+export const K_NAVBAR_LOGOUT = 'Cerrar sesión';
+export const K_NAVBAR_BACK = 'Volver';
 
 @Injectable()
 export class Globals {
