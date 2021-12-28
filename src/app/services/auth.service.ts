@@ -10,7 +10,7 @@ import { delay, mergeMap, catchError, retry, retryWhen, shareReplay } from 'rxjs
 import * as globalsConstants from 'src/app/common/globals';
 // Services
 import { UserInterface } from 'src/app/models/user-interface';
-
+// Constants
 const DEFAULT_MAX_RETRIES = 5;
 
 @Injectable({
@@ -87,9 +87,10 @@ export class AuthService {
   }
 
   /**
-   * Get token ID from local storage
+   * Get user token ID
+   * @return User token
    */
-  getTokenStorage(): void {
+  getTokenStorage() {
     if (localStorage.getItem(globalsConstants.K_LOGIN_STRG_ACCESSTKN)) {
       this.userToken = localStorage.getItem(globalsConstants.K_LOGIN_STRG_ACCESSTKN);
     } else {
