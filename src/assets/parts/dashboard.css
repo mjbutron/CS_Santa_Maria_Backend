@@ -1,3 +1,5 @@
+/* General Dashboard CSS style */
+
 .card .card-icon i {
 	 width: 50px;
 	 height: 50px;
@@ -6,7 +8,8 @@
 	 border-radius: 50%;
 	 font-size: 3rem;
 }
- .card .legend span:first-child {
+
+.card .legend span:first-child {
 	 width: 10px;
 	 height: 10px;
 }
