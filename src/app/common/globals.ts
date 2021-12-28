@@ -77,6 +77,7 @@ export const K_SERVICE_STR = 'Servicios';
 export const K_WORKSHOP_STR = 'Talleres';
 export const K_COURSE_STR = 'Cursos';
 export const K_OPINION_STR = 'Opiniones';
+export const K_CHANGE_PASS_NOTIF_STR = '¡Hola! Por favor, cambie la contraseña desde su perfil para completar el registro del usuario.';
 //// About Us
 export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
 export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
