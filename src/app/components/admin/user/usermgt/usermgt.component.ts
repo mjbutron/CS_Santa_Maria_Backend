@@ -164,6 +164,7 @@ export class UsermgtComponent implements OnInit {
     this.auxEmail = user.email;
 
     this.userObj.id = user.id;
+    this.userObj.active = user.active;
     this.userObj.name = user.name;
     this.userObj.surname = user.surname;
     this.userObj.email = user.email;
