@@ -19,6 +19,7 @@ import { UserInterface } from 'src/app/models/user-interface';
 export class UserComponent implements OnInit {
   // Path
   path = environment.imageRootPath;
+  assetsImg = environment.pathImage;
   // User Obj
   userObj: UserInterface;
   // Utils

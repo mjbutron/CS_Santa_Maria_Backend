@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import * as globalsConstants from 'src/app/common/globals';
 import { Globals } from 'src/app/common/globals';
 // Services
@@ -13,6 +14,8 @@ import { CoreService } from 'src/app/services/core.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  // Path image
+  assetsImg = environment.pathImage;
   // Responsive
   isCollapsed = true;
   // Utils

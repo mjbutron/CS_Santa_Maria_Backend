@@ -54,6 +54,10 @@
     opacity: 1;
 }
 
+.footer-icon-color {
+  color: #FF5959;
+}
+
 h3.fancy, .ck.ck-button.ckeditor-title {
   color: #fff;
   font-family: "Amatic SC", cursive;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 import * as globalsConstants from 'src/app/common/globals';
 import { formatDate } from '@angular/common';
 import { Globals } from 'src/app/common/globals';
@@ -19,6 +20,8 @@ import { TimeWithoutSecPipe } from 'src/app/pipes/time-without-sec.pipe';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  // Path image
+  assetsImg = environment.pathImage;
   // User
   user: UserInterface;
   rememberUser = false;

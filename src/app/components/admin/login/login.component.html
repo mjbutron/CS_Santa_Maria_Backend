@@ -7,7 +7,7 @@
                 class="login100-form validate-form flex-sb flex-w p-b-20 p-r-20 p-t-20 p-l-20">
                 <!-- Logo -->
                 <span class="login100-form-title p-b-26">
-                    <img src="../../assets/img/logo.png" width="200px" alt="">
+                    <img [src]="assetsImg+'logo.png'" width="200px" alt="">
                 </span>
                 <!-- User name -->
                 <span *ngIf="loginForm.submitted && loginForm.controls['email'].errors"
