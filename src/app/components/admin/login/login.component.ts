@@ -138,10 +138,10 @@ export class LoginComponent implements OnInit {
         if (0 < data.allWorkshops.length) {
           for (let wspDate of data.allWorkshops) {
             if (this.todayDateStr == wspDate.session_date) {
-              notif = "¡Hoy taller de " + wspDate.title + " a las " + this.pipe.transform(wspDate.session_start) + "!";
+              notif = "¡Hoy taller de <b>" + wspDate.title + "</b> a las " + this.pipe.transform(wspDate.session_start) + "!";
             }
             else if (this.tomorrowDateStr == wspDate.session_date) {
-              notif = "Taller de " + wspDate.title + " mañana a las " + this.pipe.transform(wspDate.session_start);
+              notif = "Taller de <b>" + wspDate.title + "</b> mañana a las " + this.pipe.transform(wspDate.session_start);
             }
             // Check if notification
             if ("" != notif) {
@@ -168,10 +168,10 @@ export class LoginComponent implements OnInit {
         if (0 < data.allCourses.length) {
           for (let crsDate of data.allCourses) {
             if (this.todayDateStr == crsDate.session_date) {
-              notif = "¡Hoy curso de " + crsDate.title + " a las " + this.pipe.transform(crsDate.session_start) + "!";
+              notif = "¡Hoy curso de <b>" + crsDate.title + "</b> a las " + this.pipe.transform(crsDate.session_start) + "!";
             }
             else if (this.tomorrowDateStr == crsDate.session_date) {
-              notif = "Curso de " + crsDate.title + " mañana a las " + this.pipe.transform(crsDate.session_start);
+              notif = "Curso de <b>" + crsDate.title + "</b> mañana a las " + this.pipe.transform(crsDate.session_start);
             }
             // Check if notification
             if ("" != notif) {
