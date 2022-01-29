@@ -7,5 +7,4 @@ export class SliderInterface {
   color_text?: string;
   create_date?: string;
   update_date?: string;
-  user_id?: number;
 }

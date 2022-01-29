@@ -280,7 +280,6 @@ export class DashboardComponent implements OnInit {
     this.sliderObj.description = slider.description;
     this.sliderObj.order_slider = slider.order_slider;
     this.sliderObj.color_text = slider.color_text;
-    this.sliderObj.user_id = this.globals.userID;
     this.sliderObj.image = (slider.image) ? slider.image : globalsConstants.K_DEFAULT_IMAGE;
     this.sliderImg = slider.image;
     this.disabledForm = false;
@@ -296,7 +295,6 @@ export class DashboardComponent implements OnInit {
     this.imageFile.nativeElement.value = globalsConstants.K_BLANK;
     this.sliderObj.order_slider = 0;
     this.sliderObj.color_text = globalsConstants.K_SLIDER_TEXT_COLOR;
-    this.sliderObj.user_id = 0;
     this.sliderObj.image = globalsConstants.K_BLANK;
     this.uploadSuccess = false;
     this.disabledForm = true;
