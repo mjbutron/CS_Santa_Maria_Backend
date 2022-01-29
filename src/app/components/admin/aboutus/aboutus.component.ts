@@ -136,7 +136,6 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_fcbk = globalsConstants.K_BLANK;
     this.aboutUsObj.user_ytube = globalsConstants.K_BLANK;
     this.aboutUsObj.user_insta = globalsConstants.K_BLANK;
-    this.aboutUsObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);
@@ -163,7 +162,6 @@ export class AboutusComponent implements OnInit {
     this.aboutUsObj.user_fcbk = aboutUs.user_fcbk;
     this.aboutUsObj.user_ytube = aboutUs.user_ytube;
     this.aboutUsObj.user_insta = aboutUs.user_insta;
-    this.aboutUsObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);

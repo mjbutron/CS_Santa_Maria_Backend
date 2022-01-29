@@ -10,5 +10,4 @@ export class AboutUsInterface {
   user_fcbk?: string;
   user_ytube?: string;
   user_insta?: string;
-  user_id?: number;
 }
