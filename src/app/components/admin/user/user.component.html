@@ -277,19 +277,6 @@
           </div>
         </div>
         <form (ngSubmit)="onSubmitImage( imageForm )" #imageForm="ngForm" enctype="multipart/form-data">
-          <div class="row p-2">
-            <div class="col-md-12">
-              <div class="form-group">
-                <div class="card-body">
-                  <div class="col mb-3">
-                    <div class="card h-100">
-                      <img [src]="path+userObj.image" name="picture" id="picture" class="card-img-top" alt="..."/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div *ngIf="activeFormImage" class="row p-2">
             <div class="col-md-6">
               <input #cssmFile type="file" name="image" placeholder="Seleccione imagen" accept="image/png, image/jpeg" (change)="onFileChanged($event)">
@@ -318,6 +305,15 @@
                 class="btn btn-outline-lightning rounded-0 mb-2" (click)="onCancelEditImage()" [hidden]="disabledFormImage">
                 {{globalCnstns.K_CANCEL_BUTTON_STR}}
                 </button>
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-md-12">
+              <div class="card-body">
+                <div class="card h-100">
+                  <img [src]="path+userObj.image" width="300" name="picture" id="picture" alt="..." style="align-self: center;"/>
+                </div>
+              </div>
             </div>
           </div>
         </form>
