@@ -138,7 +138,6 @@ export class ServiceComponent implements OnInit {
     this.serviceObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.serviceObj.subtitle = globalsConstants.K_BLANK;
     this.serviceObj.description = globalsConstants.K_BLANK;
-    this.serviceObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);
@@ -162,7 +161,6 @@ export class ServiceComponent implements OnInit {
       this.serviceObj.title = service.title;
       this.serviceObj.subtitle = service.subtitle;
       this.serviceObj.description = service.description;
-      this.serviceObj.user_id = this.globals.userID;
       this.scrollToForm();
     }, 200);
   }
@@ -435,7 +433,6 @@ export class ServiceComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
-        service.user_id = this.globals.userID;
         service.active = (service.active == 0) ? 1 : 0;
         this.dataApi.updateServiceById(service).subscribe((data) => {
           if (globalsConstants.K_COD_OK == data.cod) {

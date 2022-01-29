@@ -7,5 +7,4 @@ export class OpinionInterface {
   rating?: number;
   create_date?: string;
   update_date?: string;
-  user_id?: number;
 }

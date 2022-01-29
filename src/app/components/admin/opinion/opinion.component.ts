@@ -137,7 +137,6 @@ export class OpinionComponent implements OnInit {
     this.opinionObj.image = globalsConstants.K_DEFAULT_IMAGE;
     this.opinionObj.commentary = globalsConstants.K_BLANK;
     this.opinionObj.rating = 0;
-    this.opinionObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);
@@ -162,7 +161,6 @@ export class OpinionComponent implements OnInit {
       this.opinionObj.name = opinion.name;
       this.opinionObj.commentary = opinion.commentary;
       this.opinionObj.rating = opinion.rating;
-      this.opinionObj.user_id = this.globals.userID;
       this.scrollToForm();
     }, 200);
   }
