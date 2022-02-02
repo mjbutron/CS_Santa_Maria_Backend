@@ -157,7 +157,6 @@ export class CourseComponent implements OnInit {
     this.courseObj.places = 0;
     this.courseObj.free_places = 0;
     this.courseObj.price = 0;
-    this.courseObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);
@@ -195,7 +194,6 @@ export class CourseComponent implements OnInit {
       this.courseObj.places = course.places;
       this.courseObj.free_places = course.free_places;
       this.courseObj.price = course.price;
-      this.courseObj.user_id = this.globals.userID;
       this.scrollToForm();
     }, 200);
   }
@@ -478,7 +476,6 @@ export class CourseComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
-        course.user_id = this.globals.userID;
         course.active = (course.active == 0) ? 1 : 0;
         this.dataApi.updateCourseById(course).subscribe((data) => {
           if (globalsConstants.K_COD_OK == data.cod) {

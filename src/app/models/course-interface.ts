@@ -19,5 +19,4 @@ export class CourseInterface {
   price?: number;
   create_date?: string;
   update_date?: string;
-  user_id?: number;
 }
