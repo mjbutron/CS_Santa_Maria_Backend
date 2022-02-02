@@ -156,7 +156,6 @@ export class WorkshopComponent implements OnInit {
     this.workShopObj.free_places = 0;
     this.workShopObj.new_workshop = 1;
     this.workShopObj.impart = globalsConstants.K_BLANK;
-    this.workShopObj.user_id = this.globals.userID;
     setTimeout(() => {
       this.scrollToForm();
     }, 200);
@@ -194,7 +193,6 @@ export class WorkshopComponent implements OnInit {
       this.workShopObj.new_workshop = workShop.new_workshop;
       this.inNewChk = (workShop.new_workshop == 1) ? true : false;
       this.workShopObj.impart = workShop.impart;
-      this.workShopObj.user_id = this.globals.userID;
       this.scrollToForm();
     }, 200);
   }
@@ -476,7 +474,6 @@ export class WorkshopComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.isLoaded = false;
-        workshop.user_id = this.globals.userID;
         workshop.active = (workshop.active == 0) ? 1 : 0;
         this.dataApi.updateWorkshopById(workshop).subscribe((data) => {
           if (globalsConstants.K_COD_OK == data.cod) {

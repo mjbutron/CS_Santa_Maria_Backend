@@ -19,5 +19,4 @@ export class WorkshopInterface {
   impart?: string;
   create_date?: string;
   update_date?: string;
-  user_id?: number;
 }
