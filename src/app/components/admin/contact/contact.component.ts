@@ -160,7 +160,6 @@ export class ContactComponent implements OnInit {
       return;
     }
     this.isLoaded = false;
-    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoHomeById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
@@ -193,7 +192,6 @@ export class ContactComponent implements OnInit {
     }
 
     this.isLoaded = false;
-    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoFooterById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
@@ -225,7 +223,6 @@ export class ContactComponent implements OnInit {
       return;
     }
     this.isLoaded = false;
-    this.infoObj.user_id = this.globals.userID;
     this.dataApi.updateInfoContactById(this.infoObj).subscribe((data) => {
       if (globalsConstants.K_COD_OK == data.cod) {
         this.isLoaded = true;
