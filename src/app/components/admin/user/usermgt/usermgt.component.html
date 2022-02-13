@@ -209,10 +209,15 @@
             <div class="row p-2">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="rolId">Rol del usuario</label>
-                  <select type="number" name="userRolId" [(ngModel)]="userRol" class="form-control">
+                  <label for="rolId">Rol del usuario*</label>
+                  <select type="number" name="userRolId" [(ngModel)]="userRol"
+                    class="form-control" [ngClass]="{ 'is-invalid': userForm.submitted && userForm.controls['userRolId'].errors }"
+                    required>
                     <option *ngFor="let rol of roles" [ngValue]="rol">{{rol.rol_name}}</option>
                   </select>
+                  <div *ngIf="userForm.submitted && userForm.controls['userRolId'].errors" class="invalid-feedback">
+                      <div *ngIf="userForm.controls['userRolId'].errors.required">El rol es obligatorio</div>
+                  </div>
                 </div>
               </div>
             </div>
