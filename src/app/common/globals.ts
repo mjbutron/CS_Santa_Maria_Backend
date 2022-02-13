@@ -72,7 +72,7 @@ export const K_CANCEL_BUTTON_STR = 'Cancelar';
 export const K_NO_DATA_STR = ' No existen registros';
 export const K_DASHBOARD_STR = 'Principal';
 export const K_INFO_CONTACT_STR = 'Info. Contacto';
-export const K_ABOUT_US_STR = 'Nosotras';
+export const K_ABOUT_US_STR = 'Personal';
 export const K_SERVICE_STR = 'Servicios';
 export const K_WORKSHOP_STR = 'Talleres';
 export const K_COURSE_STR = 'Cursos';
@@ -81,7 +81,7 @@ export const K_CHANGE_PASS_NOTIF_STR = '¡Hola! Por favor, cambie la contraseña
 //// About Us
 export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
 export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
-export const K_ABOUTUS_TITLE_STR = 'Nosotras ';
+export const K_ABOUTUS_TITLE_STR = 'Personal ';
 export const K_ABOUTUS_NAME_STR = 'Nombre';
 export const K_ABOUTUS_SURNAME_STR = 'Primer Apellido';
 export const K_ABOUTUS_LASTNAME_STR = 'Segundo Apellido';
