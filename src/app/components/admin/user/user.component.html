@@ -353,9 +353,10 @@
                   <label for="curr_Pass">Contraseña actual*</label>
                   <input name="curr_Pass" id="curr_Pass" type="password" [(ngModel)]="currentPass"
                     class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['curr_Pass'].errors }"
-                    [disabled]="disabledFormPass" required>
+                    [disabled]="disabledFormPass" required minlength="6">
                     <div *ngIf="passForm.submitted && passForm.controls['curr_Pass'].errors" class="invalid-feedback">
                         <div *ngIf="passForm.controls['curr_Pass'].errors.required">Contraseña obligatoria</div>
+                        <div *ngIf="passForm.controls['curr_Pass'].errors.minlength">Debe contener mínimo 6 caracteres</div>
                     </div>
                 </div>
               </div>
@@ -366,9 +367,10 @@
                   <label for="new_Pass">Nueva contraseña*</label>
                   <input name="new_Pass" id="new_Pass" type="password" [(ngModel)]="newPass"
                     class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['new_Pass'].errors }"
-                    [disabled]="disabledFormPass" required>
+                    [disabled]="disabledFormPass" required minlength="6">
                     <div *ngIf="passForm.submitted && passForm.controls['new_Pass'].errors" class="invalid-feedback">
                         <div *ngIf="passForm.controls['new_Pass'].errors.required">Nueva contraseña obligatoria</div>
+                        <div *ngIf="passForm.controls['new_Pass'].errors.minlength">Debe contener mínimo 6 caracteres</div>
                     </div>
                 </div>
               </div>
@@ -377,9 +379,10 @@
                   <label for="repet_NewPass">Repetir nueva contraeña*</label>
                   <input name="repet_NewPass" id="repet_NewPass" type="password" [(ngModel)]="repetNewPass"
                     class="form-control" [ngClass]="{ 'is-invalid': passForm.submitted && passForm.controls['repet_NewPass'].errors }"
-                    [disabled]="disabledFormPass" required>
+                    [disabled]="disabledFormPass" required minlength="6">
                     <div *ngIf="passForm.submitted && passForm.controls['repet_NewPass'].errors" class="invalid-feedback">
                         <div *ngIf="passForm.controls['repet_NewPass'].errors.required">Repetir nueva contraseña</div>
+                        <div *ngIf="passForm.controls['repet_NewPass'].errors.minlength">Debe contener mínimo 6 caracteres</div>
                     </div>
                 </div>
               </div>
