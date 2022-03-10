@@ -10,8 +10,10 @@
                     <img [src]="assetsImg+'logo.png'" width="200px" alt="">
                 </span>
                 <!-- User name -->
-                <span *ngIf="loginForm.submitted && loginForm.controls['email'].errors"
-                      class="text-danger animated fadeIn">El email es obligatorio</span>
+                <div *ngIf="loginForm.submitted && loginForm.controls['email'].errors" class="text-danger animated fadeIn">
+                    <div *ngIf="loginForm.controls['email'].errors.required">El email es obligatorio</div>
+                    <div *ngIf="loginForm.controls['email'].errors.email">El email es incorrecto</div>
+                </div>
                 <div class="wrap-input100 m-b-16">
                     <input class="input100"
                            type="email"
@@ -23,8 +25,10 @@
                     <span class="focus-input100"></span>
                 </div>
                 <!-- User pass -->
-                <span *ngIf="loginForm.submitted && loginForm.controls['password'].errors"
-                      class="text-danger animated fadeIn">La contraseña es obligatoria</span>
+                <div *ngIf="loginForm.submitted && loginForm.controls['password'].errors" class="text-danger animated fadeIn">
+                    <div *ngIf="loginForm.controls['password'].errors.required">La contraseña es obligatoria</div>
+                    <div *ngIf="loginForm.controls['password'].errors.minlength">Mínimo 6 caracteres</div>
+                </div>
                 <div class="wrap-input100 m-b-16">
                     <input class="input100"
                            type="password"
