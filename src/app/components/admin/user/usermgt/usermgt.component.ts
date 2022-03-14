@@ -32,6 +32,7 @@ export class UsermgtComponent implements OnInit {
   // Role
   userRol: RolInterface;
   roles: RolInterface[] = [];
+  rolAdmin = "Administrador";
   // Number pages
   public numberPage: number[] = [];
   // Current page
@@ -64,8 +65,10 @@ export class UsermgtComponent implements OnInit {
    * @param toastr       Toastr service
    * @param coreService  Core service
    */
-  constructor(private dataApi: DataApiService, public toastr: ToastrService, private coreService: CoreService) {
+  constructor(private dataApi: DataApiService, public toastr: ToastrService,
+              private coreService: CoreService, globals: Globals) {
     this.userObj = new UserInterface();
+    this.globals = globals;
     this.element.scrollTop = 0;
     this.userInSession = localStorage.getItem('email');
     this.getAllRoles();
@@ -75,11 +78,13 @@ export class UsermgtComponent implements OnInit {
    * Initialize
    */
   ngOnInit(): void {
-    this.isLoaded = false;
-    this.activeForm = false;
-    this.isEditForm = false;
-    this.auxEmail = "";
-    this.getUsersByPage(this.page);
+    setTimeout(() => {
+      this.isLoaded = false;
+      this.activeForm = false;
+      this.isEditForm = false;
+      this.auxEmail = "";
+      this.getUsersByPage(this.page);
+    }, 500);
   }
 
   /**
