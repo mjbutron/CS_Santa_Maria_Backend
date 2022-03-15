@@ -34,13 +34,17 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="hme_firstph">Teléfono primario</label>
-                  <input name="hme_firstph" id="hme_firstph" type="number" [(ngModel)]="infoObj.home_first_ph" class="form-control">
+                  <input name="hme_firstph" id="hme_firstph" type="number"
+                         [(ngModel)]="infoObj.home_first_ph" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="hme_secondph">Teléfono secundario</label>
-                  <input name="hme_secondph" id="hme_secondph" type="number" [(ngModel)]="infoObj.home_second_ph" class="form-control">
+                  <input name="hme_secondph" id="hme_secondph" type="number"
+                         [(ngModel)]="infoObj.home_second_ph" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -54,23 +58,29 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="hme_fcbk">Facebook</label>
-                  <input name="hme_fcbk" id="hme_fcbk" type="text" [(ngModel)]="infoObj.home_fcbk" class="form-control">
+                  <input name="hme_fcbk" id="hme_fcbk" type="text"
+                         [(ngModel)]="infoObj.home_fcbk" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="hme_ytube">YouTube</label>
-                  <input name="hme_ytube" id="hme_ytube" type="text" [(ngModel)]="infoObj.home_ytube" class="form-control">
+                  <input name="hme_ytube" id="hme_ytube" type="text"
+                         [(ngModel)]="infoObj.home_ytube" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="hme_insta">Instagram</label>
-                  <input name="hme_insta" id="hme_insta" type="text" [(ngModel)]="infoObj.home_insta" class="form-control">
+                  <input name="hme_insta" id="hme_insta" type="text"
+                         [(ngModel)]="infoObj.home_insta" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-2" *ngIf="!editPermissions">
               <div class="col-md-6">
                   <button type="submit" name="submit"
                   class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
@@ -113,7 +123,9 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="localaddress">Dirección del centro</label>
-                  <input name="localaddress" id="localaddress" type="text" [(ngModel)]="infoObj.footer_address" class="form-control">
+                  <input name="localaddress" id="localaddress" type="text"
+                         [(ngModel)]="infoObj.footer_address" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
@@ -127,7 +139,9 @@
                       <span><i class="fas fa-info-circle text-muted"></i></span>
                     </span>
                   </button>
-                  <input name="ftr_email" id="ftr_email" type="text" [(ngModel)]="infoObj.footer_email" class="form-control">
+                  <input name="ftr_email" id="ftr_email" type="text"
+                         [(ngModel)]="infoObj.footer_email" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -135,7 +149,9 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="ftr_phone">Teléfono de contacto</label>
-                  <input name="ftr_phone" id="ftr_phone" type="number" [(ngModel)]="infoObj.footer_ph" class="form-control">
+                  <input name="ftr_phone" id="ftr_phone" type="number"
+                         [(ngModel)]="infoObj.footer_ph" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
@@ -149,7 +165,9 @@
                       <span><i class="fas fa-info-circle text-muted"></i></span>
                     </span>
                   </button>
-                  <input name="ftr_time" id="ftr_time" type="text" [(ngModel)]="infoObj.footer_schdl" class="form-control">
+                  <input name="ftr_time" id="ftr_time" type="text"
+                         [(ngModel)]="infoObj.footer_schdl" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -158,14 +176,14 @@
                 <div class="form-group">
                   <input name="social" id="social" type="checkbox" [(ngModel)]="inSocialChk"
                     data-md-icheck (change)="toggleVisibility($event)"
-                    class="form-control">
+                    class="form-control" [disabled]="editPermissions">
                     <label for="social" class="label_checkbox">
                       {{globalCnstns.K_CONTACT_SHOW_SOCIAL_STR}}
                     </label>
                 </div>
               </div>
             </div>
-            <div class="row p-2">
+            <div class="row p-2" *ngIf="!editPermissions">
               <div class="col-md-6">
                   <button type="submit" name="submit"
                   class="btn btn-outline-lightning rounded-0 mb-2 mr-2">
@@ -208,7 +226,9 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label for="cnt_address">Dirección</label>
-                  <input name="cnt_address" id="cnt_address" type="text" [(ngModel)]="infoObj.cnt_address" class="form-control">
+                  <input name="cnt_address" id="cnt_address" type="text"
+                         [(ngModel)]="infoObj.cnt_address" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -216,7 +236,9 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_ph_appo">Teléfono para cita previa</label>
-                  <input name="cnt_ph_appo" id="cnt_ph_appo" type="number" [(ngModel)]="infoObj.cnt_ph_appo" class="form-control">
+                  <input name="cnt_ph_appo" id="cnt_ph_appo" type="number"
+                         [(ngModel)]="infoObj.cnt_ph_appo" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
@@ -230,7 +252,9 @@
                       <span><i class="fas fa-info-circle text-muted"></i></span>
                     </span>
                   </button>
-                  <input name="cnt_email" id="cnt_email" type="text" [(ngModel)]="infoObj.cnt_emails" class="form-control">
+                  <input name="cnt_email" id="cnt_email" type="text"
+                         [(ngModel)]="infoObj.cnt_emails" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -238,13 +262,17 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_ph_mwives">Teléfonos matronas</label>
-                  <input name="cnt_ph_mwives" id="cnt_ph_mwives" type="number" [(ngModel)]="infoObj.cnt_ph_mwives" class="form-control">
+                  <input name="cnt_ph_mwives" id="cnt_ph_mwives" type="number"
+                         [(ngModel)]="infoObj.cnt_ph_mwives" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_ph_physio">Teléfonos fisioterapia</label>
-                  <input name="cnt_ph_physio" id="cnt_ph_physio" type="number" [(ngModel)]="infoObj.cnt_ph_physio" class="form-control">
+                  <input name="cnt_ph_physio" id="cnt_ph_physio" type="number"
+                         [(ngModel)]="infoObj.cnt_ph_physio" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -258,13 +286,17 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_lat">Latitud</label>
-                  <input name="cnt_lat" id="cnt_lat" type="text" [(ngModel)]="infoObj.cnt_lat" class="form-control">
+                  <input name="cnt_lat" id="cnt_lat" type="text"
+                         [(ngModel)]="infoObj.cnt_lat" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="cnt_lon">Longitud</label>
-                  <input name="cnt_lon" id="cnt_lon" type="text" [(ngModel)]="infoObj.cnt_lon" class="form-control">
+                  <input name="cnt_lon" id="cnt_lon" type="text"
+                         [(ngModel)]="infoObj.cnt_lon" class="form-control"
+                         [disabled]="editPermissions">
                 </div>
               </div>
             </div>
@@ -275,7 +307,7 @@
               (mapClick)="mapClicked($event)">
               <agm-marker [latitude]="lat" [longitude]="lon"></agm-marker>
             </agm-map>
-            <div class="row p-2">
+            <div class="row p-2" *ngIf="!editPermissions">
               <div class="col-md-6">
                   <button type="submit" name="submit"
                   class="btn btn-outline-lightning rounded-0 mb-2 mr-2">

@@ -41,6 +41,8 @@ export class ContactComponent implements OnInit {
   infoEmailPopData = '';
   // Global Constants
   globalCnstns = globalsConstants;
+  // Edition
+  editPermissions: boolean;
 
   /**
    * Constructor
@@ -60,11 +62,27 @@ export class ContactComponent implements OnInit {
    * Initialize
    */
   ngOnInit(): void {
-    this.isLoaded = false;
-    this.populatePopData();
-    this.getHomeInfo();
-    this.getFooterInfo();
-    this.getContactInfo();
+    setTimeout(() => {
+      this.isLoaded = false;
+      this.editPermissions = false;
+      this.getEditPermission();
+      this.populatePopData();
+      this.getHomeInfo();
+      this.getFooterInfo();
+      this.getContactInfo();
+    }, 500);
+  }
+
+  /**
+   * Get edit permissions
+   */
+  getEditPermission(): void {
+    if (this.globals.rolAdmin == this.globals.rol_name) {
+      this.editPermissions = false;
+    }
+    else {
+      this.editPermissions = true;
+    }
   }
 
   /**
@@ -249,7 +267,7 @@ export class ContactComponent implements OnInit {
    * Show and hide social links in the footer
    * @param e  Event
    */
-  toggleVisibility(e): void{
+  toggleVisibility(e): void {
     this.infoObj.footer_social_links = (this.inSocialChk) ? 1 : 0;
   }
 
