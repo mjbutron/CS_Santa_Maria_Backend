@@ -90,7 +90,6 @@ export class UserComponent implements OnInit {
    */
   setGlobalsData(): void {
     this.globals.user_name = localStorage.getItem('username');
-    this.globals.rol_name = localStorage.getItem('rolname');
     this.globals.userImage = localStorage.getItem('userImage');
   }
 

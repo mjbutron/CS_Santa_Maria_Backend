@@ -86,7 +86,6 @@ export class LoginComponent implements OnInit {
         this.checkStatusAndNotifications();
         Swal.close();
         localStorage.setItem(globalsConstants.K_LOGIN_STRG_USER_NAME, data.user.name);
-        localStorage.setItem(globalsConstants.K_LOGIN_STRG_ROL_NAME, data.user.rol_name);
         localStorage.setItem(globalsConstants.K_LOGIN_STRG_USER_IMAGE, data.user.image);
         localStorage.setItem(globalsConstants.K_LOGIN_STRG_EMAIL, this.user.email);
         if (this.rememberUser) {
@@ -97,6 +96,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem(globalsConstants.K_LOGIN_STRG_EMAIL, this.user.email);
         this.globals.isAuth = true;
         this.globals.userID = data.user.id;
+        this.globals.rol_name = data.user.rol_name;
         this.globals.isChangePass = (data.user.change_pass == 0) ? false : true;
         this.router.navigateByUrl('/admin/dashboard');
       }

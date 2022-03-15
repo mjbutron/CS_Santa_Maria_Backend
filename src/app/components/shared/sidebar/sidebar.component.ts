@@ -23,7 +23,6 @@ export class SidebarComponent implements OnInit {
   constructor(globals: Globals, private coreService: CoreService) {
     this.globals = globals;
     this.globals.user_name = localStorage.getItem(globalsConstants.K_LOGIN_STRG_USER_NAME);
-    this.globals.rol_name = localStorage.getItem(globalsConstants.K_LOGIN_STRG_ROL_NAME);
     this.globals.userImage = localStorage.getItem(globalsConstants.K_LOGIN_STRG_USER_IMAGE);
   }
 

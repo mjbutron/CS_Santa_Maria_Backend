@@ -70,7 +70,7 @@ export class UsermgtComponent implements OnInit {
     this.userObj = new UserInterface();
     this.globals = globals;
     this.element.scrollTop = 0;
-    this.userInSession = localStorage.getItem('email');
+    this.userInSession = localStorage.getItem(globalsConstants.K_LOGIN_STRG_EMAIL);
     this.getAllRoles();
   }
 

@@ -100,6 +100,7 @@ export class CoreService {
       this.userData(email).subscribe(data => {
         if (globalsConstants.K_COD_OK == data.cod) {
           this.globals.userID = data.userData.id;
+          this.globals.rol_name = data.userData.rol_name;
           this.globals.isChangePass = (data.userData.change_pass == 0) ? false : true;
         } else {
           this.globals.userID = 0;

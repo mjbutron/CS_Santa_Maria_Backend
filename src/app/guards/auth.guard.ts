@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { Router } from '@angular/router';
 import { Globals } from 'src/app/common/globals';
 // Services
@@ -26,10 +26,16 @@ export class AuthGuard implements CanActivate {
    * Allow or deny access to a URL
    * @return True if allowed and False if denied
    */
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
     if (this.auth.isAuthenticated()) {
-      this.globals.isAuth = true;
-      return true;
+      if (this.globals.pathUsers == route.url[1].path && this.globals.rol_name != this.globals.rolAdmin) {
+        this.globals.isAuth = true;
+        return false;
+      }
+      else {
+        this.globals.isAuth = true;
+        return true;
+      }
     } else {
       this.globals.isAuth = false;
       this.router.navigateByUrl('login');

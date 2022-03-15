@@ -32,7 +32,7 @@
           <span class="link-text">{{globalCnstns.K_NAVBAR_VISIT_WEB}}</span>
         </a>
       </li>
-      <li class="nav-item" *ngIf="globals.isAuth">
+      <li class="nav-item" *ngIf="globals.isAuth && globals.rol_name == globals.rolAdmin">
         <a class="btn nav-link" [routerLink]="['admin/usuarios']" (click)="changeCollapse()" title="Gestión de usuarios">
           <i class="fas fa-users"></i>
           <span class="link-text">{{globalCnstns.K_NAVBAR_USERS}}</span>
