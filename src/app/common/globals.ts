@@ -269,7 +269,7 @@ export class Globals {
   user_name: string = '----';
   rolAdmin: string = 'Administrador';
   pathUsers: string = 'usuarios';
-  // Show if you are logged in
+  // Auth - Show if you are logged in
   isAuth: boolean = false;
   // Sets whether the password has changed
   isChangePass: boolean = true;
