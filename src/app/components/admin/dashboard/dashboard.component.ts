@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit {
   path = environment.imageRootPath;
   // Scroll
   element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
+  // Scroll Form
+  @ViewChild("editHeader", { static: false }) editHeader: ElementRef;
   // Form
   disabledForm = true;
   @ViewChild('cssmFile', { static: false }) imageFile: ElementRef;
@@ -62,10 +64,6 @@ export class DashboardComponent implements OnInit {
   numOpn: number;
   isLastOpn = false;
   nextDateOpn: string;
-  // Scroll
-  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
-  // Scroll Form
-  @ViewChild("editHeader", { static: false }) editHeader: ElementRef;
   // Load
   isLoaded: boolean;
   // Today date
