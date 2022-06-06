@@ -153,6 +153,7 @@
             </div>
           </div>
           <!-- Edit header -->
+          <div #editHeader id="editHdr"></div>
           <div class="card-title mb-1 p-3">
             <h5><b>{{globalCnstns.K_DASHBRD_EDIT_HEADER_STR}}</b></h5>
           </div>
@@ -172,7 +173,7 @@
                 <input type="text" class="form-control rounded-0" name="description" [disabled]="disabledForm"
                 [(ngModel)]="sliderObj.description" required>
               </div>
-              <label for="colorSlider" class="col-sm-2 col-form-label text-nowrap">Color de letra</label>
+              <label for="colorSlider" class="col-sm-2 col-form-label text-nowrap">Color del texto</label>
               <span *ngIf="sliderForm.submitted && sliderForm.controls['color'].errors"
                     class="text-danger animated fadeIn">El color es obligatorio</span>
               <div class="col-sm-10">

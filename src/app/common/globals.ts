@@ -79,7 +79,7 @@ export const K_COURSE_STR = 'Cursos';
 export const K_OPINION_STR = 'Opiniones';
 export const K_CHANGE_PASS_NOTIF_STR = '¡Hola! Por favor, cambie la contraseña desde su perfil para completar el registro del usuario.';
 //// About Us
-export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar la entrada?';
+export const K_ABOUTUS_DELETE = '¿Seguro que deseas eliminar este miembro?';
 export const K_ABOUTUS_DELETE_IMAGE = '¿Seguro que deseas eliminar la imagen?';
 export const K_ABOUTUS_TITLE_STR = 'Personal ';
 export const K_ABOUTUS_NAME_STR = 'Nombre';
@@ -89,7 +89,7 @@ export const K_ABOUTUS_POSITION_STR = 'Cargo';
 export const K_ABOUTUS_EDIT_RECORD_STR = 'Editar entrada';
 export const K_ABOUTUS_NEW_RECORD_STR = 'Crear entrada';
 //// Contact
-export const K_CONTACT_HOME_TITLE_STR = "Información de página de inicio";
+export const K_CONTACT_HOME_TITLE_STR = "Información de barra superior";
 export const K_CONTACT_FOOTER_TITLE_STR = "Información de pie de página";
 export const K_CONTACT_CONTACT_TITLE_STR = "Información de página de contacto";
 export const K_CONTACT_SHOW_SOCIAL_STR = "Mostrar redes sociales en el pie de página";
@@ -132,7 +132,7 @@ export const K_DASHBRD_LAST_SERVICE_STR = 'Ult. añadido:  ';
 export const K_DASHBRD_NEXT_WORKSHOP_STR = 'Próximo Taller: ';
 export const K_DASHBRD_NEXT_COURSE_STR = 'Próximo Curso: ';
 export const K_DASHBRD_LAST_OPINION_STR = 'Ult. añadida:  ';
-export const K_DASHBRD_HEADER_TITLE_STR = 'Imagenes de cabecera';
+export const K_DASHBRD_HEADER_TITLE_STR = 'Imágenes de cabecera';
 export const K_DASHBRD_SUBTEXT_HEADER_STR = 'Cambia el orden arrastrando la imagen o modifica la cabecera seleccionando una de ellas.';
 export const K_DASHBRD_EDIT_HEADER_STR = 'Editar cabecera';
 export const K_DASHBRD_WORKSHOP_IN_HOME_STR = 'Talleres en página de inicio';

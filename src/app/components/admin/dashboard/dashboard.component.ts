@@ -62,6 +62,10 @@ export class DashboardComponent implements OnInit {
   numOpn: number;
   isLastOpn = false;
   nextDateOpn: string;
+  // Scroll
+  element = (<HTMLDivElement>document.getElementById(globalsConstants.K_TOP_ELEMENT_STR));
+  // Scroll Form
+  @ViewChild("editHeader", { static: false }) editHeader: ElementRef;
   // Load
   isLoaded: boolean;
   // Today date
@@ -275,14 +279,18 @@ export class DashboardComponent implements OnInit {
    */
   onSlider(slider: SliderInterface): void {
     this.changeImage = false;
-    this.sliderObj.id = slider.id;
-    this.sliderObj.title = slider.title;
-    this.sliderObj.description = slider.description;
-    this.sliderObj.order_slider = slider.order_slider;
-    this.sliderObj.color_text = slider.color_text;
     this.sliderObj.image = (slider.image) ? slider.image : globalsConstants.K_DEFAULT_IMAGE;
     this.sliderImg = slider.image;
     this.disabledForm = false;
+
+    setTimeout(() => {
+      this.sliderObj.id = slider.id;
+      this.sliderObj.title = slider.title;
+      this.sliderObj.description = slider.description;
+      this.sliderObj.order_slider = slider.order_slider;
+      this.sliderObj.color_text = slider.color_text;
+      this.scrollToForm();
+    }, 200);
   }
 
   /**
@@ -373,6 +381,13 @@ export class DashboardComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  /**
+   * Scroll to form
+   */
+  scrollToForm(): void {
+    this.editHeader.nativeElement.scrollIntoView({ behavior: "smooth" });
   }
 
   /**
