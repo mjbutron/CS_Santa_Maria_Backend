@@ -125,7 +125,6 @@ describe('About Us Component', () => {
     expect(component.isEditForm).toBeFalsy();
     expect(component.changeImage).toBeFalsy();
     expect(component.uploadSuccess).toBeFalsy();
-    expect(component.uploadSuccess).toBeFalsy();
   });
 
   it('Should go to page number', () => {
@@ -215,7 +214,6 @@ describe('About Us Component', () => {
   });
 
   it('Should delete image', (done) => {
-    // staffData.id = 4;
     const dummyPage = 1;
     component.aboutUsObj.image = "dummyImage.jpg";
 
