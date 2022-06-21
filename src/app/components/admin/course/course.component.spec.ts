@@ -184,8 +184,6 @@ describe('Course Component', () => {
   });
 
   it('Should reload data', () => {
-    const dummyPage = 1;
-
     const spy = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
 
     component.onReload();
@@ -204,8 +202,8 @@ describe('Course Component', () => {
 
   it('Should delete course', (done) => {
     courseData.id = 5;
-    const dummyPage = 1;
-    const spy_staff = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
+
+    const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
     const spy_delete = spyOn(api_service, 'deleteCourseById').and.returnValue(of(dummyUpdateData));
 
     component.onDeleteCourse(courseData);

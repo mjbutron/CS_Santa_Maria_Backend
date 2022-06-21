@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 import { NgForm, FormsModule, FormControl, Validators } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import * as globalsConstants from 'src/app/common/globals';
-import Swal from 'sweetalert2';
 
 import { DashboardComponent } from './dashboard.component';
 import { SliderInterface } from 'src/app/models/slider-interface';
