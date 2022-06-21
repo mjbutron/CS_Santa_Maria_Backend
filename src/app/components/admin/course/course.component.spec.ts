@@ -204,7 +204,7 @@ describe('Course Component', () => {
     courseData.id = 5;
 
     const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
-    const spy_delete = spyOn(api_service, 'deleteCourseById').and.returnValue(of(dummyUpdateData));
+    const spy_delete = spyOn(api_service, 'deleteCourseById').and.returnValue(of(dummyDeleteData));
 
     component.onDeleteCourse(courseData);
 
@@ -238,7 +238,7 @@ describe('Course Component', () => {
     component.courseObj.image = "dummyImage.jpg";
 
     const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
-    const spy_delete = spyOn(api_service, 'updateCourseById').and.returnValue(of(dummyUpdateData));
+    const spy_update = spyOn(api_service, 'updateCourseById').and.returnValue(of(dummyUpdateData));
 
     component.onDeleteImage();
 
@@ -269,7 +269,7 @@ describe('Course Component', () => {
     const dummyPage = 1;
 
     const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
-    const spy_delete = spyOn(api_service, 'updateCourseById').and.returnValue(of(dummyUpdateData));
+    const spy_update = spyOn(api_service, 'updateCourseById').and.returnValue(of(dummyUpdateData));
 
     component.onActiveCourse(courseData);
 
