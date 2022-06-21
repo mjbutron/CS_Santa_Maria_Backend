@@ -234,7 +234,6 @@ describe('Course Component', () => {
   });
 
   it('Should delete image', (done) => {
-    const dummyPage = 1;
     component.courseObj.image = "dummyImage.jpg";
 
     const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
@@ -266,8 +265,6 @@ describe('Course Component', () => {
   });
 
   it('Should active course', (done) => {
-    const dummyPage = 1;
-
     const spy_course = spyOn(api_service, 'getCoursesByPage').and.returnValue(of(dummySuccessData));
     const spy_update = spyOn(api_service, 'updateCourseById').and.returnValue(of(dummyUpdateData));
 
