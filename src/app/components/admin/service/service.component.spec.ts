@@ -13,7 +13,7 @@ import { DataApiService } from 'src/app/services/data-api.service';
 import { CoreService } from 'src/app/services/core.service';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('Course Component', () => {
+describe('Service Component', () => {
   let component: ServiceComponent;
   let injector: TestBed;
   let api_service: DataApiService;
@@ -226,7 +226,7 @@ describe('Course Component', () => {
     expect(component.uploadSuccess).toBeFalsy();
   });
 
-  it('Should active course', (done) => {
+  it('Should active service', (done) => {
     const spy_service = spyOn(api_service, 'getServicesByPage').and.returnValue(of(dummySuccessData));
     const spy_update = spyOn(api_service, 'updateServiceById').and.returnValue(of(dummyUpdateData));
 
