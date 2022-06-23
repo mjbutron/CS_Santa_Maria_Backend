@@ -22,6 +22,10 @@ const DEFAULT_MAX_RETRIES = 5;
 export class DataApiService {
   // URL API
   url = environment.urlApiRest;
+  // Retry
+  retries: number = 3;
+  delay_ms:number = 2000;
+
   // User email
   userEmail = {
     email: ""
@@ -72,7 +76,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allSlider';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -89,7 +93,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
     return this.http.put(url_api, JSON.stringify(slider), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -108,7 +112,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/slider/update/' + slider.id;
     return this.http.put(url_api, JSON.stringify(slider), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -124,7 +128,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allServices';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -141,7 +145,7 @@ export class DataApiService {
     const url_api = this.url + '/api/servicesByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -158,7 +162,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/new';
     return this.http.post(url_api, JSON.stringify(service), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -175,7 +179,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/update/' + service.id;
     return this.http.put(url_api, JSON.stringify(service), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -192,7 +196,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/services/delete/' + serviceId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -208,7 +212,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allWorkshops';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -225,7 +229,7 @@ export class DataApiService {
     const url_api = this.url + '/api/workshopsByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -242,7 +246,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/workshops/new';
     return this.http.post(url_api, JSON.stringify(workshop), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -259,7 +263,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/workshops/update/' + workshop.id;
     return this.http.put(url_api, JSON.stringify(workshop), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -276,7 +280,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/workshops/delete/' + workshopId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -292,7 +296,7 @@ export class DataApiService {
     const url_api = this.url + '/api/courses';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -309,7 +313,7 @@ export class DataApiService {
     const url_api = this.url + '/api/coursesByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -326,7 +330,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/courses/new';
     return this.http.post(url_api, JSON.stringify(course), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -343,7 +347,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/courses/update/' + course.id;
     return this.http.put(url_api, JSON.stringify(course), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -360,7 +364,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/courses/delete/' + courseId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -376,7 +380,7 @@ export class DataApiService {
     const url_api = this.url + '/api/home/info';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -392,7 +396,7 @@ export class DataApiService {
     const url_api = this.url + '/api/footer/info';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -408,7 +412,7 @@ export class DataApiService {
     const url_api = this.url + '/api/contact/info';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -425,7 +429,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/home/info/update/' + infoHome.id;
     return this.http.put(url_api, JSON.stringify(infoHome), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -442,7 +446,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/footer/info/update/' + infoFooter.id;
     return this.http.put(url_api, JSON.stringify(infoFooter), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -459,7 +463,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/contact/info/update/' + infoContact.id;
     return this.http.put(url_api, JSON.stringify(infoContact), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -475,7 +479,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allOpinion';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -492,7 +496,7 @@ export class DataApiService {
     const url_api = this.url + '/api/opinionsByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -509,7 +513,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/opinions/new';
     return this.http.post(url_api, JSON.stringify(opinion), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -526,7 +530,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/opinions/update/' + opinion.id;
     return this.http.put(url_api, JSON.stringify(opinion), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -543,7 +547,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/opinions/delete/' + opinionId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -559,7 +563,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allAboutUs';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -576,7 +580,7 @@ export class DataApiService {
     const url_api = this.url + '/api/aboutUsByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -593,7 +597,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/aboutus/new';
     return this.http.post(url_api, JSON.stringify(aboutus), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -610,7 +614,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/aboutus/update/' + aboutus.id;
     return this.http.put(url_api, JSON.stringify(aboutus), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -627,7 +631,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/aboutus/delete/' + aboutusId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -644,7 +648,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/userProfile';
     return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -661,7 +665,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/userProfile/update/' + user.id;
     return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -680,7 +684,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/userProfile/updatePass/' + user.id;
     return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -699,7 +703,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/checkPassword';
     return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -717,7 +721,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/logout';
     return this.http.put(url_api, JSON.stringify(this.userEmail), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -733,7 +737,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allRoles';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -749,7 +753,7 @@ export class DataApiService {
     const url_api = this.url + '/api/allUsers';
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -766,7 +770,7 @@ export class DataApiService {
     const url_api = this.url + '/api/usersByPage/' + page;
     return this.http.get(url_api)
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -783,7 +787,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/users/new';
     return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -800,7 +804,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/users/update/' + user.id;
     return this.http.put(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -817,7 +821,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/users/delete/' + userId;
     return this.http.delete(url_api, this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
@@ -834,7 +838,7 @@ export class DataApiService {
     const url_api = this.url + '/admin/api/validateEmail';
     return this.http.post(url_api, JSON.stringify(user), this.getHeadersOptions())
       .pipe(
-        this.delayRetry(2000, 3),
+        this.delayRetry(this.delay_ms, this.retries),
         catchError(err => {
           return of(err.value.error);
         }),
