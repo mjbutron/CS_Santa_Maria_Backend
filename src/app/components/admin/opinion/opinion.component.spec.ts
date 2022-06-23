@@ -97,6 +97,9 @@ describe('Opinion Component', () => {
 
     opinionData = new OpinionInterface();
     component = new OpinionComponent(api_service, toast, core_service, globals);
+    component.editOpinion = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {

@@ -111,6 +111,9 @@ describe('About Us Component', () => {
 
     staffData = new AboutUsInterface();
     component = new AboutusComponent(api_service, toast, core_service, globals);
+    component.editAboutUs = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {

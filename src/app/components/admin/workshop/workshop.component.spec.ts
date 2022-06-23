@@ -133,6 +133,9 @@ describe('Workshop Component', () => {
 
     workshopData = new WorkshopInterface();
     component = new WorkshopComponent(api_service, toast, core_service, globals);
+    component.editWorkshop = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {

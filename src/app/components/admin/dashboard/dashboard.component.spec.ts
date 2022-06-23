@@ -93,6 +93,12 @@ describe('Dashboard Component', () => {
 
     sliderData = new SliderInterface();
     component = new DashboardComponent(api_service, toast, core_service, globals);
+    component.editHeader = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
+    component.imageFile = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['value'])
+    };
   });
 
   it('Create an instance', () => {

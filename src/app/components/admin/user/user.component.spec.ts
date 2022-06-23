@@ -84,6 +84,12 @@ describe('User Component', () => {
 
     userData = new UserInterface();
     component = new UserComponent(api_service, toast, core_service, globals);
+    component.editSocial = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
+    component.editSocial = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {

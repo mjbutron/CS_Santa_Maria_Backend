@@ -133,6 +133,9 @@ describe('Course Component', () => {
 
     courseData = new CourseInterface();
     component = new CourseComponent(api_service, toast, core_service, globals);
+    component.editCourse = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {

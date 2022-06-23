@@ -97,6 +97,9 @@ describe('Service Component', () => {
 
     serviceData = new ServiceInterface();
     component = new ServiceComponent(api_service, toast, core_service, globals);
+    component.editService = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['scrollIntoView'])
+    };
   });
 
   it('Create an instance', () => {
