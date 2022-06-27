@@ -1,9 +1,5 @@
 /* General theme CSS style */
 
-body {
-	 font-family: 'Poppins', 'Roboto', sans-serif;
-	 font-size: 0.9rem;
-}
  .wrapper.default-theme {
 	 background: #f2f3f8;
 }

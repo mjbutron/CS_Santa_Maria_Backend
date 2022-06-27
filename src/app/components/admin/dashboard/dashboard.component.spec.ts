@@ -146,7 +146,6 @@ describe('Dashboard Component', () => {
     component.changeImage = true;
 
     const spy_api = spyOn(api_service, 'updateSliderById').and.returnValue(of(dummyUpdateData));
-    // const spy_core = spyOn(core_service, 'uploadFiles').and.returnValue(of(dummyUpload));
     const spy_api_all = spyOn(api_service, 'getAllSlider').and.returnValue(of(dummySuccessData));
 
     component.onSubmit(dummyForm);
